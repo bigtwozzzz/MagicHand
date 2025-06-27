@@ -10,14 +10,7 @@
 GameMsg::GameMsg(MSG_TYPE _type, google::protobuf::Message* _pMsg): enMsgType(_type), m_pMsg(_pMsg)
 {
 }
-void hex_dump(const std::string& data) {
-    for (size_t i = 0; i < data.size(); ++i) {
-        // 打印十六进制值（2位）
-        std::cout << std::hex << std::setw(2) << std::setfill('0')
-            << static_cast<int>(static_cast<unsigned char>(data[i])) << " ";
-    }
-    std::cout << std::endl;
-}
+
 GameMsg::GameMsg(MSG_TYPE _type, std::string _pstream)
 {
 	enMsgType = _type;

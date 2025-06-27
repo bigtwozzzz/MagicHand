@@ -1,6 +1,6 @@
 // broadcast.proto
 syntax = "proto3";
-option cc_enable_arenas = true;
+
 package broadcast;
 
 import "common.proto";  // 导入状态、元素类型等枚举
