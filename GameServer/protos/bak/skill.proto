@@ -1,0 +1,40 @@
+// skill.proto
+syntax = "proto3";
+
+package skill;
+
+import "common.proto";  // 导入状态、元素类型等枚举
+
+// 技能类型（普通攻击/法术/控制技能）
+enum SkillType {
+  BASIC_ATTACK = 0;      // 基础攻击
+  ELEMENTAL_SPELL = 1;   // 元素法术（火/水/冰）
+  CONTROL_EFFECT = 2;    // 控制技能（眩晕、沉默）
+  BUFF_DEBUFF = 3;       // 增益/减益效果
+  SPECIAL_ABILITY = 4;   // 特殊能力（复活、传送）
+}
+
+// 技能效果类型
+enum EffectType {
+  DAMAGE = 0;            // 伤害
+  HEAL = 1;              // 治疗
+  STUN = 2;              // 眩晕
+  SLOW = 3;              // 减速
+  SPEED_BOOST = 4;       // 加速
+  INVISIBLE = 5;         // 无敌/隐身
+  ELEMENTAL_DAMAGE = 6;  // 元素伤害（火/水/冰）
+}
+
+// 技能定义（基础信息）
+message SkillDefinition {
+  string skill_id = 1;        // 技能唯一ID
+  string skill_name = 2;      // 技能名称
+  SkillType skill_type = 3;   // 技能类型
+  int32 base_damage = 4;      // 基础伤害
+  float cast_time = 5;        // 施法时间（秒）
+  float cool_down = 6;        // 冷却时间（秒）
+  float duration = 7;         // 效果持续时间（秒）
+  int32 mana_cost = 8;        // 法力消耗
+  repeated EffectType effects = 9;  // 技能效果列表
+  common.ElementType element_type = 10;  // 元素类型（用于相克判定）
+}

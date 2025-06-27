@@ -1,0 +1,50 @@
+// common.proto
+syntax = "proto3";
+
+package common;
+
+// 怪物状态枚举
+enum MonsterState {
+  M_MOVE = 0;     // 移动
+  M_ATTACK = 1;   // 攻击
+  M_STUNNED = 2;  // 眩晕
+  M_SCARED = 3;   // 恐惧
+  M_DEAD = 4;     // 死亡
+  M_SPAWNING = 5; // 生成中
+}
+
+// 怪物类型枚举
+enum MonsterType {
+  ZOMBIE_BASIC = 0;     // 普通僵尸
+  ZOMBIE_FAST = 1;      // 快速僵尸
+  ZOMBIE_TANK = 2;      // 坦克僵尸
+  ZOMBIE_EXPLODE = 3;   // 爆炸僵尸
+  ZOMBIE_BOSS = 4;      // 僵尸领主
+  SKELETON = 5;         // 骨骼兵
+  GHOST = 6;            // 幽灵
+}
+
+// 角色状态枚举
+enum Status {
+  IDLE = 0;         // 待机
+  CASTING = 1;      // 施法
+  STUNNED = 2;      // 眩晕
+  DEAD = 3;         // 死亡
+  INVINCIBLE = 4;   // 无敌
+}
+// common.proto
+enum StageSelectState {
+  PENDING = 0;       // 等待确认
+  CONFIRMED = 1;     // 玩家已确认
+  REJECTED = 2;      // 玩家已拒绝
+}
+
+// 新增 ElementType 枚举
+enum ElementType  {
+  NONE = 0;
+  FIRE = 1;
+  WATER = 2;
+  ICE = 3;
+  EARTH = 4;
+  AIR = 5;
+}

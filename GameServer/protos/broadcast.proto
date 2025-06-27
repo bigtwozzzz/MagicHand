@@ -1,0 +1,115 @@
+// broadcast.proto
+syntax = "proto3";
+
+package broadcast;
+
+import "common.proto";  // 导入状态、元素类型等枚举
+//import "character.proto";  // 角色移动和状态信息
+//import "enemy.proto";      // 怪物移动和状态信息
+//import "skill.proto";     // 技能相关广播
+import "combat.proto";
+// ==================== 玩家上下线 ====================
+// 玩家上线广播（进入场景）
+message PlayerOnlineNotify {
+  string player_id = 1;         // 玩家ID
+  string player_name = 2;       // 显示名称
+  float pos_x = 3;              // 当前X坐标
+  float pos_y = 4;              // 当前Y坐标
+  common.Status status = 5;     // 初始状态（如 IDLE）
+}
+
+// 玩家下线广播（离开场景）
+message PlayerOfflineNotify {
+  string player_id = 1;         // 离线玩家ID
+}
+// ==================== 关卡选择相关 ====================
+// 玩家请求进入关卡
+message PlayerSelectStageRequest {
+  string player_id = 1;         // 请求者ID
+  string stage_id = 2;          // 目标关卡ID
+}
+
+// 广播关卡选择请求（通知所有玩家）
+message StageSelectRequestNotify {
+  string player_id = 1;         // 请求者ID
+  string stage_id = 2;          // 目标关卡ID
+  string stage_name = 3;        // 关卡名称（可选）
+}
+
+// 玩家确认或拒绝关卡选择
+message PlayerConfirmStageResponse {
+  string player_id = 1;         // 响应者ID
+  string stage_id = 2;          // 关卡ID
+  common.StageSelectState state = 3;  // 确认状态（Confirmed/Rejected）
+}
+
+// 广播关卡选择结果（所有玩家确认后）
+message StageSelectResultNotify {
+  string stage_id = 1;          // 目标关卡ID
+  bool is_all_confirmed = 2;    // 是否所有玩家确认
+}
+// ==================== 实体移动 ====================
+// 角色移动广播
+message CharacterMoveNotify {
+  string entity_id = 1;         // 角色ID
+  float pos_x = 2;              // 新X坐标
+  float pos_y = 3;              // 新Y坐标
+  float direction = 4;          // 朝向角度 //没用
+  float speed = 5;              // 移动速度 //没用
+}
+
+// 怪物移动广播
+message MonsterMoveNotify {
+  string entity_id = 1;         // 怪物ID
+  float pos_x = 2;              // 新X坐标
+  float pos_y = 3;              // 新Y坐标
+  float direction = 4;          // 朝向角度 //没用
+  float speed = 5;              // 移动速度 //没用
+}
+
+// ==================== 状态同步 ====================
+// 角色状态更新（如死亡、复活）
+message CharacterStatusUpdate {
+  string entity_id = 1;         // 角色ID
+  common.Status new_status = 2; // 新状态（如 DEAD、CASTING）
+  int32 current_hp = 3;         // 当前血量
+  int32 max_hp = 4;             // 最大血量
+}
+
+// 怪物状态更新（如眩晕、死亡）
+message MonsterStatusUpdate {
+  string entity_id = 1;         // 怪物ID
+  common.MonsterState new_state = 2; // 新状态（如 STUNNED、DEAD）
+  int32 current_hp = 3;         // 当前血量
+  int32 max_hp = 4;             // 最大血量
+}
+
+// ==================== 技能相关 ====================
+// 技能释放广播（补充技能释放动画）
+message SkillCastNotify {
+  string entity_id = 1;         // 施法者ID
+  combat.EntityType entity_type = 2; // 实体类型（角色/怪物）
+  string skill_id = 3;          // 使用技能ID
+  float cast_time = 4;          // 施法时间
+  float attack_angle = 5;       // 攻击方向
+}
+
+// ==================== 攻击与受击 ====================
+// 原有攻击和受击广播（保留）
+message EntityAttackNotify {
+  string entity_id = 1;       // 实体ID（角色/怪物）
+  combat.EntityType entity_type = 2; // 实体类型
+  string target_id = 3;       // 目标ID
+  float attack_angle = 4;     // 攻击方向
+  string skill_id = 5;        // 使用的技能ID
+  float cast_time = 6;        // 施法时间
+}
+
+message EntityHitNotify {
+  string entity_id = 1;       // 被攻击实体ID
+  combat.EntityType entity_type = 2; // 被攻击实体类型
+  string attacker_id = 3;     // 攻击者ID
+  int32 damage = 4;           // 伤害值
+  common.Status new_status = 5; // 新状态（如 DEAD、CASTING）
+  common.MonsterState new_monster_state = 6; // 怪物的新状态（如 STUNNED、DEAD）
+}

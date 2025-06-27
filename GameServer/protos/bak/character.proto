@@ -1,0 +1,41 @@
+// character.proto
+
+syntax = "proto3";
+
+package character;
+
+//import "combat.proto"; // 使用通用攻击请求
+
+import "common.proto";
+// 角色技能栏位
+message SkillSlot {
+   string skill_id = 1;        // 当前技能ID
+   float current_cooldown = 2;  // 当前冷却时间
+   bool is_active = 3;         // 是否激活
+}
+
+
+message CharacterBase {
+   string role_id = 1;             // 角色ID
+   string role_name = 2;           // 显示名称
+   int32 current_hp = 3;           // 当前血量
+   int32 max_hp = 4;               // 最大血量
+   int32 level = 5;                // 等级
+   int32 exp = 6;                  // 经验值
+   float pos_x = 7;                // 位置X
+   float pos_y = 8;                // 位置Y
+   float direction = 9;            // 朝向角度
+   common.Status status = 10;      // 当前状态（如 IDLE、CASTING）
+   SkillSlot skills = 11; // 技能栏位列表
+  
+}
+
+
+
+// 角色移动请求（保留原有定义）
+message MoveRequest {
+  string role_id = 1;
+  float target_x = 2;
+  float target_y = 3;
+  float speed_multiplier = 4;
+}
