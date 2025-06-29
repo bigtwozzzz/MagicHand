@@ -1,0 +1,17 @@
+- role_id: "player_001"
+  role_name: "Warrior"
+  current_hp: 100
+  max_hp: 150
+  level: 10
+  exp: 500
+  pos_x: 123.4
+  pos_y: 567.8
+  direction: 0.0
+  status: 0  # IDLE
+  skills:
+    - skill_id: "skill_001"
+      current_cooldown: 0.0
+      is_active: true
+    - skill_id: "skill_002"
+      current_cooldown: 2.5
+      is_active: false

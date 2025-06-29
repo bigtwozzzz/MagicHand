@@ -4,6 +4,60 @@
   正在验证体系结构
   正在启动远程生成
   正在编译源:
+  DBRequest.cpp
+C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\DBRequest.cpp(76,1): warning : no return statement in function returning non-void [-Wreturn-type]
+C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\DBRequest.cpp(76,1): warning :    76 | }
+C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\DBRequest.cpp(76,1): warning :       | ^
+C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\DBRequest.cpp(76,1): warning : /hom
+  GameChannel.cpp
+  GameMsg.cpp
+C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\GameMsg.h(40,11): warning : ‘GameMsg::enMsgType’ will be initialized after [-Wreorder]
+C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\GameMsg.h(40,11): warning :    40 |         } enMsgType;
+C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\GameMsg.h(40,11): warning :       |           ^~~~~~~~~
+C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\GameMsg.h(10,36): warning : ‘google::protobuf::Message* GameMsg::m_pMsg’ [-Wreorder]
+C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\GameMsg.cpp(10,1): warning : when initialized here [-Wreorder]
+  GameProtocol.cpp
+C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\GameProtocol.cpp(36,39): warning : comparison of integer expressions of different signedness: ‘std::__cxx11::basic_string<char>::size_type’ {aka ‘long unsigned int’} and ‘int’ [-Wsign-compare]
+C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\GameProtocol.cpp(36,39): warning :    36 |                 if (szLast.size() - 8 < iLength) {
+C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\GameProtocol.cpp(36,39): warning :       |                     ~~~~~~~~~~~~~~~~~~^~~~~~~~~
+C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\GameProtocol.cpp(60,34): warning : conversion from ‘std::__cxx11::basic_string<char>::size_type’ {aka ‘long unsigned int’} to ‘int’ may change value [-Wconversion]
+C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\GameProtocol.cpp(60,34): warning :    60 |         iLength = MsgContent.size();
+C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\GameProtocol.cpp(60,34): warning :       |                   ~~~~~~~~~~~~~~~^~
+C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\GameProtocol.cpp(63,41): warning : conversion from ‘int’ to ‘char’ may change value [-Wconversion]
+C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\GameProtocol.cpp(63,41): warning :    63 |         pret->push_back( (iLength >> 0) & 0xff);
+C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\GameProtocol.cpp(63,41): warning :       |                          ~~~~~~~~~~~~~~~^~~~~~
+C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\GameProtocol.cpp(64,40): warning : conversion from ‘int’ to ‘char’ may change value [-Wconversion]
+C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\GameProtocol.cpp(64,40): warning :    64 |         pret->push_back((iLength >> 8) & 0xff);
+C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\GameProtocol.cpp(64,40): warning :       |                         ~~~~~~~~~~~~~~~^~~~~~
+C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\GameProtocol.cpp(65,41): warning : conversion from ‘int’ to ‘char’ may change value [-Wconversion]
+C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\GameProtocol.cpp(65,41): warning :    65 |         pret->push_back((iLength >> 16) & 0xff);
+C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\GameProtocol.cpp(65,41): warning :       |                         ~~~~~~~~~~~~~~~~^~~~~~
+C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\GameProtocol.cpp(66,41): warning : conversion from ‘int’ to ‘char’ may change value [-Wconversion]
+C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\GameProtocol.cpp(66,41): warning :    66 |         pret->push_back((iLength >> 24) & 0xff);
+C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\GameProtocol.cpp(66,41): warning :       |                         ~~~~~~~~~~~~~~~~^~~~~~
+C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\GameProtocol.cpp(67,35): warning : conversion from ‘int’ to ‘char’ may change value [-Wconversion]
+C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\GameProtocol.cpp(67,35): warning :    67 |         pret->push_back((id >> 0) & 0xff);
+C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\GameProtocol.cpp(67,35): warning :       |                         ~~~~~~~~~~^~~~~~
+C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\GameProtocol.cpp(68,35): warning : conversion from ‘int’ to ‘char’ may change value [-Wconversion]
+C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\GameProtocol.cpp(68,35): warning :    68 |         pret->push_back((id >> 8) & 0xff);
+C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\GameProtocol.cpp(68,35): warning :       |                         ~~~~~~~~~~^~~~~~
+C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\GameProtocol.cpp(69,36): warning : conversion from ‘int’ to ‘char’ may change value [-Wconversion]
+C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\GameProtocol.cpp(69,36): warning :    69 |         pret->push_back((id >> 16) & 0xff);
+C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\GameProtocol.cpp(69,36): warning :       |                         ~~~~~~~~~~~^~~~~~
+C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\GameProtocol.cpp(70,36): warning : conversion from ‘int’ to ‘char’ may change value [-Wconversion]
+  GameRole.cpp
+C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\GameRole.cpp(129,55): warning : conversion from ‘int’ to ‘char’ may change value [-Wconversion]
+C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\GameRole.cpp(129,55): warning :   129 |         m_iID = m_pGameProtocol->m_pGameChannel->GetFd();
+C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\GameRole.cpp(129,55): warning :       |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~
+  GameWorld.cpp
   main.cpp
+  base.pb.cpp
+  broadcast.pb.cpp
+  character.pb.cpp
+  combat.pb.cpp
+  common.pb.cpp
+  enemy.pb.cpp
+  scene.pb.cpp
+  skill.pb.cpp
   正在链接对象
   GameServer.vcxproj -> C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\bin\x64\Debug\GameServer.out

@@ -1,0 +1,14 @@
+- monster_id: "zombie_001"
+  type: 0  # ZOMBIE_BASIC
+  current_hp: 50
+  max_hp: 50
+  attack_power: 10
+  attack_speed: 1.5
+  move_speed: 2.0
+  pos_x: 100.0
+  pos_y: 200.0
+  pos_z: 0.0
+  direction: 0.0
+  attack_range: 5.0
+  state: 0  # M_MOVE
+  exp_reward: 10

@@ -73,6 +73,9 @@
     </ClCompile> -->
   </ItemGroup>
   <ItemGroup>
+    <None Include="config\characters.yaml" />
+    <None Include="config\enemies.yaml" />
+    <None Include="config\skills.yaml" />
     <None Include="protos\bak\base.proto" />
     <None Include="protos\bak\broadcast.proto" />
     <None Include="protos\bak\character.proto" />
@@ -128,7 +131,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Link>
-      <LibraryDependencies>zinx;protobuf;pthread;hiredis</LibraryDependencies>
+      <LibraryDependencies>zinx;protobuf;pthread;hiredis;yaml-cpp</LibraryDependencies>
       <AdditionalOptions>-pthread</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>

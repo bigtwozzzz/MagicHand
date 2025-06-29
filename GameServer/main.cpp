@@ -1,48 +1,49 @@
 #include "GameChannel.h"
 #include "GameMsg.h"
 #include "hiredis/hiredis.h"
+#include "DBRequest.h"
+void PrintCharacterBase(const character::CharacterBase& character) {
+    std::cout << "=== Character Info ===\n";
+    std::cout << "Role ID: " << character.role_id() << "\n";
+    std::cout << "Name: " << character.role_name() << "\n";
+    std::cout << "HP: " << character.current_hp() << "/" << character.max_hp() << "\n";
+    std::cout << "Level: " << character.level() << "\n";
+    std::cout << "Exp: " << character.exp() << "\n";
+    std::cout << "Position: (" << character.pos_x() << ", " << character.pos_y() << ")\n";
+    std::cout << "Direction: " << character.direction() << " radians\n";
+
+    // 处理状态枚举（假设 common::Status 是一个 enum）
+    switch (character.status()) {
+    case common::Status::IDLE:
+        std::cout << "Status: IDLE\n";
+        break;
+    case common::Status::CASTING:
+        std::cout << "Status: CASTING\n";
+        break;
+    default:
+        std::cout << "Status: UNKNOWN (" << character.status() << ")\n";
+    }
+
+    // 打印技能栏位
+    std::cout << "Skills:\n";
+    for (int i = 0; i < character.skills_size(); ++i) {
+        const auto& skill = character.skills(i);
+        std::cout << "  - Skill ID: " << skill.skill_id() << "\n";
+        std::cout << "    Cooldown: " << skill.current_cooldown() << "s\n";
+        std::cout << "    Active: " << (skill.is_active() ? "Yes" : "No") << "\n";
+    }
+}
 int main() {
-	//test
-	//pb::SynicPid * pmsg = new SyncPid();
-	//pmsg->set_pid(1);...
-	/*base::LoginRequest *pmsg = new base::LoginRequest();
-	pmsg->set_username("qzx");
-	pmsg->set_password("123456");
-	GameMsg gm(GameMsg::MSG_TYPE_LOGIN_ID_NAME, pmsg);
-	auto output = gm.serialize();
-	for (auto byte : output) {
-		printf("%02x ", byte);
+	DBRequest dbRequest;
+	if (dbRequest.Init("127.0.0.1", 6379, "qzx123456")) {
+		redisContext* pRedis = dbRequest.GetRedisContext();
+		character::CharacterBase character;
+		dbRequest.Read(pRedis, "character:player_001", &character);
+        PrintCharacterBase(character);
+	} else {
+		printf("db init failed\n");
 	}
-	puts("");
-	char buf[] = { 0x0a, 0x03, 0x71, 0x7a, 0x78, 0x12, 0x06, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36 };
-	std::string input(buf, sizeof(buf));
-	auto ingm = GameMsg(GameMsg::MSG_TYPE_LOGIN_ID_NAME, input);*/
-	//std::cout << dynamic_cast<base::LoginRequest*> (ingm.m_pMsg)->username()<<std::endl;
-	// 创建 Redis 连接
-	//redisContext* context = redisConnect("127.0.0.1", 6379);
-	//if (context == nullptr || context->err) {
-	//	if (context) {
-	//		std::cerr << "Redis connection error: " << context->errstr << std::endl;
-	//		redisFree(context);
-	//	}
-	//	else {
-	//		std::cerr << "Failed to allocate Redis context" << std::endl;
-	//	}
-	//	return 1;
-	//}
-	//const std::string password = "qzx123456";  // 替换为你的实际密码
-	//redisReply* verify_reply = (redisReply*)redisCommand(context, "AUTH %s", password.c_str());
-	//if (verify_reply == nullptr) {
-	//	std::cerr << "Redis AUTH command failed." << std::endl;
-	//	redisFree(context);
-	//	return 1;
-	//}
-
-	//std::string test = "test";
-	//redisReply* reply = (redisReply*)redisCommand(context, "SET name %s", test);
-	//std::cout << reply->str << '\n';
-	//std::cout << "Connected to Redis!" << std::endl;
-
+	
 	ZinxKernel::ZinxKernelInit();
 	//添加监听通道
 	ZinxKernel::Zinx_Add_Channel( *new ZinxTCPListen(8888, new GameConnectFact()));

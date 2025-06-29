@@ -361,9 +361,9 @@ class CharacterBase final :
   // accessors -------------------------------------------------------
 
   enum : int {
+    kSkillsFieldNumber = 11,
     kRoleIdFieldNumber = 1,
     kRoleNameFieldNumber = 2,
-    kSkillsFieldNumber = 11,
     kCurrentHpFieldNumber = 3,
     kMaxHpFieldNumber = 4,
     kLevelFieldNumber = 5,
@@ -373,6 +373,24 @@ class CharacterBase final :
     kDirectionFieldNumber = 9,
     kStatusFieldNumber = 10,
   };
+  // repeated .character.SkillSlot skills = 11;
+  int skills_size() const;
+  private:
+  int _internal_skills_size() const;
+  public:
+  void clear_skills();
+  ::character::SkillSlot* mutable_skills(int index);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::character::SkillSlot >*
+      mutable_skills();
+  private:
+  const ::character::SkillSlot& _internal_skills(int index) const;
+  ::character::SkillSlot* _internal_add_skills();
+  public:
+  const ::character::SkillSlot& skills(int index) const;
+  ::character::SkillSlot* add_skills();
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::character::SkillSlot >&
+      skills() const;
+
   // string role_id = 1;
   void clear_role_id();
   const std::string& role_id() const;
@@ -400,24 +418,6 @@ class CharacterBase final :
   inline PROTOBUF_ALWAYS_INLINE void _internal_set_role_name(const std::string& value);
   std::string* _internal_mutable_role_name();
   public:
-
-  // .character.SkillSlot skills = 11;
-  bool has_skills() const;
-  private:
-  bool _internal_has_skills() const;
-  public:
-  void clear_skills();
-  const ::character::SkillSlot& skills() const;
-  PROTOBUF_NODISCARD ::character::SkillSlot* release_skills();
-  ::character::SkillSlot* mutable_skills();
-  void set_allocated_skills(::character::SkillSlot* skills);
-  private:
-  const ::character::SkillSlot& _internal_skills() const;
-  ::character::SkillSlot* _internal_mutable_skills();
-  public:
-  void unsafe_arena_set_allocated_skills(
-      ::character::SkillSlot* skills);
-  ::character::SkillSlot* unsafe_arena_release_skills();
 
   // int32 current_hp = 3;
   void clear_current_hp();
@@ -499,9 +499,9 @@ class CharacterBase final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   struct Impl_ {
+    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::character::SkillSlot > skills_;
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr role_id_;
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr role_name_;
-    ::character::SkillSlot* skills_;
     int32_t current_hp_;
     int32_t max_hp_;
     int32_t level_;
@@ -1066,94 +1066,44 @@ inline void CharacterBase::set_status(::common::Status value) {
   // @@protoc_insertion_point(field_set:character.CharacterBase.status)
 }
 
-// .character.SkillSlot skills = 11;
-inline bool CharacterBase::_internal_has_skills() const {
-  return this != internal_default_instance() && _impl_.skills_ != nullptr;
+// repeated .character.SkillSlot skills = 11;
+inline int CharacterBase::_internal_skills_size() const {
+  return _impl_.skills_.size();
 }
-inline bool CharacterBase::has_skills() const {
-  return _internal_has_skills();
+inline int CharacterBase::skills_size() const {
+  return _internal_skills_size();
 }
 inline void CharacterBase::clear_skills() {
-  if (GetArenaForAllocation() == nullptr && _impl_.skills_ != nullptr) {
-    delete _impl_.skills_;
-  }
-  _impl_.skills_ = nullptr;
+  _impl_.skills_.Clear();
 }
-inline const ::character::SkillSlot& CharacterBase::_internal_skills() const {
-  const ::character::SkillSlot* p = _impl_.skills_;
-  return p != nullptr ? *p : reinterpret_cast<const ::character::SkillSlot&>(
-      ::character::_SkillSlot_default_instance_);
-}
-inline const ::character::SkillSlot& CharacterBase::skills() const {
-  // @@protoc_insertion_point(field_get:character.CharacterBase.skills)
-  return _internal_skills();
-}
-inline void CharacterBase::unsafe_arena_set_allocated_skills(
-    ::character::SkillSlot* skills) {
-  if (GetArenaForAllocation() == nullptr) {
-    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.skills_);
-  }
-  _impl_.skills_ = skills;
-  if (skills) {
-    
-  } else {
-    
-  }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:character.CharacterBase.skills)
-}
-inline ::character::SkillSlot* CharacterBase::release_skills() {
-  
-  ::character::SkillSlot* temp = _impl_.skills_;
-  _impl_.skills_ = nullptr;
-#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
-  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
-  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
-  if (GetArenaForAllocation() == nullptr) { delete old; }
-#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
-  if (GetArenaForAllocation() != nullptr) {
-    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
-  }
-#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
-  return temp;
-}
-inline ::character::SkillSlot* CharacterBase::unsafe_arena_release_skills() {
-  // @@protoc_insertion_point(field_release:character.CharacterBase.skills)
-  
-  ::character::SkillSlot* temp = _impl_.skills_;
-  _impl_.skills_ = nullptr;
-  return temp;
-}
-inline ::character::SkillSlot* CharacterBase::_internal_mutable_skills() {
-  
-  if (_impl_.skills_ == nullptr) {
-    auto* p = CreateMaybeMessage<::character::SkillSlot>(GetArenaForAllocation());
-    _impl_.skills_ = p;
-  }
-  return _impl_.skills_;
-}
-inline ::character::SkillSlot* CharacterBase::mutable_skills() {
-  ::character::SkillSlot* _msg = _internal_mutable_skills();
+inline ::character::SkillSlot* CharacterBase::mutable_skills(int index) {
   // @@protoc_insertion_point(field_mutable:character.CharacterBase.skills)
-  return _msg;
+  return _impl_.skills_.Mutable(index);
 }
-inline void CharacterBase::set_allocated_skills(::character::SkillSlot* skills) {
-  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
-  if (message_arena == nullptr) {
-    delete _impl_.skills_;
-  }
-  if (skills) {
-    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
-        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(skills);
-    if (message_arena != submessage_arena) {
-      skills = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
-          message_arena, skills, submessage_arena);
-    }
-    
-  } else {
-    
-  }
-  _impl_.skills_ = skills;
-  // @@protoc_insertion_point(field_set_allocated:character.CharacterBase.skills)
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::character::SkillSlot >*
+CharacterBase::mutable_skills() {
+  // @@protoc_insertion_point(field_mutable_list:character.CharacterBase.skills)
+  return &_impl_.skills_;
+}
+inline const ::character::SkillSlot& CharacterBase::_internal_skills(int index) const {
+  return _impl_.skills_.Get(index);
+}
+inline const ::character::SkillSlot& CharacterBase::skills(int index) const {
+  // @@protoc_insertion_point(field_get:character.CharacterBase.skills)
+  return _internal_skills(index);
+}
+inline ::character::SkillSlot* CharacterBase::_internal_add_skills() {
+  return _impl_.skills_.Add();
+}
+inline ::character::SkillSlot* CharacterBase::add_skills() {
+  ::character::SkillSlot* _add = _internal_add_skills();
+  // @@protoc_insertion_point(field_add:character.CharacterBase.skills)
+  return _add;
+}
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::character::SkillSlot >&
+CharacterBase::skills() const {
+  // @@protoc_insertion_point(field_list:character.CharacterBase.skills)
+  return _impl_.skills_;
 }
 
 // -------------------------------------------------------------------

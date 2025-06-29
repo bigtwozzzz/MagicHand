@@ -1,0 +1,12 @@
+- skill_id: "skill_001"
+  skill_name: "Fireball"
+  skill_type: 1  # ELEMENTAL_SPELL
+  base_damage: 20
+  cast_time: 0.5
+  cool_down: 5.0
+  duration: 3.0
+  mana_cost: 10
+  effects:
+    - 0  # DAMAGE
+    - 5  # ELEMENTAL_DAMAGE
+  element_type: 1  # FIRE

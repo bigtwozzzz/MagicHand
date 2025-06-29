@@ -38,9 +38,9 @@ struct SkillSlotDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SkillSlotDefaultTypeInternal _SkillSlot_default_instance_;
 PROTOBUF_CONSTEXPR CharacterBase::CharacterBase(
     ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_.role_id_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
+    /*decltype(_impl_.skills_)*/{}
+  , /*decltype(_impl_.role_id_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
   , /*decltype(_impl_.role_name_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
-  , /*decltype(_impl_.skills_)*/nullptr
   , /*decltype(_impl_.current_hp_)*/0
   , /*decltype(_impl_.max_hp_)*/0
   , /*decltype(_impl_.level_)*/0
@@ -139,7 +139,7 @@ const char descriptor_table_protodef_character_2eproto[] PROTOBUF_SECTION_VARIAB
   "hp\030\004 \001(\005\022\r\n\005level\030\005 \001(\005\022\013\n\003exp\030\006 \001(\005\022\r\n\005"
   "pos_x\030\007 \001(\002\022\r\n\005pos_y\030\010 \001(\002\022\021\n\tdirection\030"
   "\t \001(\002\022\036\n\006status\030\n \001(\0162\016.common.Status\022$\n"
-  "\006skills\030\013 \001(\0132\024.character.SkillSlot\"\\\n\013M"
+  "\006skills\030\013 \003(\0132\024.character.SkillSlot\"\\\n\013M"
   "oveRequest\022\017\n\007role_id\030\001 \001(\t\022\020\n\010target_x\030"
   "\002 \001(\002\022\020\n\010target_y\030\003 \001(\002\022\030\n\020speed_multipl"
   "ier\030\004 \001(\002b\006proto3"
@@ -443,13 +443,8 @@ void SkillSlot::InternalSwap(SkillSlot* other) {
 
 class CharacterBase::_Internal {
  public:
-  static const ::character::SkillSlot& skills(const CharacterBase* msg);
 };
 
-const ::character::SkillSlot&
-CharacterBase::_Internal::skills(const CharacterBase* msg) {
-  return *msg->_impl_.skills_;
-}
 CharacterBase::CharacterBase(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                          bool is_message_owned)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
@@ -460,9 +455,9 @@ CharacterBase::CharacterBase(const CharacterBase& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
   CharacterBase* const _this = this; (void)_this;
   new (&_impl_) Impl_{
-      decltype(_impl_.role_id_){}
+      decltype(_impl_.skills_){from._impl_.skills_}
+    , decltype(_impl_.role_id_){}
     , decltype(_impl_.role_name_){}
-    , decltype(_impl_.skills_){nullptr}
     , decltype(_impl_.current_hp_){}
     , decltype(_impl_.max_hp_){}
     , decltype(_impl_.level_){}
@@ -490,9 +485,6 @@ CharacterBase::CharacterBase(const CharacterBase& from)
     _this->_impl_.role_name_.Set(from._internal_role_name(), 
       _this->GetArenaForAllocation());
   }
-  if (from._internal_has_skills()) {
-    _this->_impl_.skills_ = new ::character::SkillSlot(*from._impl_.skills_);
-  }
   ::memcpy(&_impl_.current_hp_, &from._impl_.current_hp_,
     static_cast<size_t>(reinterpret_cast<char*>(&_impl_.status_) -
     reinterpret_cast<char*>(&_impl_.current_hp_)) + sizeof(_impl_.status_));
@@ -504,9 +496,9 @@ inline void CharacterBase::SharedCtor(
   (void)arena;
   (void)is_message_owned;
   new (&_impl_) Impl_{
-      decltype(_impl_.role_id_){}
+      decltype(_impl_.skills_){arena}
+    , decltype(_impl_.role_id_){}
     , decltype(_impl_.role_name_){}
-    , decltype(_impl_.skills_){nullptr}
     , decltype(_impl_.current_hp_){0}
     , decltype(_impl_.max_hp_){0}
     , decltype(_impl_.level_){0}
@@ -538,9 +530,9 @@ CharacterBase::~CharacterBase() {
 
 inline void CharacterBase::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  _impl_.skills_.~RepeatedPtrField();
   _impl_.role_id_.Destroy();
   _impl_.role_name_.Destroy();
-  if (this != internal_default_instance()) delete _impl_.skills_;
 }
 
 void CharacterBase::SetCachedSize(int size) const {
@@ -553,12 +545,9 @@ void CharacterBase::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
+  _impl_.skills_.Clear();
   _impl_.role_id_.ClearToEmpty();
   _impl_.role_name_.ClearToEmpty();
-  if (GetArenaForAllocation() == nullptr && _impl_.skills_ != nullptr) {
-    delete _impl_.skills_;
-  }
-  _impl_.skills_ = nullptr;
   ::memset(&_impl_.current_hp_, 0, static_cast<size_t>(
       reinterpret_cast<char*>(&_impl_.status_) -
       reinterpret_cast<char*>(&_impl_.current_hp_)) + sizeof(_impl_.status_));
@@ -656,11 +645,16 @@ const char* CharacterBase::_InternalParse(const char* ptr, ::_pbi::ParseContext*
         } else
           goto handle_unusual;
         continue;
-      // .character.SkillSlot skills = 11;
+      // repeated .character.SkillSlot skills = 11;
       case 11:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 90)) {
-          ptr = ctx->ParseMessage(_internal_mutable_skills(), ptr);
-          CHK_(ptr);
+          ptr -= 1;
+          do {
+            ptr += 1;
+            ptr = ctx->ParseMessage(_internal_add_skills(), ptr);
+            CHK_(ptr);
+            if (!ctx->DataAvailable(ptr)) break;
+          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<90>(ptr));
         } else
           goto handle_unusual;
         continue;
@@ -774,11 +768,12 @@ uint8_t* CharacterBase::_InternalSerialize(
       10, this->_internal_status(), target);
   }
 
-  // .character.SkillSlot skills = 11;
-  if (this->_internal_has_skills()) {
+  // repeated .character.SkillSlot skills = 11;
+  for (unsigned i = 0,
+      n = static_cast<unsigned>(this->_internal_skills_size()); i < n; i++) {
+    const auto& repfield = this->_internal_skills(i);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(11, _Internal::skills(this),
-        _Internal::skills(this).GetCachedSize(), target, stream);
+        InternalWriteMessage(11, repfield, repfield.GetCachedSize(), target, stream);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -797,6 +792,13 @@ size_t CharacterBase::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
+  // repeated .character.SkillSlot skills = 11;
+  total_size += 1UL * this->_internal_skills_size();
+  for (const auto& msg : this->_impl_.skills_) {
+    total_size +=
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
+  }
+
   // string role_id = 1;
   if (!this->_internal_role_id().empty()) {
     total_size += 1 +
@@ -809,13 +811,6 @@ size_t CharacterBase::ByteSizeLong() const {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
         this->_internal_role_name());
-  }
-
-  // .character.SkillSlot skills = 11;
-  if (this->_internal_has_skills()) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *_impl_.skills_);
   }
 
   // int32 current_hp = 3;
@@ -889,15 +884,12 @@ void CharacterBase::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
+  _this->_impl_.skills_.MergeFrom(from._impl_.skills_);
   if (!from._internal_role_id().empty()) {
     _this->_internal_set_role_id(from._internal_role_id());
   }
   if (!from._internal_role_name().empty()) {
     _this->_internal_set_role_name(from._internal_role_name());
-  }
-  if (from._internal_has_skills()) {
-    _this->_internal_mutable_skills()->::character::SkillSlot::MergeFrom(
-        from._internal_skills());
   }
   if (from._internal_current_hp() != 0) {
     _this->_internal_set_current_hp(from._internal_current_hp());
@@ -954,6 +946,7 @@ void CharacterBase::InternalSwap(CharacterBase* other) {
   auto* lhs_arena = GetArenaForAllocation();
   auto* rhs_arena = other->GetArenaForAllocation();
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  _impl_.skills_.InternalSwap(&other->_impl_.skills_);
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
       &_impl_.role_id_, lhs_arena,
       &other->_impl_.role_id_, rhs_arena
@@ -965,9 +958,9 @@ void CharacterBase::InternalSwap(CharacterBase* other) {
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
       PROTOBUF_FIELD_OFFSET(CharacterBase, _impl_.status_)
       + sizeof(CharacterBase::_impl_.status_)
-      - PROTOBUF_FIELD_OFFSET(CharacterBase, _impl_.skills_)>(
-          reinterpret_cast<char*>(&_impl_.skills_),
-          reinterpret_cast<char*>(&other->_impl_.skills_));
+      - PROTOBUF_FIELD_OFFSET(CharacterBase, _impl_.current_hp_)>(
+          reinterpret_cast<char*>(&_impl_.current_hp_),
+          reinterpret_cast<char*>(&other->_impl_.current_hp_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata CharacterBase::GetMetadata() const {
