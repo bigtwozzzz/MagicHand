@@ -1,0 +1,16 @@
+C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\DBRequest.cpp;C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\obj\x64\Debug\DBRequest.o
+C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\GameChannel.cpp;C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\obj\x64\Debug\GameChannel.o
+C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\GameMsg.cpp;C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\obj\x64\Debug\GameMsg.o
+C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\GameProtocol.cpp;C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\obj\x64\Debug\GameProtocol.o
+C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\GameRole.cpp;C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\obj\x64\Debug\GameRole.o
+C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\GameWorld.cpp;C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\obj\x64\Debug\GameWorld.o
+C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\main.cpp;C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\obj\x64\Debug\main.o
+C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\protos\base.pb.cpp;C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\obj\x64\Debug\base.pb.o
+C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\protos\broadcast.pb.cpp;C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\obj\x64\Debug\broadcast.pb.o
+C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\protos\character.pb.cpp;C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\obj\x64\Debug\character.pb.o
+C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\protos\combat.pb.cpp;C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\obj\x64\Debug\combat.pb.o
+C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\protos\common.pb.cpp;C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\obj\x64\Debug\common.pb.o
+C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\protos\enemy.pb.cpp;C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\obj\x64\Debug\enemy.pb.o
+C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\protos\scene.pb.cpp;C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\obj\x64\Debug\scene.pb.o
+C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\protos\skill.pb.cpp;C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\obj\x64\Debug\skill.pb.o
+C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\test.cpp;C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\obj\x64\Debug\test.o

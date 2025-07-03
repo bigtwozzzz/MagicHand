@@ -1,0 +1,52 @@
+- role_id: "player_001"
+  role_name: "Warrior"
+  current_hp: 100
+  max_hp: 150
+  level: 10
+  exp: 500
+  pos_x: 123.4
+  pos_y: 567.8
+  direction: 0.0
+  status: 0  # IDLE
+  skills:
+    - skill_id: "skill_001"
+      current_cooldown: 0.0
+      is_active: true
+    - skill_id: "skill_002"
+      current_cooldown: 2.5
+      is_active: false
+- role_id: "player_002"
+  role_name: "Warrior 2"
+  current_hp: 120
+  max_hp: 160
+  level: 10
+  exp: 550
+  pos_x: 456.7
+  pos_y: 789.0
+  direction: 90.0
+  status: 0  # IDLE
+  skills:
+    - skill_id: "skill_003"
+      current_cooldown: 1.0
+      is_active: true
+    - skill_id: "skill_004"
+      current_cooldown: 3.0
+      is_active: false
+
+- role_id: "player_003"
+  role_name: "Warrior 3"
+  current_hp: 110
+  max_hp: 170
+  level: 10
+  exp: 600
+  pos_x: 789.0
+  pos_y: 101.1
+  direction: 180.0
+  status: 0  # IDLE
+  skills:
+    - skill_id: "skill_005"
+      current_cooldown: 0.0
+      is_active: true
+    - skill_id: "skill_006"
+      current_cooldown: 5.0
+      is_active: false
