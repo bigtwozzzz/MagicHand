@@ -1,9 +1,9 @@
 C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\DBRequest.cpp|638871339742645893|~/projects/GameServer/|
 C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\GameChannel.cpp|638871359212178562|~/projects/GameServer/|
-C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\GameMsg.cpp|638871373650887005|~/projects/GameServer/|
+C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\GameMsg.cpp|638871512388123389|~/projects/GameServer/|
 C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\GameProtocol.cpp|638869591966767372|~/projects/GameServer/|
-C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\GameRole.cpp|638871398395816351|~/projects/GameServer/|
-C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\GameWorld.cpp|638870832620941593|~/projects/GameServer/|
+C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\GameRole.cpp|638871557236992398|~/projects/GameServer/|
+C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\GameWorld.cpp|638871525779616635|~/projects/GameServer/|
 C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\main.cpp|638869652639178193|~/projects/GameServer/|
 C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\protos\base.pb.cpp|638868794603295284|~/projects/GameServer/|
 C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\protos\broadcast.pb.cpp|638866122860911981|~/projects/GameServer/|
@@ -16,10 +16,10 @@ C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\protos\skill.pb.cpp|6
 C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\test.cpp|638868725785371247|~/projects/GameServer/|
 C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\DBRequest.h|638870910460243037|~/projects/GameServer/|
 C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\GameChannel.h|638864044160212813|~/projects/GameServer/|
-C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\GameMsg.h|638871373346034737|~/projects/GameServer/|
+C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\GameMsg.h|638871512201924376|~/projects/GameServer/|
 C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\GameProtocol.h|638865681324190065|~/projects/GameServer/|
-C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\GameRole.h|638871392797149525|~/projects/GameServer/|
-C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\GameWorld.h|638871307278234211|~/projects/GameServer/|
+C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\GameRole.h|638871512423210870|~/projects/GameServer/|
+C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\GameWorld.h|638871526654379095|~/projects/GameServer/|
 C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\protos\base.pb.h|638868794603375228|~/projects/GameServer/|
 C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\protos\broadcast.pb.h|638866122860982049|~/projects/GameServer/|
 C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\protos\character.pb.h|638868269451046548|~/projects/GameServer/|
@@ -30,7 +30,7 @@ C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\protos\scene.pb.h|638
 C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\protos\skill.pb.h|638865536090223686|~/projects/GameServer/|
 C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\config\characters.yaml|638868940090258409|~/projects/GameServer/|
 C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\config\enemies.yaml|638868254757386286|~/projects/GameServer/|
-C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\config\scenes.yaml|638868731138333406|~/projects/GameServer/|
+C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\config\scenes.yaml|638871508235942440|~/projects/GameServer/|
 C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\config\skills.yaml|638868255061053080|~/projects/GameServer/|
 C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\config\usernames.yaml|638869640323124452|~/projects/GameServer/|
 C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\protos\bak\base.proto|638868794862394734|~/projects/GameServer/|

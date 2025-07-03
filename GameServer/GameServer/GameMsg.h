@@ -35,7 +35,7 @@ class GameMsg :
             MSG_TYPE_ENEMY_HIT_BROADCAST = 212,
             MSG_TYPE_CHARACTER_ATTACK_NOTIFY = 213,
 
-            MSG_TYPE_SCENE_UPDATE = 301, //
+            MSG_TYPE_SCENE_DATA= 301, //
             MSG_TYPE_PLAYER_INFO = 302
             
         } enMsgType;

@@ -176,6 +176,43 @@ void GameRole::broadcastLogout(std::string id) {
         }
 	}
 }
+void GameRole::broadcastScene(std::string scene_id)
+{
+	scene::SceneData* pmsg = new scene::SceneData();
+	pmsg->set_scene_id(scene_id);
+	auto context = db_request->Connect();
+
+	if (!db_request->Read(context, "scene:" + scene_id, pmsg)) {
+		std::cerr << "[ERROR] Failed to read scene data from Redis for scene_id: " << scene_id << std::endl;
+	}
+	else {
+		// 添加调试信息 - 打印场景数据
+		std::cerr << "[DEBUG] Successfully loaded scene data for " << scene_id << std::endl;
+		std::cerr << "[DEBUG] Scene Data Content:\n" << pmsg->DebugString() << std::endl;
+
+		// 逐个字段调试（可选）
+		std::cerr << "[DEBUG] Scene ID: " << pmsg->scene_id() << std::endl;
+
+		// 打印怪物列表详细信息
+		for (const auto& monster : pmsg->monsters()) {
+			std::cerr << "[DEBUG] Monster ID: " << monster.monster_id()
+				<< " | Type: " << monster.type()
+				<< " | HP: " << monster.current_hp() << "/" << monster.max_hp()
+				<< " | Position: (" << monster.pos_x() << ", " << monster.pos_y() << ", " << monster.pos_z() << ")"
+				<< std::endl;
+		}
+	}
+
+	auto player_list = gameWorld.getPlayers(this);
+	for (auto player : player_list) {
+		
+		GameMsg* pRet = new GameMsg(GameMsg::MSG_TYPE_SCENE_DATA, pmsg);
+		auto pRole = dynamic_cast<GameRole*>(player);
+		std::cout << "[Server] Broadcasting Scene - Scene ID: " << scene_id << " to "<< player->getUserID() << std::endl;
+		ZinxKernel::Zinx_SendOut(*pRet, *(pRole->m_pGameProtocol));
+	}
+	redisFree(context);
+}
 void GameRole::broadcastPlayerMove(std::string role_id, float target_x, float target_y) {
 	broadcast::CharacterMoveNotify *pmsg = new broadcast::CharacterMoveNotify();
 	pmsg->set_entity_id(m_iID);
@@ -227,6 +264,7 @@ void GameRole::broadcastSelectResultNotify(std::string stage_id, bool isSuccess)
           auto pRole = dynamic_cast<GameRole*>(player);
           ZinxKernel::Zinx_SendOut(*pRet, *(pRole->m_pGameProtocol));
     }
+	
 }
 void GameRole::broadcastEnemyHit(std::string entity_id, combat::EntityType entity_type, std::string attacker_id)
 {
@@ -467,6 +505,14 @@ UserData* GameRole::ProcMsg(UserData& _poUserData) {
 		}
 		case GameMsg::MSG_TYPE_PLAYER_SELECT_STAGE_REQUEST: //接收选择关卡请求 no: 5
 		{
+			auto selectMsg = dynamic_cast<broadcast::PlayerSelectStageRequest*>(single->m_pMsg);
+			if (!selectMsg) {
+				std::cerr << "[ERROR] Failed to parse PlayerSelectStageRequest" << std::endl;
+				break;
+			}
+
+			std::string stage_id = selectMsg->stage_id();
+			gameWorld.resetConfirmStates();
 			//std::cout << "测试: " << dynamic_cast<broadcast::PlayerSelectStageRequest*>(single->m_pMsg)->stage_id()<<" "<< dynamic_cast<broadcast::PlayerSelectStageRequest*>(single->m_pMsg)->Utf8DebugString() << std::endl;
 			broadcastSelectRequestNotify(
 				dynamic_cast<broadcast::PlayerSelectStageRequest*>(single->m_pMsg)->stage_id(),
@@ -477,11 +523,39 @@ UserData* GameRole::ProcMsg(UserData& _poUserData) {
 		//暂时放着没写完
 		case GameMsg::MSG_TYPE_PLAYER_CONFIRM_STAGE_RESPONSE: //接收确认关卡请求 no: 6
 		{
-			bool isSuccess = countIfAll();
-			broadcastSelectResultNotify(
-				dynamic_cast<broadcast::StageSelectResultNotify*>(single->m_pMsg)->stage_id(),
-				isSuccess
-			);// 确认关卡广播 no: 204
+			// 1. 解析确认消息
+			auto confirmMsg = dynamic_cast<broadcast::PlayerConfirmStageResponse*>(single->m_pMsg);
+			if (!confirmMsg) {
+				std::cerr << "[ERROR] Failed to cast message to PlayerConfirmStageResponse" << std::endl;
+				break;
+			}
+
+			// 2. 提取关键信息
+			std::string player_id = confirmMsg->player_id();
+			std::string stage_id = confirmMsg->stage_id();
+			common::StageSelectState state = confirmMsg->state();
+
+			// 3. 更新确认状态
+			if (!gameWorld.updateConfirmState(player_id, state)) {
+				std::cerr << "[ERROR] Failed to update confirm state for player: " << player_id << std::endl;
+			}
+
+			// 4. 检查是否所有玩家确认
+			bool isSuccess = gameWorld.checkAllConfirmed(stage_id);
+
+			broadcastSelectResultNotify(stage_id, isSuccess);
+			if (isSuccess) {
+				broadcastScene(stage_id);
+			}
+			
+			//// 5. 构造并广播结果通知
+			//broadcast::StageSelectResultNotify resultNotify;
+			//resultNotify.set_stage_id(stage_id);
+			//resultNotify.set_is_all_confirmed(isSuccess);
+
+			//// 6. 调用广播函数
+			//broadcastSelectResultNotify(&resultNotify);  // 实现见下文
+
 			break;
 		}
 		default:

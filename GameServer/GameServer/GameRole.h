@@ -26,6 +26,7 @@ class GameRole :
     GameMsg* handleLogout();
     void broadcastLogin(std::string);
     void broadcastLogout(std::string id);
+    void broadcastScene(std::string);
     void broadcastPlayerMove(std::string id, float x, float z);
     void broadcastPlayerAttack(std::string entity_id, combat::EntityType entity_type, std::string target_id, float attack_angle, std::string skill_id, float cast_time);
     void broadcastSelectRequestNotify(std::string stage_id, std::string player_id);

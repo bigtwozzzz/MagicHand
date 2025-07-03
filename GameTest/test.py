@@ -210,16 +210,16 @@
 #     thread2.join()
 import socket
 import struct
-import select
-import sys
-import base_pb2
-
-import socket
-import struct
 import threading
 import sys
 import base_pb2
+import broadcast_pb2
+import character_pb2
+import common_pb2  # 枚举定义
 logged_in_user_id = None
+current_stage_id = None  # 可选：记录当前正在确认的关卡 ID
+
+
 def receive_messages(client_socket):
     buffer = b''
     try:
@@ -246,9 +246,8 @@ def receive_messages(client_socket):
                     print(f"  User ID: {login_response.user_id}")
                     print(f"  Status: {login_response.status}")
                     global logged_in_user_id
-                    logged_in_user_id = login_response.user_id  # 存储用户ID
+                    logged_in_user_id = login_response.user_id
                     print("[INFO] Type 'logout' to log out or 'quit' to exit.")
-
 
                 elif msg_id == 102:  # 登出响应
                     logout_response = base_pb2.LogoutResponse()
@@ -260,16 +259,50 @@ def receive_messages(client_socket):
                     sys.exit(0)
 
                 elif msg_id == 201:  # 玩家上线广播
-                    online_notify = base_pb2.PlayerOnlineNotify()
+                    online_notify = broadcast_pb2.PlayerOnlineNotify()
                     online_notify.ParseFromString(msg_body)
                     print(f"[NOTIFY] Player Online: {online_notify.player_name} (ID: {online_notify.player_id})")
                     print(f"  Position: ({online_notify.pos_x}, {online_notify.pos_y})")
                     print(f"  Status: {online_notify.status}")
 
                 elif msg_id == 202:  # 玩家下线广播
-                    offline_notify = base_pb2.PlayerOfflineNotify()
+                    offline_notify = broadcast_pb2.PlayerOfflineNotify()
                     offline_notify.ParseFromString(msg_body)
                     print(f"[NOTIFY] Player Offline: {offline_notify.player_id}")
+
+                elif msg_id == 302:  # 角色信息广播
+                    try:
+                        character_info = character_pb2.CharacterBase()
+                        character_info.ParseFromString(msg_body)
+                        print(f"[INFO] Received Character Info for {character_info.role_id}:")
+                        print(f"  Name: {character_info.role_name}")
+                        print(f"  HP: {character_info.current_hp}/{character_info.max_hp}")
+                        print(f"  Level: {character_info.level} | Exp: {character_info.exp}")
+                        print(f"  Position: ({character_info.pos_x:.1f}, {character_info.pos_y:.1f})")
+                        print(f"  Direction: {character_info.direction:.1f}°")
+                        print(f"  Status: {character_info.status}")
+                        print("  Skills:")
+                        for slot in character_info.skills:
+                            print(f"    - Skill ID: {slot.skill_id}")
+                            print(f"      Cooldown: {slot.current_cooldown:.1f}s")
+                            print(f"      Active: {slot.is_active}")
+                    except Exception as e:
+                        print(f"[ERROR] Failed to parse character info: {e}")
+
+                elif msg_id == 203:  # 关卡选择请求通知
+                    notify = broadcast_pb2.StageSelectRequestNotify()
+                    notify.ParseFromString(msg_body)
+                    print(f"[NOTIFY] Stage Select Request: Player {notify.player_id} wants to enter stage '{notify.stage_id}'")
+                    if notify.stage_name:
+                        print(f"  Stage Name: {notify.stage_name}")
+                    print("Type 'confirm_stage <stage_id> CONFIRMED' to agree or 'confirm_stage <stage_id> REJECTED' to reject")
+                    global current_stage_id
+                    current_stage_id = notify.stage_id  # 记录当前待确认的关卡 ID
+
+                elif msg_id == 204:  # 关卡选择结果通知
+                    result = broadcast_pb2.StageSelectResultNotify()
+                    result.ParseFromString(msg_body)
+                    print(f"[NOTIFY] Stage Select Result: Stage '{result.stage_id}' {'confirmed by all players' if result.is_all_confirmed else 'not confirmed'}")
 
                 buffer = buffer[total_length:]
 
@@ -277,6 +310,7 @@ def receive_messages(client_socket):
         print(f"[ERROR] Receiving messages failed: {e}")
     finally:
         client_socket.close()
+
 
 def send_login_request(host, port, username, password):
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -289,7 +323,7 @@ def send_login_request(host, port, username, password):
     msg_body = login_request.SerializeToString()
 
     data_len = len(msg_body)
-    full_message = struct.pack('<I', data_len) + struct.pack('<I', 1) +  msg_body
+    full_message = struct.pack('<I', data_len) + struct.pack('<I', 1) + msg_body
     print(f"[DEBUG] Sending login request for user: {username}")
     client_socket.sendall(full_message)
 
@@ -302,13 +336,58 @@ def send_login_request(host, port, username, password):
         while True:
             try:
                 cmd = input().strip().lower()
-                if cmd == 'logout':
+                if cmd.startswith('select_stage '):
+                    if logged_in_user_id is None:
+                        print("[ERROR] You must be logged in to select a stage.")
+                        continue
+                    parts = cmd.split()
+                    if len(parts) < 2:
+                        print("Usage: select_stage <stage_id>")
+                        continue
+                    stage_id = parts[1]
+                    req = broadcast_pb2.PlayerSelectStageRequest()
+                    req.player_id = logged_in_user_id
+                    req.stage_id = stage_id
+                    msg_body = req.SerializeToString()
+                    data_len = len(msg_body)
+                    full_message = struct.pack('<I', data_len) + struct.pack('<I', 5) + msg_body
+                    client_socket.sendall(full_message)
+                    print(f"[DEBUG] Sent stage select request: {stage_id}")
+
+                elif cmd.startswith('confirm_stage '):
+                    if logged_in_user_id is None:
+                        print("[ERROR] You must be logged in to confirm a stage.")
+                        continue
+                    parts = cmd.split()
+                    if len(parts) < 3:
+                        print("Usage: confirm_stage <stage_id> [CONFIRMED|REJECTED]")
+                        continue
+                    stage_id = parts[1]
+                    state_str = parts[2].upper()
+                    if state_str not in ['CONFIRMED', 'REJECTED']:
+                        print("Invalid state. Use 'CONFIRMED' or 'REJECTED'.")
+                        continue
+                    state = common_pb2.StageSelectState.Value(state_str)
+                    resp = broadcast_pb2.PlayerConfirmStageResponse()
+                    resp.player_id = logged_in_user_id
+                    resp.stage_id = stage_id
+                    resp.state = state
+                    msg_body = resp.SerializeToString()
+                    data_len = len(msg_body)
+                    full_message = struct.pack('<I', data_len) + struct.pack('<I', 6) + msg_body
+                    client_socket.sendall(full_message)
+                    print(f"[DEBUG] Sent stage confirm response: {stage_id} {state_str}")
+
+                elif cmd == 'logout':
+                    if logged_in_user_id is None:
+                        print("[ERROR] You are not logged in.")
+                        continue
                     # 构造登出请求
                     logout_request = base_pb2.LogoutRequest()
                     logout_request.user_id = logged_in_user_id
                     msg_body = logout_request.SerializeToString()
                     data_len = len(msg_body)
-                    full_message = struct.pack('<I', data_len) + struct.pack('<I', 2) +  msg_body
+                    full_message = struct.pack('<I', data_len) + struct.pack('<I', 2) + msg_body
                     client_socket.sendall(full_message)
                     print("[DEBUG] Sent logout request.")
                 elif cmd == 'quit':
@@ -316,7 +395,11 @@ def send_login_request(host, port, username, password):
                     client_socket.close()
                     sys.exit(0)
                 else:
-                    print("Unknown command. Use 'logout' or 'quit'.")
+                    print("Available commands:")
+                    print("  select_stage <stage_id> - Request to select a stage")
+                    print("  confirm_stage <stage_id> [CONFIRMED|REJECTED] - Respond to stage selection")
+                    print("  logout - Log out")
+                    print("  quit - Exit the client")
             except KeyboardInterrupt:
                 print("\n[INFO] Exiting...")
                 client_socket.close()
@@ -325,5 +408,7 @@ def send_login_request(host, port, username, password):
         print(f"[ERROR] Main thread error: {e}")
     finally:
         client_socket.close()
+
+
 if __name__ == "__main__":
-    send_login_request("192.168.13.129", 8888, "Noct", "qzx123456")
+    send_login_request("192.168.13.129", 8888, "Stella", "qzx123456")

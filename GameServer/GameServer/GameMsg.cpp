@@ -92,8 +92,8 @@ GameMsg::GameMsg(MSG_TYPE _type, std::string _pstream)
         m_pMsg = new broadcast::EntityAttackNotify();
         break;
 
-    case MSG_TYPE_SCENE_UPDATE:
-        m_pMsg = new scene::SceneUpdate();
+    case MSG_TYPE_SCENE_DATA:
+        m_pMsg = new scene::SceneData();
         break;
     case MSG_TYPE_CHARACTER_ATTACK_NOTIFY:
         m_pMsg = new broadcast::EntityAttackNotify();
