@@ -1,0 +1,3 @@
+现在有一个Unity-LeapMotion手部动捕测试项目，一个手部控制器挂载LeapServiceProvider和HandModelManager脚本，胶囊手挂载CapsuleHand，HandEnableDisable。除此之外还有RigidHand。这个测试场景外接leapmotion的检测设备就能实现手部动捕。
+但我没有leap的设备，只能依靠笔记本摄像头（参考Gesture\mediapipe_gesture_recognition.py），识别出手部关键点和手势编号信息，并通过UDP传输到Unity中。
+现在请你分析原leapmotion手部动捕的实现方案结构，并说明最少可以通过修改（添加）哪些部分，实现笔记本摄像头-Unity版本的手部动捕
