@@ -1,0 +1,537 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Megumin.MessageStandard</name>
+    </assembly>
+    <members>
+        <member name="T:Megumin.Remote.BufferWriterBytesStream">
+            <summary>
+            包装<see cref="T:System.Buffers.IBufferWriter`1"/><see cref="T:System.Byte"/>成一个长度无限的只写流，
+            只有<see cref="M:Megumin.Remote.BufferWriterBytesStream.Write(System.Byte[],System.Int32,System.Int32)"/>函数起作用。
+            </summary>
+        </member>
+        <member name="T:Megumin.Remote.IDeserializeLengthWriter">
+            <summary>
+            用于反序列化时获取长度
+            </summary>
+        </member>
+        <member name="T:Megumin.Remote.DeserializeLengthHelper">
+            <summary>
+            用于反序列化时获取长度
+            </summary>
+        </member>
+        <member name="M:Megumin.Remote.IFormatterContainer.Regist(Megumin.Remote.IMeguminFormatter,Megumin.Remote.KeyAlreadyHave)">
+            <summary>
+            注册序列化器
+            </summary>
+            <param name="meguminFormatter"></param>
+            <param name="key"></param>
+        </member>
+        <member name="M:Megumin.Remote.IFormatterContainer.RegistIMeguminFormatter``1(Megumin.Remote.KeyAlreadyHave)">
+            <summary>
+            注册序列化器
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="key"></param>
+        </member>
+        <member name="M:Megumin.Remote.FormatterContainerBase.Regist(Megumin.Remote.IMeguminFormatter,Megumin.Remote.KeyAlreadyHave)">
+            <summary>
+            注册序列化器
+            </summary>
+            <param name="meguminFormatter"></param>
+            <param name="key"></param>
+        </member>
+        <member name="M:Megumin.Remote.FormatterContainerBase.RegistIMeguminFormatter``1(Megumin.Remote.KeyAlreadyHave)">
+            <summary>
+            注册序列化器
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="key"></param>
+        </member>
+        <member name="T:Megumin.Remote.KeyAlreadyHave">
+            <summary>
+            Key冲突改怎么做
+            </summary>
+        </member>
+        <member name="F:Megumin.Remote.KeyAlreadyHave.Replace">
+            <summary>
+            替换
+            </summary>
+        </member>
+        <member name="F:Megumin.Remote.KeyAlreadyHave.Skip">
+            <summary>
+            跳过
+            </summary>
+        </member>
+        <member name="F:Megumin.Remote.KeyAlreadyHave.ThrowException">
+            <summary>
+            抛出异常
+            </summary>
+        </member>
+        <member name="M:Megumin.Remote.IMeguminSerializer`2.Serialize(`0,`1,System.Object)">
+            <summary>
+            序列化函数
+            </summary>
+            <param name="destination"></param>
+            <param name="value"></param>
+            <param name="options"></param>
+            <remarks>序列化函数不在提供序列化多少字节，需要在destination中自己统计</remarks>
+        </member>
+        <member name="M:Megumin.Remote.IMeguminDeserializer`1.Deserialize(`0@,System.Object)">
+            <summary>
+            反序列化函数
+            </summary>
+            <param name="source"></param>
+            <param name="options"></param>
+            <returns></returns>
+            <remarks>返回值不考虑泛型，泛型虽然能避免值类型消息装箱，但是调用时要使用反射去转化为
+            对应类型接口，在rpc回调转型处仍然会有类型匹配失败问题，得不偿失。</remarks>
+        </member>
+        <member name="T:Megumin.Remote.IMeguminFormatter">
+            <summary>
+            通用序列化库接口
+            </summary>
+            <remarks>
+            用户自己实现时可以不必实现所有函数，不同的协议用的是不同的函数，可以有选择的实现即可。
+            </remarks>
+        </member>
+        <member name="P:Megumin.Remote.IMeguminFormatter.MessageID">
+            <summary>
+            消息识别ID
+            </summary>
+        </member>
+        <member name="P:Megumin.Remote.IMeguminFormatter.BindType">
+            <summary>
+            消息类型
+            </summary>
+        </member>
+        <member name="M:Megumin.Remote.IMeguminFormatter.Deserialize(System.ReadOnlySpan{System.Byte}@,System.Object)">
+            <summary>
+            反序列化函数
+            </summary>
+            <param name="source"></param>
+            <param name="options"></param>
+            <returns></returns>
+            <remarks>返回值不考虑泛型，泛型虽然能避免值类型消息装箱，但是调用时要使用反射去转化为
+            对应类型接口，在rpc回调转型处仍然会有类型匹配失败问题，得不偿失。</remarks>
+        </member>
+        <member name="T:Megumin.Remote.IMeguminFormatter`1">
+            <summary>
+            不要使用协变，会导致序列化错误
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:Megumin.Remote.IMeguminFormatter`1.Serialize(System.Buffers.IBufferWriter{System.Byte},`0,System.Object)">
+            <summary>
+            序列化函数
+            </summary>
+            <param name="destination"></param>
+            <param name="value"></param>
+            <param name="options"></param>
+            <remarks>序列化函数不在提供序列化多少字节，需要在writer中自己统计</remarks>
+        </member>
+        <member name="M:Megumin.Remote.IMeguminFormatter`1.Serialize(System.IO.Stream,`0,System.Object)">
+            <summary>
+            序列化函数
+            </summary>
+            <param name="destination"></param>
+            <param name="value"></param>
+            <param name="options"></param>
+            <remarks>序列化函数不在提供序列化多少字节，需要在writer中自己统计</remarks>
+        </member>
+        <member name="T:Megumin.Remote.IMeguminSelfFormatter">
+            <summary>
+            对象自身就是序列化器，是MessageLut没注册时的fallback。
+            </summary>
+        </member>
+        <member name="M:Megumin.Remote.IMeguminSelfFormatter.SelfDeserialize(System.Buffers.ReadOnlySequence{System.Byte}@,System.Object)">
+            <summary>
+            先构造对象，然后自己解析。
+            </summary>
+            <param name="byteSequence"></param>
+            <param name="options"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Megumin.Remote.MessageLUT">
+            <summary>
+            消息查找表
+            </summary>
+        </member>
+        <member name="P:Megumin.Remote.MessageLUT.FormatterContainer">
+            <summary>
+            Formatter 容器。
+            允许用户设置自定义Formatter
+            </summary>
+        </member>
+        <member name="M:Megumin.Remote.MessageLUT.Regist(Megumin.Remote.IMeguminFormatter,Megumin.Remote.KeyAlreadyHave)">
+            <summary>
+            注册序列化器
+            </summary>
+            <param name="meguminFormatter"></param>
+            <param name="key"></param>
+        </member>
+        <member name="M:Megumin.Remote.MessageLUT.RegistIMeguminFormatter``1(Megumin.Remote.KeyAlreadyHave)">
+            <summary>
+            注册序列化器
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="key"></param>
+        </member>
+        <member name="M:Megumin.Remote.MessageLUT.GetType(System.Int32)">
+            <summary>
+            查找消息类型
+            </summary>
+            <param name="messageID"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Megumin.Remote.MessageLUT.TryGetType(System.Int32,System.Type@)">
+            <summary>
+            查找消息类型
+            </summary>
+            <param name="messageID"></param>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Megumin.Remote.MessageLUT.GetID``1">
+            <summary>
+            查找消息ID
+            </summary>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:Megumin.Remote.MessageLUT.GetID(System.Type)">
+            <summary>
+            查找消息ID
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Megumin.Remote.MessageLUT.TryGetID``1(System.Int32@)">
+            <summary>
+            查找消息ID
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="ID"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Megumin.Remote.MessageLUT.TryGetID(System.Type,System.Int32@)">
+            <summary>
+            查找消息ID
+            </summary>
+            <param name="type"></param>
+            <param name="ID"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Megumin.Remote.MessageLUT.Serialize``1(System.Buffers.IBufferWriter{System.Byte},``0,System.Object)">
+            <summary>
+            序列化一个对象到指定writer
+            </summary>
+            <param name="writer"></param>
+            <param name="value"></param>
+            <param name="options"></param>
+            <returns>消息ID</returns>
+            <remarks>序列化函数不在提供序列化多少字节，需要在writer中自己统计</remarks>
+            <exception cref="T:System.Collections.Generic.KeyNotFoundException"></exception>
+            <exception cref="T:System.ArgumentNullException"></exception>
+        </member>
+        <member name="M:Megumin.Remote.MessageLUT.Deserialize(System.Int32,System.Buffers.ReadOnlySequence{System.Byte}@,System.Object)">
+            <summary>
+            反序列化
+            </summary>
+            <param name="messageID"></param>
+            <param name="source"></param>
+            <param name="options"></param>
+            <returns></returns>
+            <exception cref="T:System.Collections.Generic.KeyNotFoundException"></exception>
+            <exception cref="T:System.ArgumentNullException"></exception>
+        </member>
+        <member name="M:Megumin.Remote.MessageLUT.Deserialize(System.Int32,System.ReadOnlySpan{System.Byte}@,System.Object)">
+            <summary>
+            反序列化
+            </summary>
+            <param name="messageID"></param>
+            <param name="source"></param>
+            <param name="options"></param>
+            <returns></returns>
+            <exception cref="T:System.Collections.Generic.KeyNotFoundException"></exception>
+            <exception cref="T:System.ArgumentNullException"></exception>
+        </member>
+        <member name="M:Megumin.Remote.MessageLUT.Deserialize(System.Int32,System.ReadOnlyMemory{System.Byte}@,System.Object)">
+            <summary>
+            反序列化
+            </summary>
+            <param name="messageID"></param>
+            <param name="source"></param>
+            <param name="options"></param>
+            <returns></returns>
+            <exception cref="T:System.Collections.Generic.KeyNotFoundException"></exception>
+            <exception cref="T:System.ArgumentNullException"></exception>
+        </member>
+        <member name="M:Megumin.Remote.MessageLUT.Deserialize(System.Int32,System.IO.Stream@,System.Object)">
+            <summary>
+            反序列化
+            </summary>
+            <param name="messageID"></param>
+            <param name="source"></param>
+            <param name="options"></param>
+            <returns></returns>
+            <exception cref="T:System.Collections.Generic.KeyNotFoundException"></exception>
+            <exception cref="T:System.ArgumentNullException"></exception>
+        </member>
+        <member name="M:Megumin.Remote.MessageLUT.Deserialize``1(System.Buffers.ReadOnlySequence{System.Byte}@,System.Object)">
+            <summary>
+            反序列化
+            </summary>
+            <param name="source"></param>
+            <param name="options"></param>
+            <returns></returns>
+            <remarks>有时即使类型不匹配也能反序列化成功，但得到的值时错误的</remarks>
+            <exception cref="T:System.Collections.Generic.KeyNotFoundException"></exception>
+            <exception cref="T:System.ArgumentNullException"></exception>
+            <exception cref="T:System.InvalidCastException"></exception>
+        </member>
+        <member name="M:Megumin.Remote.MessageLUT.Deserialize``1(System.ReadOnlySpan{System.Byte}@,System.Object)">
+            <summary>
+            反序列化
+            </summary>
+            <param name="source"></param>
+            <param name="options"></param>
+            <returns></returns>
+            <remarks>有时即使类型不匹配也能反序列化成功，但得到的值时错误的</remarks>
+            <exception cref="T:System.Collections.Generic.KeyNotFoundException"></exception>
+            <exception cref="T:System.ArgumentNullException"></exception>
+            <exception cref="T:System.InvalidCastException"></exception>
+        </member>
+        <member name="M:Megumin.Remote.MessageLUT.Deserialize``1(System.ReadOnlyMemory{System.Byte}@,System.Object)">
+            <summary>
+            反序列化
+            </summary>
+            <param name="source"></param>
+            <param name="options"></param>
+            <returns></returns>
+            <remarks>有时即使类型不匹配也能反序列化成功，但得到的值时错误的</remarks>
+            <exception cref="T:System.Collections.Generic.KeyNotFoundException"></exception>
+            <exception cref="T:System.ArgumentNullException"></exception>
+            <exception cref="T:System.InvalidCastException"></exception>
+        </member>
+        <member name="M:Megumin.Remote.MessageLUT.Deserialize``1(System.IO.Stream@,System.Object)">
+            <summary>
+            反序列化
+            </summary>
+            <param name="source"></param>
+            <param name="options"></param>
+            <returns></returns>
+            <remarks>有时即使类型不匹配也能反序列化成功，但得到的值时错误的</remarks>
+            <exception cref="T:System.Collections.Generic.KeyNotFoundException"></exception>
+            <exception cref="T:System.ArgumentNullException"></exception>
+            <exception cref="T:System.InvalidCastException"></exception>
+        </member>
+        <member name="T:Megumin.Remote.MSGID">
+            <summary>
+            使用MessageID来为每一个消息指定一个唯一ID(-999~999 被框架占用)。
+            请查看常量。
+            </summary>
+        </member>
+        <member name="M:Megumin.Remote.MSGID.op_Implicit(Megumin.Remote.MSGID)~System.Int32">
+            <summary>
+            
+            </summary>
+            <param name="attribute"></param>
+        </member>
+        <member name="M:Megumin.Remote.MSGID.#ctor(System.Int32)">
+            <summary>
+            消息ID
+            </summary>
+            <param name="id"></param>
+        </member>
+        <member name="P:Megumin.Remote.MSGID.ID">
+            <summary>
+            消息类唯一编号
+            </summary>
+        </member>
+        <member name="F:Megumin.Remote.MSGID.ErrorType">
+            <summary>
+            错误的类型，表示框架未记录的类型。不是void，也不是任何异常ErrorType。
+            </summary>
+        </member>
+        <member name="F:Megumin.Remote.MSGID.TypeToJumpCode">
+            <summary>
+            https://github.com/neuecc/MessagePack-CSharp/blob/ffc18319670d49246db1abbd05c404a820280776/src/MessagePack.UnityClient/Assets/Scripts/MessagePack/Formatters/PrimitiveObjectFormatter.cs#L16
+            </summary>
+        </member>
+        <member name="F:Megumin.Remote.MSGID.UdpConnectMessageID">
+            <summary>
+            Udp握手连接使用的消息ID编号
+            </summary>
+        </member>
+        <member name="F:Megumin.Remote.MSGID.Heartbeat">
+            <summary>
+            心跳包ID，256好识别，buffer[10-13]=[255,1,0,0]
+            </summary>
+        </member>
+        <member name="T:Megumin.Message.Heartbeat">
+            <summary>
+            用于RTT时不需要控制线程转换，线程转换带来的延迟是RTT的一部分。
+            </summary>
+        </member>
+        <member name="T:Megumin.Message.TestPacket1">
+            <summary>
+            序列化后长度为1024 * 10字节
+            </summary>
+        </member>
+        <member name="P:Megumin.Message.TestPacket1.MessageID">
+            <inheritdoc/>
+        </member>
+        <member name="T:Megumin.Message.TestPacket2">
+            <summary>
+            序列化后长度为1024字节
+            </summary>
+        </member>
+        <member name="P:Megumin.Message.TestPacket2.MessageID">
+            <inheritdoc/>
+        </member>
+        <member name="T:Megumin.Message.TestPacket3">
+            <summary>
+            序列化后长度为1024 * 50字节
+            </summary>
+        </member>
+        <member name="P:Megumin.Message.TestPacket3.MessageID">
+            <inheritdoc/>
+        </member>
+        <member name="P:Megumin.Message.TestPacket4.MessageID">
+            <inheritdoc/>
+        </member>
+        <member name="T:Megumin.Message.StringFormatter">
+            <summary>
+            内置UTF8 string 格式化器，性能低没有优化
+            对动态长度的类型，先用ushort写入总长度，在写入正文，实现复杂类型字段切分。实现复杂类型嵌套序列化。
+            </summary>
+        </member>
+        <member name="T:Megumin.Message.SpanByteExtension_37AAF334E75041368C6B47A256F0F93F">
+            <summary>
+            小端
+            </summary>
+        </member>
+        <member name="M:Megumin.Message.SpanByteExtension_37AAF334E75041368C6B47A256F0F93F.Write(System.Int32,System.Span{System.Byte})">
+            <summary>
+            写入一个int
+            </summary>
+            <param name="num"></param>
+            <param name="span"></param>
+            <returns>offset</returns>
+        </member>
+        <member name="M:Megumin.Message.SpanByteExtension_37AAF334E75041368C6B47A256F0F93F.Write(System.Span{System.Byte},System.Int32)">
+            <summary>
+            写入一个int
+            </summary>
+            <param name="span"></param>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Megumin.Message.SpanByteExtension_37AAF334E75041368C6B47A256F0F93F.Write(System.IO.Stream,System.Int32)">
+            <summary>
+            写入一个int
+            </summary>
+            <param name="stream"></param>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Megumin.Message.SpanByteExtension_37AAF334E75041368C6B47A256F0F93F.Write(System.Span{System.Byte},System.Int64)">
+            <summary>
+            写入一个long
+            </summary>
+            <param name="span"></param>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Megumin.Message.SpanByteExtension_37AAF334E75041368C6B47A256F0F93F.Write(System.Int64,System.Span{System.Byte})">
+            <summary>
+            写入一个long
+            </summary>
+            <param name="span"></param>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Megumin.Message.SpanByteExtension_37AAF334E75041368C6B47A256F0F93F.Write(System.Span{System.Byte},System.Single)">
+            <summary>
+            写入一个short
+            </summary>
+            <param name="span"></param>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Megumin.Message.SpanByteExtension_37AAF334E75041368C6B47A256F0F93F.Write(System.Single,System.Span{System.Byte})">
+            <summary>
+            写入一个short
+            </summary>
+            <param name="span"></param>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Megumin.Message.SpanByteExtension_37AAF334E75041368C6B47A256F0F93F.Write(System.Span{System.Byte},System.Double)">
+            <summary>
+            写入一个double
+            </summary>
+            <param name="span"></param>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Megumin.Message.SpanByteExtension_37AAF334E75041368C6B47A256F0F93F.Write(System.Double,System.Span{System.Byte})">
+            <summary>
+            写入一个double
+            </summary>
+            <param name="span"></param>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Megumin.Message.SpanByteExtension_37AAF334E75041368C6B47A256F0F93F.Write(System.Span{System.Byte},System.Int16)">
+            <summary>
+            写入一个short
+            </summary>
+            <param name="span"></param>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Megumin.Message.SpanByteExtension_37AAF334E75041368C6B47A256F0F93F.Write(System.IO.Stream,System.Int16)">
+            <summary>
+            写入一个short
+            </summary>
+            <param name="stream"></param>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Megumin.Message.SpanByteExtension_37AAF334E75041368C6B47A256F0F93F.ReadGuid(System.ReadOnlySpan{System.Byte})">
+            <summary>
+            todo 优化alloc
+            </summary>
+            <param name="source"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Megumin.Message.IPreReceiveable">
+            <summary>
+            由发送端和消息协议控制的的响应机制
+            </summary>
+        </member>
+        <member name="P:Megumin.Message.IPreReceiveable.PreReceiveType">
+            <summary>
+            1: Echo
+            2: AutoResp
+            </summary>
+            <remarks>具体实现在PreReceive函数中</remarks>
+        </member>
+        <member name="T:Megumin.Message.IAutoResponseable">
+            <summary>
+            <inheritdoc/>
+            自动回复
+            </summary>
+        </member>
+        <member name="T:Megumin.Message.IReceiveThreadControlable">
+            <summary>
+            指定接受端处理此消息时是否使用线程调度。
+            </summary>
+            <remarks>
+            目前仅用于GetTime。在校准两个进程的TimeStamp时，不希望线程切换功能产生不必要的延迟。
+            </remarks>
+        </member>
+    </members>
+</doc>

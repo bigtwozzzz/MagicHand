@@ -1,0 +1,20 @@
+// scene.proto
+syntax = "proto3";
+
+package scene;
+
+import "combat.proto"; // 使用通用战斗事件
+import "broadcast.proto"; // 使用广播消息
+import "enemy.proto";
+
+// 场景动态更新消息（包含战斗事件）
+message SceneUpdate {
+  repeated combat.HitEvent hit_events = 1; // 受击事件列表
+  repeated broadcast.EntityAttackNotify attack_events = 2; // 攻击事件列表
+  repeated broadcast.EntityHitNotify hit_notifies = 3; // 广播的受击事件
+}
+
+message SceneData {
+  string scene_id = 1;                    // 场景唯一ID（如 "forest_001"）
+  repeated enemy.MonsterBase monsters = 2; // 场景中的怪物列表
+}
