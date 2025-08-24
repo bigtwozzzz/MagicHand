@@ -367,9 +367,8 @@ def detect_and_send():
                                    (int(wrist[0]), int(wrist[1]) - 30),
                                    cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255, 0, 0), 2, cv2.LINE_AA)
 
-            # 发送手部数据到Unity
-            if hand_data_list:
-                send_hand_data_to_unity(hand_data_list)
+            # 发送手部数据到Unity（即使为空也要发送，以便Unity知道手已消失）
+            send_hand_data_to_unity(hand_data_list)
 
             # 计算并显示FPS
             current_time = time.time()
