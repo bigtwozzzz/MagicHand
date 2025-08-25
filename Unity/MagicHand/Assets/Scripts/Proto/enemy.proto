@@ -1,0 +1,32 @@
+// enemy.proto
+syntax = "proto3";
+
+package enemy;
+
+//import "combat.proto"; // 使用通用攻击请求
+import "common.proto";
+// enemy.proto
+message MonsterBase {
+  string monster_id = 1;        // 怪物ID
+  common.MonsterType type = 2;  // 怪物类型（普通/BOSS）
+  int32 current_hp = 3;         // 当前血量
+  int32 max_hp = 4;             // 最大血量
+  int32 attack_power = 5;       // 攻击力
+  float attack_speed = 6;       // 攻击速度（秒）
+  float move_speed = 7;         // 移动速度
+  float pos_x = 8;              // 位置X
+  float pos_y = 9;              // 位置Y
+  float pos_z = 10;             // 位置Z
+  float direction = 11;         // 朝向角度
+  float attack_range = 12;      // 攻击范围
+  common.MonsterState state = 13; // 当前状态（如 STUNNED、DEAD）
+  int32 exp_reward = 14;        // 击杀获得经验
+}
+
+// 怪物移动请求（保留原有定义）
+message MoveRequest {
+  string monster_id = 1;
+  float target_x = 2;
+  float target_y = 3;
+  float speed_multiplier = 4;
+}
