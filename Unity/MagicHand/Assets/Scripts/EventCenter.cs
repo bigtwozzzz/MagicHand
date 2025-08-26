@@ -6,12 +6,12 @@ using UnityEngine.Events;
 
 
 /// <summary>
-/// Í¨ÓÃÊÂ¼þ½Ó¿Ú
+/// Í¨ï¿½ï¿½ï¿½Â¼ï¿½ï¿½Ó¿ï¿½
 /// </summary>
 public interface IEventInfo { }
 
 /// <summary>
-/// ´ø·ºÐÍ²ÎÊýµÄÊÂ¼þ°ü×°Æ÷
+/// ï¿½ï¿½ï¿½ï¿½ï¿½Í²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½ï¿½ï¿½×°ï¿½ï¿½
 /// </summary>
 /// <typeparam name="T"></typeparam>
 public class EventInfo<T> : IEventInfo
@@ -25,7 +25,7 @@ public class EventInfo<T> : IEventInfo
 }
 
 /// <summary>
-/// ÎÞ²ÎÊÂ¼þ°ü×°Æ÷
+/// ï¿½Þ²ï¿½ï¿½Â¼ï¿½ï¿½ï¿½×°ï¿½ï¿½
 /// </summary>
 public class EventInfo : IEventInfo
 {
@@ -38,11 +38,11 @@ public class EventInfo : IEventInfo
 }
 
 /// <summary>  
-/// ÊÂ¼þÀàÐÍÃ¶¾Ù
+/// ï¿½Â¼ï¿½ï¿½ï¿½ï¿½ï¿½Ã¶ï¿½ï¿½
 /// </summary>  
 public enum E_EventType
 {
-    // Íæ¼ÒÖ¸Áî
+    // ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½
     Event_Login_Request,
     Event_Player_Command,
     Event_Player_Command_Login,
@@ -53,7 +53,7 @@ public enum E_EventType
     Event_Player_Command_UseSkill,
     Event_Player_Command_Logout,
     Event_Button_Setting_Click,
-    // ·þÎñÆ÷Ö¸Áî
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½
     Event_Global_Random_Seed,
     Event_Login_Success,
     Event_Logout,
@@ -64,17 +64,17 @@ public enum E_EventType
     Event_Stage_Select_Result,
     Event_Scene_Data_Update,
 
-    // ÏµÍ³Ö¸Áî
+    // ÏµÍ³Ö¸ï¿½ï¿½
     Event_Platform_Loaded,
     Event_LoadScene_Progress,
     Event_Lock_Window,
 
-    // ÓÎÏ·Âß¼­
+    // ï¿½ï¿½Ï·ï¿½ß¼ï¿½
     Event_Character_Spawn_Ready,
     Event_Monster_Dead,
     Event_Player_Dead,
 
-    // ÊäÈëÊÂ¼þ
+    // ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½
     Event_Keycode_Input,
     Event_Mouse_Input,
     Event_MouseX_Input,
@@ -84,12 +84,12 @@ public enum E_EventType
 }
 
 /// <summary>
-/// ÊÂ¼þÖÐÐÄ ¡ª¡ª µ¥ÀýÄ£Ê½
-/// ¹¦ÄÜ£ºÊÂ¼þ×¢²á¡¢·Ö·¢¡¢ÒÆ³ý
-/// Éè¼ÆÄ£Ê½£º¹Û²ìÕßÄ£Ê½ + ·ºÐÍ + ×Öµä
-/// ×¢Òâ£º
-/// - ²»Ö§³Ö lambda ±í´ïÊ½×÷Îª¼àÌýº¯Êý£¨ÎÞ·¨ÕýÈ·ÒÆ³ý£©
-/// - ³¡¾°ÇÐ»»Ê±½¨Òéµ÷ÓÃ Clear() ÇåÀí¿ç³¡¾°²ÐÁô
+/// ï¿½Â¼ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ä£Ê½
+/// ï¿½ï¿½ï¿½Ü£ï¿½ï¿½Â¼ï¿½×¢ï¿½á¡¢ï¿½Ö·ï¿½ï¿½ï¿½ï¿½Æ³ï¿½
+/// ï¿½ï¿½ï¿½Ä£Ê½ï¿½ï¿½ï¿½Û²ï¿½ï¿½ï¿½Ä£Ê½ + ï¿½ï¿½ï¿½ï¿½ + ï¿½Öµï¿½
+/// ×¢ï¿½â£º
+/// - ï¿½ï¿½Ö§ï¿½ï¿½ lambda ï¿½ï¿½ï¿½ï¿½Ê½ï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Þ·ï¿½ï¿½ï¿½È·ï¿½Æ³ï¿½ï¿½ï¿½
+/// - ï¿½ï¿½ï¿½ï¿½ï¿½Ð»ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Clear() ï¿½ï¿½ï¿½ï¿½ï¿½ç³¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 /// </summary>
 public class EventCenter : BaseManager<EventCenter>
 {
@@ -97,20 +97,20 @@ public class EventCenter : BaseManager<EventCenter>
 
     protected override void Awake()
     {
-        //  1. ÏÈµ÷ÓÃ¸¸Àà£¬È·±£µ¥ÀýÂß¼­
+        //  1. ï¿½Èµï¿½ï¿½Ã¸ï¿½ï¿½à£¬È·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ß¼ï¿½
         base.Awake();
 
-        //  2. È·±£Ö»³õÊ¼»¯Ò»´Î
+        //  2. È·ï¿½ï¿½Ö»ï¿½ï¿½Ê¼ï¿½ï¿½Ò»ï¿½ï¿½
         if (eventDic != null) return;
 
         eventDic = new Dictionary<E_EventType, IEventInfo>();
 
-        //  3. ±ê¼ÇÎª²»Ëæ³¡¾°Ïú»Ù£¨±ØÐëÔÚ Awake ÖÐµ÷ÓÃ£©
+        //  3. ï¿½ï¿½ï¿½Îªï¿½ï¿½ï¿½æ³¡ï¿½ï¿½ï¿½ï¿½ï¿½Ù£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Awake ï¿½Ðµï¿½ï¿½Ã£ï¿½
         DontDestroyOnLoad(gameObject);
     }
 
     /// <summary>
-    /// Ìí¼Ó´ø²ÎÊýµÄÊÂ¼þ¼àÌý
+    /// ï¿½ï¿½ï¿½Ó´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½ï¿½ï¿½ï¿½ï¿½
     /// </summary>
     public void AddEventListener<T>(E_EventType name, UnityAction<T> action)
     {
@@ -122,7 +122,7 @@ public class EventCenter : BaseManager<EventCenter>
             }
             else
             {
-                Debug.LogError($"[EventCenter] ÊÂ¼þ {name} ÀàÐÍ²»Æ¥Åä£¡");
+                Debug.LogError($"[EventCenter] ï¿½Â¼ï¿½ {name} ï¿½ï¿½ï¿½Í²ï¿½Æ¥ï¿½ä£¡");
             }
         }
         else
@@ -132,7 +132,7 @@ public class EventCenter : BaseManager<EventCenter>
     }
 
     /// <summary>
-    /// Ìí¼ÓÎÞ²ÎÊÂ¼þ¼àÌý
+    /// ï¿½ï¿½ï¿½ï¿½ï¿½Þ²ï¿½ï¿½Â¼ï¿½ï¿½ï¿½ï¿½ï¿½
     /// </summary>
     public void AddEventListener(E_EventType name, UnityAction action)
     {
@@ -150,15 +150,15 @@ public class EventCenter : BaseManager<EventCenter>
     }
 
     /// <summary>
-    /// ÒÆ³ý´ø²ÎÊýµÄÊÂ¼þ¼àÌý
-    /// ×¢Òâ£º²»Ö§³Ö lambda£¬±ØÐë´«ÈëÏàÍ¬·½·¨ÒýÓÃ
+    /// ï¿½Æ³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½ï¿½ï¿½ï¿½ï¿½
+    /// ×¢ï¿½â£ºï¿½ï¿½Ö§ï¿½ï¿½ lambdaï¿½ï¿½ï¿½ï¿½ï¿½ë´«ï¿½ï¿½ï¿½ï¿½Í¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     /// </summary>
     public void RemoveEventListener<T>(E_EventType name, UnityAction<T> action)
     {
-        // Ôö¼Ó null ¼ì²é
+        // ï¿½ï¿½ï¿½ï¿½ null ï¿½ï¿½ï¿½
         if (eventDic == null)
         {
-            Debug.LogWarning($"[EventCenter] eventDic Îª null£¬ÎÞ·¨ÒÆ³ýÊÂ¼þ¼àÌý: {name}");
+            Debug.LogWarning($"[EventCenter] eventDic Îª nullï¿½ï¿½ï¿½Þ·ï¿½ï¿½Æ³ï¿½ï¿½Â¼ï¿½ï¿½ï¿½ï¿½ï¿½: {name}");
             return;
         }
 
@@ -177,13 +177,13 @@ public class EventCenter : BaseManager<EventCenter>
     }
 
     /// <summary>
-    /// ÒÆ³ýÎÞ²ÎÊÂ¼þ¼àÌý
+    /// ï¿½Æ³ï¿½ï¿½Þ²ï¿½ï¿½Â¼ï¿½ï¿½ï¿½ï¿½ï¿½
     /// </summary>
     public void RemoveEventListener(E_EventType name, UnityAction action)
     {
         if (eventDic == null)
         {
-            Debug.LogWarning($"[EventCenter] eventDic Îª null£¬ÎÞ·¨ÒÆ³ýÊÂ¼þ¼àÌý: {name}");
+            Debug.LogWarning($"[EventCenter] eventDic Îª nullï¿½ï¿½ï¿½Þ·ï¿½ï¿½Æ³ï¿½ï¿½Â¼ï¿½ï¿½ï¿½ï¿½ï¿½: {name}");
             return;
         }
 
@@ -201,11 +201,11 @@ public class EventCenter : BaseManager<EventCenter>
         }
     }
     /// <summary>
-    /// ´¥·¢´ø²ÎÊýµÄÊÂ¼þ
+    /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½
     /// </summary>
     public void EventTrigger<T>(E_EventType name, T info)
     {
-        //Debug.Log($"[EventCenter] ´¥·¢ÊÂ¼þ: {name}, ²ÎÊýÀàÐÍ: {typeof(T)}, Öµ: {info}");
+        //Debug.Log($"[EventCenter] ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½: {name}, ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½: {typeof(T)}, Öµ: {info}");
         if (eventDic.TryGetValue(name, out IEventInfo existing))
         {
             if (existing is EventInfo<T> eventInfo && eventInfo.actions != null)
@@ -216,18 +216,18 @@ public class EventCenter : BaseManager<EventCenter>
                 }
                 catch (System.Exception e)
                 {
-                    Debug.LogError($"[EventCenter] ´¥·¢ÊÂ¼þ {name} Ê±·¢ÉúÒì³£: {e.Message}");
+                    Debug.LogError($"[EventCenter] ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½ {name} Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ì³£: {e.Message}");
                 }
             }
             else
             {
-                Debug.LogWarning($"[EventCenter] ÊÂ¼þ {name} ÎÞ¼àÌýÕß»òÀàÐÍ²»Æ¥Åä¡£");
+                Debug.LogWarning($"[EventCenter] ï¿½Â¼ï¿½ {name} ï¿½Þ¼ï¿½ï¿½ï¿½ï¿½ß»ï¿½ï¿½ï¿½ï¿½Í²ï¿½Æ¥ï¿½ä¡£");
             }
         }
     }
 
     /// <summary>
-    /// ´¥·¢ÎÞ²ÎÊÂ¼þ
+    /// ï¿½ï¿½ï¿½ï¿½ï¿½Þ²ï¿½ï¿½Â¼ï¿½
     /// </summary>
     public void EventTrigger(E_EventType name)
     {
@@ -241,35 +241,35 @@ public class EventCenter : BaseManager<EventCenter>
                 }
                 catch (System.Exception e)
                 {
-                    Debug.LogError($"[EventCenter] ´¥·¢ÊÂ¼þ {name} Ê±·¢ÉúÒì³£: {e.Message}");
+                    Debug.LogError($"[EventCenter] ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½ {name} Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ì³£: {e.Message}");
                 }
             }
         }
     }
 
     /// <summary>
-    /// Çå¿ÕËùÓÐÊÂ¼þ¼àÌý£¨½÷É÷Ê¹ÓÃ£©
-    /// ½¨ÒéÔÚ³¡¾°ÇÐ»»»òÄ£¿éÖØÖÃÊ±µ÷ÓÃ
+    /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¹ï¿½Ã£ï¿½
+    /// ï¿½ï¿½ï¿½ï¿½ï¿½Ú³ï¿½ï¿½ï¿½ï¿½Ð»ï¿½ï¿½ï¿½Ä£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½
     /// </summary>
     public void Clear()
     {
         if (eventDic != null)
         {
             eventDic.Clear();
-            // Debug.Log("[EventCenter] ËùÓÐÊÂ¼þ¼àÌýÒÑÇå³ý¡£"); 
-            //  ¿ÉÑ¡£º·¢²¼Ê±½¨Òé×¢ÊÍµôÈÕÖ¾£¬±ÜÃâ OnDestroy Ê±´òÓ¡Ê§°Ü
+            // Debug.Log("[EventCenter] ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"); 
+            //  ï¿½ï¿½Ñ¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½×¢ï¿½Íµï¿½ï¿½ï¿½Ö¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ OnDestroy Ê±ï¿½ï¿½Ó¡Ê§ï¿½ï¿½
         }
     }
 
-    //protected override void OnDestroy()
-    //{
-    //    //  1. ÇåÀíÊÂ¼þ
-    //    Clear();
+    protected override void OnDestroy()
+    {
+        //  1. ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½
+        Clear();
 
-    //    //  2. ¸¸ÀàÇåÀí£¨Èçµ¥ÀýÒýÓÃÖÃ¿Õ£©
-    //    base.OnDestroy();
+        //  2. ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½çµ¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã¿Õ£ï¿½
+        base.OnDestroy();
 
-    //    //  3. ¿ÉÑ¡ÈÕÖ¾£¨×¢Òâ£ºÓÐÊ± OnDestroy ÖÐ´òÓ¡»áÊ§°Ü£©
-    //    // Debug.Log("[EventCenter] ÒÑÏú»Ù£¬×ÊÔ´ÊÍ·ÅÍê³É¡£");
-    //}
+        //  3. ï¿½ï¿½Ñ¡ï¿½ï¿½Ö¾ï¿½ï¿½×¢ï¿½â£ºï¿½ï¿½Ê± OnDestroy ï¿½Ð´ï¿½Ó¡ï¿½ï¿½Ê§ï¿½Ü£ï¿½
+        Debug.Log("[EventCenter] ï¿½ï¿½ï¿½ï¿½ï¿½Ù£ï¿½ï¿½ï¿½Ô´ï¿½Í·ï¿½ï¿½ï¿½É¡ï¿½");
+    }
 }

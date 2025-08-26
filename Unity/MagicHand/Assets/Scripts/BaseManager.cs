@@ -13,7 +13,7 @@ public class BaseManager<T> : MonoBehaviour where T : BaseManager<T>
             {
                 GameObject obj = new GameObject($"[{typeof(T).Name}]");
                 instance = obj.AddComponent<T>();
-                DontDestroyOnLoad(obj); // �����
+                DontDestroyOnLoad(obj); // �����
             }
         }
         return instance;
@@ -21,7 +21,7 @@ public class BaseManager<T> : MonoBehaviour where T : BaseManager<T>
 
     protected virtual void Awake()
     {
-        // ��ֹ�ظ�����
+        // 防止重复创建
         if (instance != null && instance != this)
         {
             Destroy(gameObject);
@@ -29,7 +29,15 @@ public class BaseManager<T> : MonoBehaviour where T : BaseManager<T>
         }
 
         instance = (T)this;
-        DontDestroyOnLoad(gameObject); // �ٴ�ȷ��
-        Debug.Log($"[BaseManager] {typeof(T).Name} �ѳ�ʼ��");
+        DontDestroyOnLoad(gameObject); // 再次确保
+        Debug.Log($"[BaseManager] {typeof(T).Name} 已初始化");
+    }
+
+    /// <summary>
+    /// 虚拟销毁方法，子类可重写进行资源清理
+    /// </summary>
+    protected virtual void OnDestroy()
+    {
+        // 基类默认不做任何操作，子类可重写此方法进行清理
     }
 }
