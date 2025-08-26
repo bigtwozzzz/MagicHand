@@ -2,8 +2,11 @@ using Base;        // CharacterBase 来自这里
 using Broadcast;
 using Character;
 using Common;
+using Enemy;
 using Globalrandom;
+using Scene;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 /// <summary>
@@ -33,6 +36,8 @@ public class DataMgr : BaseManager<DataMgr>
 
     // 角色详细信息（来自服务器广播）
     private CharacterBase _characterInfo;
+    private bool isMainUIReady = false;
+
 
     // 只读属性，供外部访问
     public string UserId => _userId;
@@ -41,6 +46,9 @@ public class DataMgr : BaseManager<DataMgr>
 
     // 提供角色信息的只读访问
     public CharacterBase CharacterInfo => _characterInfo;
+
+    private SceneData _SceneData;
+    public SceneData SceneData => _SceneData;
 
     protected override void Awake()
     {
@@ -63,6 +71,27 @@ public class DataMgr : BaseManager<DataMgr>
         EventCenter.GetInstance().AddEventListener<PlayerOnlineNotify>(
         E_EventType.Event_Player_Online,
         OnPlayerOnline);
+        EventCenter.GetInstance().AddEventListener<SceneData>(
+            E_EventType.Event_Scene_Data_Update,
+            OnSceneDataUpdate);
+    }
+    public void SetMainUIReady()
+    {
+        isMainUIReady = true;
+        EventCenter.GetInstance().EventTrigger(E_EventType.Event_Scene_Data_Update_UI, _SceneData);
+    }
+
+    private void OnSceneDataUpdate(Scene.SceneData sceneData)
+    {
+        if (isMainUIReady)
+        {
+            EventCenter.GetInstance().EventTrigger(E_EventType.Event_Scene_Data_Update_UI, _SceneData);
+        }
+        else
+        {
+            // 缓存数据，等待 MainUI 准备好
+            _SceneData = sceneData;
+        }
     }
     /// <summary>
     /// 处理玩家上线通知
@@ -95,6 +124,14 @@ public class DataMgr : BaseManager<DataMgr>
 
         Debug.Log($"[DataMgr] 玩家上线映射已记录 - PlayerId: {playerId} → RoleId: {roleId}");
     }
+    public List<MonsterBase> GetMonsterList()
+    {
+        if (_SceneData == null)
+            return new List<MonsterBase>();
+
+        return _SceneData.Monsters.ToList();
+    }
+
     protected void OnDestroy()
     {
         var eventCenter = EventCenter.GetInstance();
@@ -104,6 +141,7 @@ public class DataMgr : BaseManager<DataMgr>
             eventCenter.RemoveEventListener<CharacterBase>(E_EventType.Event_Character_Info_Update, OnCharacterInfoUpdate);
             eventCenter.RemoveEventListener<GlobalRandomNum>(E_EventType.Event_Global_Random_Seed, OnGlobalRandomSeedReceived);
             eventCenter.RemoveEventListener<PlayerOnlineNotify>(E_EventType.Event_Player_Online, OnPlayerOnline);
+            eventCenter.RemoveEventListener<SceneData>(E_EventType.Event_Scene_Data_Update, OnSceneDataUpdate);
         }
 
         ClearUserData();
@@ -261,6 +299,16 @@ public class DataMgr : BaseManager<DataMgr>
             Debug.Log("  技能列表: null");
         }
         Debug.Log($"==============================");
+    }
+    public void RemoveFromSpawnedPlayers(string roleId)
+    {
+        if (string.IsNullOrEmpty(roleId)) return;
+
+        bool removed = _spawnedPlayers.Remove(roleId);
+        if (removed)
+        {
+            Debug.Log($"[DataMgr] 已从已生成列表移除角色: {roleId}");
+        }
     }
     /// <summary>
     /// 更新或添加角色信息（公共方法，可被外部调用）

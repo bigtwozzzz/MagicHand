@@ -146,83 +146,102 @@ public class CharacterSpawner : MonoBehaviour
     /// </summary>
     private void ProcessPendingSpawns()
     {
-        // 平台未就绪，等待
         if (!isPlatformReady || platformRoot == null)
             return;
 
+        List<string> pendingRoleIds = new List<string>();
+
+        // 提取唯一 roleId，避免重复
+        HashSet<string> processed = new HashSet<string>();
         while (pendingSpawnRequests.Count > 0)
         {
-            string roleId = pendingSpawnRequests.Peek(); // 先看一眼
-
-            CharacterBase charInfo = DataMgr.GetInstance()?.GetCharacterInfo(roleId);
-            if (charInfo == null)
+            string roleId = pendingSpawnRequests.Dequeue();
+            if (!DataMgr.GetInstance()._spawnedPlayers.Contains(roleId) && !processed.Contains(roleId))
             {
-                Debug.LogError($"[CharacterSpawner] 无法获取角色信息，角色ID: {roleId}");
-                pendingSpawnRequests.Dequeue(); // 移除无效请求
-                continue;
-            }
-
-            // 已生成，跳过
-            if (DataMgr.GetInstance()._spawnedPlayers.Contains(roleId))
-            {
-                Debug.Log($"[CharacterSpawner] 角色 {charInfo.RoleName} 已生成，跳过。");
-                pendingSpawnRequests.Dequeue();
-                continue;
-            }
-
-            // 尝试生成
-            if (TrySpawnSingleCharacter(charInfo))
-            {
-                // 成功生成，出队
-                pendingSpawnRequests.Dequeue();
-                DataMgr.GetInstance().MarkPlayerAsSpawned(roleId);
-            }
-            else
-            {
-                // 生成失败（如无点位），保留入队，下次再试
-                break;
+                CharacterBase info = DataMgr.GetInstance().GetCharacterInfo(roleId);
+                if (info != null)
+                {
+                    pendingRoleIds.Add(roleId);
+                    processed.Add(roleId);
+                }
             }
         }
-    }
 
-    /// <summary>
-    /// 尝试生成单个角色（使用 ResMgr 异步加载）
-    /// </summary>
-    private bool TrySpawnSingleCharacter(CharacterBase charInfo)
-    {
+        // 恢复未处理的请求（已生成或无效的）
+        foreach (string id in processed)
+        {
+            if (!pendingRoleIds.Contains(id))
+            {
+                // 如果没被处理，说明被过滤了，不需要放回
+            }
+        }
+        // 注意：这里我们不再放回，因为已经处理了去重
+
+        if (pendingRoleIds.Count == 0) return;
+
+        pendingRoleIds.Sort();
+
         PositionManager posManager = platformRoot.GetComponentInChildren<PositionManager>();
         if (posManager == null)
         {
-            Debug.LogError("[CharacterSpawner] 未找到 PositionManager！");
-            return false;
+            Debug.LogError("[CharacterSpawner] Missing PositionManager");
+            return;
         }
 
-        //  1. 获取空闲点位
-        int posId = GetRandomAvailablePosition(posManager);
-        if (posId == -1)
+        for (int i = 0; i < pendingRoleIds.Count; i++)
+        {
+            string roleId = pendingRoleIds[i];
+            CharacterBase charInfo = DataMgr.GetInstance().GetCharacterInfo(roleId);
+
+            //  关键：先标记为已生成，防止其他事件再次触发
+            DataMgr.GetInstance().MarkPlayerAsSpawned(roleId);
+
+            if (!TrySpawnSingleCharacterWithConsistentPosition(charInfo, posManager))
+            {
+                // 分配失败，移除标记，允许重试
+                DataMgr.GetInstance().RemoveFromSpawnedPlayers(roleId);
+            }
+        }
+    }
+    private bool TrySpawnSingleCharacterWithConsistentPosition(CharacterBase charInfo, PositionManager posManager)
+    {
+        // 1. 获取所有未被占用的点位 ID（从小到大排序）
+        List<int> availablePositions = new List<int>();
+        for (int i = 0; i < posManager.positionCount; i++)
+        {
+            if (!posManager.IsPositionOccupied(i))
+            {
+                availablePositions.Add(i);
+            }
+        }
+
+        if (availablePositions.Count == 0)
         {
             Debug.LogError("[CharacterSpawner] 无可用出生点！");
             return false;
         }
 
-        Vector3 spawnPos = posManager.GetPosition(posId);
-        spawnPos.y += 30.0f;
+        // 2.  使用角色 ID + 全局种子 生成“确定性随机”索引
+        // 这样每个角色在所有客户端上都会选中同一个点位
+        int deterministicIndex = GetDeterministicIndex(charInfo.RoleId, availablePositions.Count);
 
-        //  2.  立即占用点位！不要等到加载完成
-        posManager.OccupyPosition(posId);
-        Debug.Log($"[CharacterSpawner] 已预占用点位 {posId}，准备生成角色 {charInfo.RoleName}");
+        int selectedPosId = availablePositions[deterministicIndex];
+        Vector3 spawnPos = posManager.GetPosition(selectedPosId);
+        spawnPos.y += 30.0f; // 你原有的偏移
 
-        //  3. 异步加载并实例化
+        // 3. 立即占用点位
+        posManager.OccupyPosition(selectedPosId);
+        Debug.Log($"[CharacterSpawner] 为角色 {charInfo.RoleName} 分配确定性点位 {selectedPosId}");
+
+        // 4. 异步加载并生成
         ResMgr.GetInstance().LoadAsync<GameObject>(
             address: characterAddress,
             callback: (prefab) =>
             {
                 if (prefab == null)
                 {
-                    Debug.LogError($"[CharacterSpawner] 预制体加载失败，地址: {characterAddress}");
-
-                    //  加载失败，要释放点位！
-                    posManager.ReleasePosition(posId);
+                    Debug.LogError($"[CharacterSpawner] 预制体加载失败: {characterAddress}");
+                    posManager.ReleasePosition(selectedPosId); // 失败则释放
                     return;
                 }
 
@@ -234,22 +253,101 @@ public class CharacterSpawner : MonoBehaviour
                 {
                     charInit.ApplyData(charInfo);
                 }
-                else
-                {
-                    Debug.LogWarning($"[CharacterSpawner] 角色缺少 CharacterInit 组件: {roleInstance.name}");
-                }
 
-                // 记录生成的角色和点位
                 spawnedCharacters[charInfo.RoleId] = roleInstance;
-                characterToPositionId[charInfo.RoleId] = posId;
+                characterToPositionId[charInfo.RoleId] = selectedPosId;
 
-                Debug.Log($"[CharacterSpawner] 角色 {charInfo.RoleName} 成功生成于点位 {posId}");
+                Debug.Log($"[CharacterSpawner] 角色 {charInfo.RoleName} 成功生成于点位 {selectedPosId}");
             },
             autoRelease: true
         );
 
         return true;
     }
+    /// <summary>
+    /// 基于 roleId 和 全局种子，生成 [0, range) 范围内的确定性索引
+    /// </summary>
+    private int GetDeterministicIndex(string roleId, int range)
+    {
+        if (range <= 1) return 0;
+
+        // 结合全局种子和角色 ID 生成哈希
+        int hash = DataMgr.GetInstance().GlobalRandomSeed;
+        foreach (char c in roleId)
+        {
+            hash ^= c;
+            hash = hash * 31 + c; // 简单哈希
+        }
+
+        // 确保正数
+        hash = Mathf.Abs(hash);
+        return hash % range;
+    }
+    /// <summary>
+    /// 尝试生成单个角色（使用 ResMgr 异步加载）
+    /// </summary>
+    //private bool TrySpawnSingleCharacter(CharacterBase charInfo)
+    //{
+    //    PositionManager posManager = platformRoot.GetComponentInChildren<PositionManager>();
+    //    if (posManager == null)
+    //    {
+    //        Debug.LogError("[CharacterSpawner] 未找到 PositionManager！");
+    //        return false;
+    //    }
+
+    //    //  1. 获取空闲点位
+    //    int posId = GetRandomAvailablePosition(posManager);
+    //    if (posId == -1)
+    //    {
+    //        Debug.LogError("[CharacterSpawner] 无可用出生点！");
+    //        return false;
+    //    }
+
+    //    Vector3 spawnPos = posManager.GetPosition(posId);
+    //    spawnPos.y += 30.0f;
+
+    //    //  2.  立即占用点位！不要等到加载完成
+    //    posManager.OccupyPosition(posId);
+    //    Debug.Log($"[CharacterSpawner] 已预占用点位 {posId}，准备生成角色 {charInfo.RoleName}");
+
+    //    //  3. 异步加载并实例化
+    //    ResMgr.GetInstance().LoadAsync<GameObject>(
+    //        address: characterAddress,
+    //        callback: (prefab) =>
+    //        {
+    //            if (prefab == null)
+    //            {
+    //                Debug.LogError($"[CharacterSpawner] 预制体加载失败，地址: {characterAddress}");
+
+    //                //  加载失败，要释放点位！
+    //                posManager.ReleasePosition(posId);
+    //                return;
+    //            }
+
+    //            GameObject roleInstance = Instantiate(prefab, spawnPos, Quaternion.identity);
+    //            roleInstance.name = $"Role_{charInfo.RoleName}_{charInfo.RoleId}";
+
+    //            CharacterInit charInit = roleInstance.GetComponent<CharacterInit>();
+    //            if (charInit != null)
+    //            {
+    //                charInit.ApplyData(charInfo);
+    //            }
+    //            else
+    //            {
+    //                Debug.LogWarning($"[CharacterSpawner] 角色缺少 CharacterInit 组件: {roleInstance.name}");
+    //            }
+
+    //            // 记录生成的角色和点位
+    //            spawnedCharacters[charInfo.RoleId] = roleInstance;
+    //            characterToPositionId[charInfo.RoleId] = posId;
+
+    //            Debug.Log($"[CharacterSpawner] 角色 {charInfo.RoleName} 成功生成于点位 {posId}");
+    //        },
+    //        autoRelease: true
+    //    );
+
+    //    return true;
+    //}
 
     #endregion
 

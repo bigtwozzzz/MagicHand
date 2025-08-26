@@ -1,34 +1,35 @@
-using Base; // 确保包含 EventCenter、BasePanel、PoolMgr、Gain 等
+using Base;
 using Broadcast;
-using System;
+using Enemy;
+using Scene;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-/// <summary>
-/// 主界面 UI 面板（显示系统消息，如玩家上线/下线）
-/// </summary>
 public class MainUI : BasePanel
 {
-    [SerializeField] private Transform contentPanel; // 消息内容容器
-    [SerializeField] private GameObject messagePrefab; // 消息条目预制体
-
-    // 存储消息及其过期时间（可选：用于自动清理）
+    [SerializeField] private Transform contentPanel;
+    [SerializeField] private GameObject messagePrefab;
+    [SerializeField] private Button btnStageVote; // 新增按钮
+    [SerializeField] private TextMeshProUGUI textStageRequest; // 可选展示面板
+    [SerializeField] private Transform monsterListContainer; // 怪物列表容器
+    [SerializeField] private GameObject monsterEntryPrefab; // 怪物条目预制体
+    [SerializeField] private TextMeshProUGUI textSceneId; // 新增引用
     private Queue<(GameObject messageObj, float expireTime)> messageQueue = new();
-    private const float MessageDuration = 30f; // 消息保留30秒（可根据需要调整）
-
-    private ScrollRect scrollRect; // 缓存 ScrollRect 引用
+    private const float MessageDuration = 30f;
+    private ScrollRect scrollRect;
 
     protected override void Awake()
     {
-        base.Awake(); // 必须先调用基类，完成控件自动注册
+        base.Awake();
         Button btnSettings = GetControl<Button>("ButtonGroup/ButtonSettings");
         if (btnSettings == null)
         {
             Debug.LogError("ButtonSettings 未正确注册！");
         }
+
         // 查找 ScrollRect
         scrollRect = GetComponentInChildren<ScrollRect>(true);
         if (scrollRect == null)
@@ -49,7 +50,34 @@ public class MainUI : BasePanel
             enabled = false;
         }
 
+        // 初始化按钮点击事件
+        if (btnStageVote != null)
+        {
+            btnStageVote.onClick.AddListener(OnBtnStageVoteClick);
+        }
+        
     }
+
+    private void OnBtnStageVoteClick()
+    {
+        // 发起关卡切换请求
+        
+    }
+
+    private void RequestStageChange()
+    {
+        string playerId = DataMgr.GetInstance().UserId; // 假设存在 PlayerMgr
+        string stageId = DataMgr.GetInstance().SceneData.SceneId;
+
+        PlayerSelectStageRequest notify = new PlayerSelectStageRequest
+        {
+            PlayerId = playerId,
+            StageId = stageId,
+        };
+
+        EventCenter.GetInstance().EventTrigger(E_EventType.Event_Stage_Select_Request, notify);
+    }
+
     protected override void OnClick(string btnName)
     {
         switch (btnName)
@@ -62,25 +90,18 @@ public class MainUI : BasePanel
                 {
                     Debug.Log("SettingsUI 面板已创建并显示");
                 });
-
-
                 break;
+            case "StageVote":
+                // case "Btn_Bag": ...
+                // case "Btn_Shop": ...
+                RequestStageChange();
 
-            //case "Btn_Bag":
-            //    Debug.Log("打开背包");
-            //    UIMgr.GetInstance().ShowPanel<BagPanel>("BagPanel");
-            //    break;
-
-            //case "Btn_Shop":
-            //    Debug.Log("打开商店");
-            //    UIMgr.GetInstance().ShowPanel<ShopPanel>("ShopPanel");
-            //    break;
-
-            //case "Btn_Skill":
-            //    Debug.Log("打开技能面板");
-            //    UIMgr.GetInstance().ShowPanel<SkillPanel>("SkillPanel");
-            //    break;
-
+                // 可选：显示本地提示
+                if (textStageRequest != null)
+                {
+                    textStageRequest.text = "已发起关卡切换请求，请等待其他玩家投票";
+                }
+                break;
             default:
                 base.OnClick(btnName);
                 break;
@@ -94,7 +115,10 @@ public class MainUI : BasePanel
 
         EventCenter.GetInstance().AddEventListener<PlayerOfflineNotify>(
             E_EventType.Event_Player_Offline, OnPlayerOffline);
-
+        EventCenter.GetInstance().AddEventListener<SceneData>(
+            E_EventType.Event_Scene_Data_Update_UI, OnSceneDataUpdated);
+        DataMgr.GetInstance().SetMainUIReady();
+        
         // 可选：启动消息清理协程
         // StartCoroutine(CleanupExpiredMessages());
         // 示例：添加几个测试按钮
@@ -108,8 +132,94 @@ public class MainUI : BasePanel
 
         EventCenter.GetInstance().RemoveEventListener<PlayerOfflineNotify>(
             E_EventType.Event_Player_Offline, OnPlayerOffline);
+        EventCenter.GetInstance().RemoveEventListener<SceneData>(
+            E_EventType.Event_Scene_Data_Update_UI, OnSceneDataUpdated);
+    }
+    private void OnSceneDataUpdated(SceneData sceneData)
+    {
+        if (sceneData == null)
+        {
+            Debug.LogWarning("[MainUI] 接收到空的场景数据！");
+            return;
+        }
+
+        Debug.Log($"[MainUI] 接收到场景数据: {sceneData.SceneId}");
+
+        // 更新场景ID显示
+        if (textSceneId != null)
+        {
+            textSceneId.text = $"场景ID: {sceneData.SceneId}";
+        }
+
+        ClearMonsterList(); // 清空旧列表
+        DisplayMonsterList(sceneData); // 显示新列表
     }
 
+    private void ClearMonsterList()
+    {
+        foreach (Transform child in monsterListContainer)
+        {
+            Destroy(child.gameObject);
+        }
+    }
+
+    private void DisplayMonsterList(SceneData sceneData)
+    {
+        if (sceneData.Monsters == null)
+        {
+            Debug.LogWarning("[MainUI] SceneData.Monsters 为 null");
+            return;
+        }
+
+        foreach (var monster in sceneData.Monsters)
+        {
+            if (monster == null) continue; // 防空判断
+
+            GameObject entry = Instantiate(monsterEntryPrefab, monsterListContainer);
+            TextMeshProUGUI text = entry.GetComponent<TextMeshProUGUI>();
+            if (text != null)
+            {
+                text.text = FormatMonsterInfo(monster);
+            }
+            else
+            {
+                Debug.LogError("怪物条目预制体缺少 TextMeshProUGUI 组件！");
+            }
+        }
+    }
+    private string FormatMonsterInfo(MonsterBase monster)
+    {
+        return $"\n- Monster: {monster.MonsterId}\n" +
+               $"  - 类型: {GetMonsterTypeName(monster.Type)}\n" +
+               $"  - HP: {monster.CurrentHp}/{monster.MaxHp}\n" +
+               $"  - 攻击力: {monster.AttackPower} (速度: {monster.AttackSpeed:F2})\n" +
+               $"  - 移动速度: {monster.MoveSpeed:F2}\n" +
+               $"  - 位置: ({monster.PosX:F2}, {monster.PosY:F2}, {monster.PosZ:F2})\n" +
+               $"  - 方向: {monster.Direction:F2}\n" +
+               $"  - 攻击范围: {monster.AttackRange:F2}\n" +
+               $"  - 状态: {GetMonsterStateName(monster.State)}\n" +
+               $"  - 掉落经验: {monster.ExpReward}";
+    }
+
+    private string GetMonsterTypeName(Common.MonsterType type)
+    {
+        switch (type)
+        {
+            case Common.MonsterType.ZombieBasic: return "ZOMBIE_BASIC";
+            case Common.MonsterType.ZombieFast: return "ZOMBIE_FAST";
+            default: return "未知类型";
+        }
+    }
+
+    private string GetMonsterStateName(Common.MonsterState state)
+    {
+        switch (state)
+        {
+            case Common.MonsterState.MMove: return "M_MOVE";
+
+            default: return "未知状态";
+        }
+    }
     private void OnPlayerOnline(object data)
     {
         if (data is PlayerOnlineNotify notify)

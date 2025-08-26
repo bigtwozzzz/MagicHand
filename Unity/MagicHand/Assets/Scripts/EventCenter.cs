@@ -63,6 +63,7 @@ public enum E_EventType
     Event_Stage_Select_Request,
     Event_Stage_Select_Result,
     Event_Scene_Data_Update,
+    Event_Scene_Data_Update_UI,
 
     // ϵͳָ��
     Event_Platform_Loaded,
@@ -73,7 +74,7 @@ public enum E_EventType
     Event_Character_Spawn_Ready,
     Event_Monster_Dead,
     Event_Player_Dead,
-
+    Event_Stage_Vote_Result,
     // �����¼�
     Event_Keycode_Input,
     Event_Mouse_Input,

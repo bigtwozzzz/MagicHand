@@ -109,7 +109,7 @@ public class Gain : BaseManager<Gain>
     /// </summary>
     private void HandleSelectStage(string stageId)
     {
-        if (DataMgr.GetInstance().UserId != null)
+        if (string.IsNullOrEmpty(DataMgr.GetInstance().UserId))
         {
             Debug.LogError("[ERROR] You must be logged in to select a stage.");
             return;
@@ -142,7 +142,7 @@ public class Gain : BaseManager<Gain>
     /// </summary>
     private void HandleConfirmStage(string stageId, int state)
     {
-        if (DataMgr.GetInstance().UserId != null)
+        if (string.IsNullOrEmpty(DataMgr.GetInstance().UserId))
         {
             Debug.LogError("[ERROR] You must be logged in to confirm a stage.");
             return;

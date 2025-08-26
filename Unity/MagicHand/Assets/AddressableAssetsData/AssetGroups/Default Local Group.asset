@@ -22,6 +22,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 480c795ea2a6d904a9392910110eacc1
+    m_Address: UI/Prefabs/StageVotePanel
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 5c43792b501f0a343b88967a77bf8d93
     m_Address: UI/Prefabs/MainUI
     m_ReadOnly: 0
