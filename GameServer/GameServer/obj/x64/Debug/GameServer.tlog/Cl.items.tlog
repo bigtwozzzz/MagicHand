@@ -11,6 +11,7 @@ C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\protos\character.pb.c
 C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\protos\combat.pb.cpp;C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\obj\x64\Debug\combat.pb.o
 C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\protos\common.pb.cpp;C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\obj\x64\Debug\common.pb.o
 C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\protos\enemy.pb.cpp;C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\obj\x64\Debug\enemy.pb.o
+C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\protos\globalrandom.pb.cpp;C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\obj\x64\Debug\globalrandom.pb.o
 C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\protos\scene.pb.cpp;C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\obj\x64\Debug\scene.pb.o
 C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\protos\skill.pb.cpp;C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\obj\x64\Debug\skill.pb.o
 C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\test.cpp;C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\obj\x64\Debug\test.o

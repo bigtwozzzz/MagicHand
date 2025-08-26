@@ -3,9 +3,13 @@
 #include "hiredis/hiredis.h"
 #include "DBRequest.h"
 #include "test.cpp"
+#include "protos/globalrandom.pb.h"
+#include "GameRole.h"
 
 int main() {
 	
+	
+	GenerateGlobalRandomNum();
 	//创建数据库请求
 	DBRequest* dbRequest = new DBRequest();
 	if (dbRequest->Init("127.0.0.1", 6379, "qzx123456")) {

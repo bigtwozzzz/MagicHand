@@ -25,6 +25,7 @@ PROTOBUF_CONSTEXPR PlayerOnlineNotify::PlayerOnlineNotify(
     ::_pbi::ConstantInitialized): _impl_{
     /*decltype(_impl_.player_id_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
   , /*decltype(_impl_.player_name_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
+  , /*decltype(_impl_.role_id_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
   , /*decltype(_impl_.pos_x_)*/0
   , /*decltype(_impl_.pos_y_)*/0
   , /*decltype(_impl_.status_)*/0
@@ -41,6 +42,7 @@ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORIT
 PROTOBUF_CONSTEXPR PlayerOfflineNotify::PlayerOfflineNotify(
     ::_pbi::ConstantInitialized): _impl_{
     /*decltype(_impl_.player_id_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
+  , /*decltype(_impl_.player_name_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
   , /*decltype(_impl_._cached_size_)*/{}} {}
 struct PlayerOfflineNotifyDefaultTypeInternal {
   PROTOBUF_CONSTEXPR PlayerOfflineNotifyDefaultTypeInternal()
@@ -245,6 +247,7 @@ const uint32_t TableStruct_broadcast_2eproto::offsets[] PROTOBUF_SECTION_VARIABL
   PROTOBUF_FIELD_OFFSET(::broadcast::PlayerOnlineNotify, _impl_.pos_x_),
   PROTOBUF_FIELD_OFFSET(::broadcast::PlayerOnlineNotify, _impl_.pos_y_),
   PROTOBUF_FIELD_OFFSET(::broadcast::PlayerOnlineNotify, _impl_.status_),
+  PROTOBUF_FIELD_OFFSET(::broadcast::PlayerOnlineNotify, _impl_.role_id_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::broadcast::PlayerOfflineNotify, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -252,6 +255,7 @@ const uint32_t TableStruct_broadcast_2eproto::offsets[] PROTOBUF_SECTION_VARIABL
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::broadcast::PlayerOfflineNotify, _impl_.player_id_),
+  PROTOBUF_FIELD_OFFSET(::broadcast::PlayerOfflineNotify, _impl_.player_name_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::broadcast::PlayerSelectStageRequest, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -366,18 +370,18 @@ const uint32_t TableStruct_broadcast_2eproto::offsets[] PROTOBUF_SECTION_VARIABL
 };
 static const ::_pbi::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, -1, sizeof(::broadcast::PlayerOnlineNotify)},
-  { 11, -1, -1, sizeof(::broadcast::PlayerOfflineNotify)},
-  { 18, -1, -1, sizeof(::broadcast::PlayerSelectStageRequest)},
-  { 26, -1, -1, sizeof(::broadcast::StageSelectRequestNotify)},
-  { 35, -1, -1, sizeof(::broadcast::PlayerConfirmStageResponse)},
-  { 44, -1, -1, sizeof(::broadcast::StageSelectResultNotify)},
-  { 52, -1, -1, sizeof(::broadcast::CharacterMoveNotify)},
-  { 63, -1, -1, sizeof(::broadcast::MonsterMoveNotify)},
-  { 74, -1, -1, sizeof(::broadcast::CharacterStatusUpdate)},
-  { 84, -1, -1, sizeof(::broadcast::MonsterStatusUpdate)},
-  { 94, -1, -1, sizeof(::broadcast::SkillCastNotify)},
-  { 105, -1, -1, sizeof(::broadcast::EntityAttackNotify)},
-  { 117, -1, -1, sizeof(::broadcast::EntityHitNotify)},
+  { 12, -1, -1, sizeof(::broadcast::PlayerOfflineNotify)},
+  { 20, -1, -1, sizeof(::broadcast::PlayerSelectStageRequest)},
+  { 28, -1, -1, sizeof(::broadcast::StageSelectRequestNotify)},
+  { 37, -1, -1, sizeof(::broadcast::PlayerConfirmStageResponse)},
+  { 46, -1, -1, sizeof(::broadcast::StageSelectResultNotify)},
+  { 54, -1, -1, sizeof(::broadcast::CharacterMoveNotify)},
+  { 65, -1, -1, sizeof(::broadcast::MonsterMoveNotify)},
+  { 76, -1, -1, sizeof(::broadcast::CharacterStatusUpdate)},
+  { 86, -1, -1, sizeof(::broadcast::MonsterStatusUpdate)},
+  { 96, -1, -1, sizeof(::broadcast::SkillCastNotify)},
+  { 107, -1, -1, sizeof(::broadcast::EntityAttackNotify)},
+  { 119, -1, -1, sizeof(::broadcast::EntityHitNotify)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
@@ -398,43 +402,44 @@ static const ::_pb::Message* const file_default_instances[] = {
 
 const char descriptor_table_protodef_broadcast_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
   "\n\017broadcast.proto\022\tbroadcast\032\014common.pro"
-  "to\032\014combat.proto\"z\n\022PlayerOnlineNotify\022\021"
-  "\n\tplayer_id\030\001 \001(\t\022\023\n\013player_name\030\002 \001(\t\022\r"
-  "\n\005pos_x\030\003 \001(\002\022\r\n\005pos_y\030\004 \001(\002\022\036\n\006status\030\005"
-  " \001(\0162\016.common.Status\"(\n\023PlayerOfflineNot"
-  "ify\022\021\n\tplayer_id\030\001 \001(\t\"\?\n\030PlayerSelectSt"
-  "ageRequest\022\021\n\tplayer_id\030\001 \001(\t\022\020\n\010stage_i"
-  "d\030\002 \001(\t\"S\n\030StageSelectRequestNotify\022\021\n\tp"
-  "layer_id\030\001 \001(\t\022\020\n\010stage_id\030\002 \001(\t\022\022\n\nstag"
-  "e_name\030\003 \001(\t\"j\n\032PlayerConfirmStageRespon"
-  "se\022\021\n\tplayer_id\030\001 \001(\t\022\020\n\010stage_id\030\002 \001(\t\022"
-  "\'\n\005state\030\003 \001(\0162\030.common.StageSelectState"
-  "\"E\n\027StageSelectResultNotify\022\020\n\010stage_id\030"
-  "\001 \001(\t\022\030\n\020is_all_confirmed\030\002 \001(\010\"h\n\023Chara"
-  "cterMoveNotify\022\021\n\tentity_id\030\001 \001(\t\022\r\n\005pos"
-  "_x\030\002 \001(\002\022\r\n\005pos_y\030\003 \001(\002\022\021\n\tdirection\030\004 \001"
-  "(\002\022\r\n\005speed\030\005 \001(\002\"f\n\021MonsterMoveNotify\022\021"
-  "\n\tentity_id\030\001 \001(\t\022\r\n\005pos_x\030\002 \001(\002\022\r\n\005pos_"
-  "y\030\003 \001(\002\022\021\n\tdirection\030\004 \001(\002\022\r\n\005speed\030\005 \001("
-  "\002\"r\n\025CharacterStatusUpdate\022\021\n\tentity_id\030"
-  "\001 \001(\t\022\"\n\nnew_status\030\002 \001(\0162\016.common.Statu"
-  "s\022\022\n\ncurrent_hp\030\003 \001(\005\022\016\n\006max_hp\030\004 \001(\005\"u\n"
-  "\023MonsterStatusUpdate\022\021\n\tentity_id\030\001 \001(\t\022"
-  "\'\n\tnew_state\030\002 \001(\0162\024.common.MonsterState"
-  "\022\022\n\ncurrent_hp\030\003 \001(\005\022\016\n\006max_hp\030\004 \001(\005\"\210\001\n"
-  "\017SkillCastNotify\022\021\n\tentity_id\030\001 \001(\t\022\'\n\013e"
-  "ntity_type\030\002 \001(\0162\022.combat.EntityType\022\020\n\010"
-  "skill_id\030\003 \001(\t\022\021\n\tcast_time\030\004 \001(\002\022\024\n\014att"
-  "ack_angle\030\005 \001(\002\"\236\001\n\022EntityAttackNotify\022\021"
-  "\n\tentity_id\030\001 \001(\t\022\'\n\013entity_type\030\002 \001(\0162\022"
-  ".combat.EntityType\022\021\n\ttarget_id\030\003 \001(\t\022\024\n"
-  "\014attack_angle\030\004 \001(\002\022\020\n\010skill_id\030\005 \001(\t\022\021\n"
-  "\tcast_time\030\006 \001(\002\"\307\001\n\017EntityHitNotify\022\021\n\t"
-  "entity_id\030\001 \001(\t\022\'\n\013entity_type\030\002 \001(\0162\022.c"
-  "ombat.EntityType\022\023\n\013attacker_id\030\003 \001(\t\022\016\n"
-  "\006damage\030\004 \001(\005\022\"\n\nnew_status\030\005 \001(\0162\016.comm"
-  "on.Status\022/\n\021new_monster_state\030\006 \001(\0162\024.c"
-  "ommon.MonsterStateb\006proto3"
+  "to\032\014combat.proto\"\213\001\n\022PlayerOnlineNotify\022"
+  "\021\n\tplayer_id\030\001 \001(\t\022\023\n\013player_name\030\002 \001(\t\022"
+  "\r\n\005pos_x\030\003 \001(\002\022\r\n\005pos_y\030\004 \001(\002\022\036\n\006status\030"
+  "\005 \001(\0162\016.common.Status\022\017\n\007role_id\030\006 \001(\t\"="
+  "\n\023PlayerOfflineNotify\022\021\n\tplayer_id\030\001 \001(\t"
+  "\022\023\n\013player_name\030\002 \001(\t\"\?\n\030PlayerSelectSta"
+  "geRequest\022\021\n\tplayer_id\030\001 \001(\t\022\020\n\010stage_id"
+  "\030\002 \001(\t\"S\n\030StageSelectRequestNotify\022\021\n\tpl"
+  "ayer_id\030\001 \001(\t\022\020\n\010stage_id\030\002 \001(\t\022\022\n\nstage"
+  "_name\030\003 \001(\t\"j\n\032PlayerConfirmStageRespons"
+  "e\022\021\n\tplayer_id\030\001 \001(\t\022\020\n\010stage_id\030\002 \001(\t\022\'"
+  "\n\005state\030\003 \001(\0162\030.common.StageSelectState\""
+  "E\n\027StageSelectResultNotify\022\020\n\010stage_id\030\001"
+  " \001(\t\022\030\n\020is_all_confirmed\030\002 \001(\010\"h\n\023Charac"
+  "terMoveNotify\022\021\n\tentity_id\030\001 \001(\t\022\r\n\005pos_"
+  "x\030\002 \001(\002\022\r\n\005pos_y\030\003 \001(\002\022\021\n\tdirection\030\004 \001("
+  "\002\022\r\n\005speed\030\005 \001(\002\"f\n\021MonsterMoveNotify\022\021\n"
+  "\tentity_id\030\001 \001(\t\022\r\n\005pos_x\030\002 \001(\002\022\r\n\005pos_y"
+  "\030\003 \001(\002\022\021\n\tdirection\030\004 \001(\002\022\r\n\005speed\030\005 \001(\002"
+  "\"r\n\025CharacterStatusUpdate\022\021\n\tentity_id\030\001"
+  " \001(\t\022\"\n\nnew_status\030\002 \001(\0162\016.common.Status"
+  "\022\022\n\ncurrent_hp\030\003 \001(\005\022\016\n\006max_hp\030\004 \001(\005\"u\n\023"
+  "MonsterStatusUpdate\022\021\n\tentity_id\030\001 \001(\t\022\'"
+  "\n\tnew_state\030\002 \001(\0162\024.common.MonsterState\022"
+  "\022\n\ncurrent_hp\030\003 \001(\005\022\016\n\006max_hp\030\004 \001(\005\"\210\001\n\017"
+  "SkillCastNotify\022\021\n\tentity_id\030\001 \001(\t\022\'\n\013en"
+  "tity_type\030\002 \001(\0162\022.combat.EntityType\022\020\n\010s"
+  "kill_id\030\003 \001(\t\022\021\n\tcast_time\030\004 \001(\002\022\024\n\014atta"
+  "ck_angle\030\005 \001(\002\"\236\001\n\022EntityAttackNotify\022\021\n"
+  "\tentity_id\030\001 \001(\t\022\'\n\013entity_type\030\002 \001(\0162\022."
+  "combat.EntityType\022\021\n\ttarget_id\030\003 \001(\t\022\024\n\014"
+  "attack_angle\030\004 \001(\002\022\020\n\010skill_id\030\005 \001(\t\022\021\n\t"
+  "cast_time\030\006 \001(\002\"\307\001\n\017EntityHitNotify\022\021\n\te"
+  "ntity_id\030\001 \001(\t\022\'\n\013entity_type\030\002 \001(\0162\022.co"
+  "mbat.EntityType\022\023\n\013attacker_id\030\003 \001(\t\022\016\n\006"
+  "damage\030\004 \001(\005\022\"\n\nnew_status\030\005 \001(\0162\016.commo"
+  "n.Status\022/\n\021new_monster_state\030\006 \001(\0162\024.co"
+  "mmon.MonsterStateb\006proto3"
   ;
 static const ::_pbi::DescriptorTable* const descriptor_table_broadcast_2eproto_deps[2] = {
   &::descriptor_table_combat_2eproto,
@@ -442,7 +447,7 @@ static const ::_pbi::DescriptorTable* const descriptor_table_broadcast_2eproto_d
 };
 static ::_pbi::once_flag descriptor_table_broadcast_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_broadcast_2eproto = {
-    false, false, 1506, descriptor_table_protodef_broadcast_2eproto,
+    false, false, 1545, descriptor_table_protodef_broadcast_2eproto,
     "broadcast.proto",
     &descriptor_table_broadcast_2eproto_once, descriptor_table_broadcast_2eproto_deps, 2, 13,
     schemas, file_default_instances, TableStruct_broadcast_2eproto::offsets,
@@ -475,6 +480,7 @@ PlayerOnlineNotify::PlayerOnlineNotify(const PlayerOnlineNotify& from)
   new (&_impl_) Impl_{
       decltype(_impl_.player_id_){}
     , decltype(_impl_.player_name_){}
+    , decltype(_impl_.role_id_){}
     , decltype(_impl_.pos_x_){}
     , decltype(_impl_.pos_y_){}
     , decltype(_impl_.status_){}
@@ -497,6 +503,14 @@ PlayerOnlineNotify::PlayerOnlineNotify(const PlayerOnlineNotify& from)
     _this->_impl_.player_name_.Set(from._internal_player_name(), 
       _this->GetArenaForAllocation());
   }
+  _impl_.role_id_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.role_id_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (!from._internal_role_id().empty()) {
+    _this->_impl_.role_id_.Set(from._internal_role_id(), 
+      _this->GetArenaForAllocation());
+  }
   ::memcpy(&_impl_.pos_x_, &from._impl_.pos_x_,
     static_cast<size_t>(reinterpret_cast<char*>(&_impl_.status_) -
     reinterpret_cast<char*>(&_impl_.pos_x_)) + sizeof(_impl_.status_));
@@ -510,6 +524,7 @@ inline void PlayerOnlineNotify::SharedCtor(
   new (&_impl_) Impl_{
       decltype(_impl_.player_id_){}
     , decltype(_impl_.player_name_){}
+    , decltype(_impl_.role_id_){}
     , decltype(_impl_.pos_x_){0}
     , decltype(_impl_.pos_y_){0}
     , decltype(_impl_.status_){0}
@@ -522,6 +537,10 @@ inline void PlayerOnlineNotify::SharedCtor(
   _impl_.player_name_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
     _impl_.player_name_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  _impl_.role_id_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.role_id_.Set("", GetArenaForAllocation());
   #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 }
 
@@ -538,6 +557,7 @@ inline void PlayerOnlineNotify::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
   _impl_.player_id_.Destroy();
   _impl_.player_name_.Destroy();
+  _impl_.role_id_.Destroy();
 }
 
 void PlayerOnlineNotify::SetCachedSize(int size) const {
@@ -552,6 +572,7 @@ void PlayerOnlineNotify::Clear() {
 
   _impl_.player_id_.ClearToEmpty();
   _impl_.player_name_.ClearToEmpty();
+  _impl_.role_id_.ClearToEmpty();
   ::memset(&_impl_.pos_x_, 0, static_cast<size_t>(
       reinterpret_cast<char*>(&_impl_.status_) -
       reinterpret_cast<char*>(&_impl_.pos_x_)) + sizeof(_impl_.status_));
@@ -606,6 +627,16 @@ const char* PlayerOnlineNotify::_InternalParse(const char* ptr, ::_pbi::ParseCon
           uint64_t val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
           _internal_set_status(static_cast<::common::Status>(val));
+        } else
+          goto handle_unusual;
+        continue;
+      // string role_id = 6;
+      case 6:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 50)) {
+          auto str = _internal_mutable_role_id();
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(ptr);
+          CHK_(::_pbi::VerifyUTF8(str, "broadcast.PlayerOnlineNotify.role_id"));
         } else
           goto handle_unusual;
         continue;
@@ -685,6 +716,16 @@ uint8_t* PlayerOnlineNotify::_InternalSerialize(
       5, this->_internal_status(), target);
   }
 
+  // string role_id = 6;
+  if (!this->_internal_role_id().empty()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_role_id().data(), static_cast<int>(this->_internal_role_id().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "broadcast.PlayerOnlineNotify.role_id");
+    target = stream->WriteStringMaybeAliased(
+        6, this->_internal_role_id(), target);
+  }
+
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
@@ -713,6 +754,13 @@ size_t PlayerOnlineNotify::ByteSizeLong() const {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
         this->_internal_player_name());
+  }
+
+  // string role_id = 6;
+  if (!this->_internal_role_id().empty()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_role_id());
   }
 
   // float pos_x = 3;
@@ -763,6 +811,9 @@ void PlayerOnlineNotify::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, con
   if (!from._internal_player_name().empty()) {
     _this->_internal_set_player_name(from._internal_player_name());
   }
+  if (!from._internal_role_id().empty()) {
+    _this->_internal_set_role_id(from._internal_role_id());
+  }
   static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
   float tmp_pos_x = from._internal_pos_x();
   uint32_t raw_pos_x;
@@ -807,6 +858,10 @@ void PlayerOnlineNotify::InternalSwap(PlayerOnlineNotify* other) {
       &_impl_.player_name_, lhs_arena,
       &other->_impl_.player_name_, rhs_arena
   );
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &_impl_.role_id_, lhs_arena,
+      &other->_impl_.role_id_, rhs_arena
+  );
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
       PROTOBUF_FIELD_OFFSET(PlayerOnlineNotify, _impl_.status_)
       + sizeof(PlayerOnlineNotify::_impl_.status_)
@@ -838,6 +893,7 @@ PlayerOfflineNotify::PlayerOfflineNotify(const PlayerOfflineNotify& from)
   PlayerOfflineNotify* const _this = this; (void)_this;
   new (&_impl_) Impl_{
       decltype(_impl_.player_id_){}
+    , decltype(_impl_.player_name_){}
     , /*decltype(_impl_._cached_size_)*/{}};
 
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
@@ -849,6 +905,14 @@ PlayerOfflineNotify::PlayerOfflineNotify(const PlayerOfflineNotify& from)
     _this->_impl_.player_id_.Set(from._internal_player_id(), 
       _this->GetArenaForAllocation());
   }
+  _impl_.player_name_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.player_name_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (!from._internal_player_name().empty()) {
+    _this->_impl_.player_name_.Set(from._internal_player_name(), 
+      _this->GetArenaForAllocation());
+  }
   // @@protoc_insertion_point(copy_constructor:broadcast.PlayerOfflineNotify)
 }
 
@@ -858,11 +922,16 @@ inline void PlayerOfflineNotify::SharedCtor(
   (void)is_message_owned;
   new (&_impl_) Impl_{
       decltype(_impl_.player_id_){}
+    , decltype(_impl_.player_name_){}
     , /*decltype(_impl_._cached_size_)*/{}
   };
   _impl_.player_id_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
     _impl_.player_id_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  _impl_.player_name_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.player_name_.Set("", GetArenaForAllocation());
   #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 }
 
@@ -878,6 +947,7 @@ PlayerOfflineNotify::~PlayerOfflineNotify() {
 inline void PlayerOfflineNotify::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
   _impl_.player_id_.Destroy();
+  _impl_.player_name_.Destroy();
 }
 
 void PlayerOfflineNotify::SetCachedSize(int size) const {
@@ -891,6 +961,7 @@ void PlayerOfflineNotify::Clear() {
   (void) cached_has_bits;
 
   _impl_.player_id_.ClearToEmpty();
+  _impl_.player_name_.ClearToEmpty();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -907,6 +978,16 @@ const char* PlayerOfflineNotify::_InternalParse(const char* ptr, ::_pbi::ParseCo
           ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
           CHK_(::_pbi::VerifyUTF8(str, "broadcast.PlayerOfflineNotify.player_id"));
+        } else
+          goto handle_unusual;
+        continue;
+      // string player_name = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
+          auto str = _internal_mutable_player_name();
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(ptr);
+          CHK_(::_pbi::VerifyUTF8(str, "broadcast.PlayerOfflineNotify.player_name"));
         } else
           goto handle_unusual;
         continue;
@@ -949,6 +1030,16 @@ uint8_t* PlayerOfflineNotify::_InternalSerialize(
         1, this->_internal_player_id(), target);
   }
 
+  // string player_name = 2;
+  if (!this->_internal_player_name().empty()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_player_name().data(), static_cast<int>(this->_internal_player_name().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "broadcast.PlayerOfflineNotify.player_name");
+    target = stream->WriteStringMaybeAliased(
+        2, this->_internal_player_name(), target);
+  }
+
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
@@ -972,6 +1063,13 @@ size_t PlayerOfflineNotify::ByteSizeLong() const {
         this->_internal_player_id());
   }
 
+  // string player_name = 2;
+  if (!this->_internal_player_name().empty()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_player_name());
+  }
+
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
@@ -992,6 +1090,9 @@ void PlayerOfflineNotify::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, co
 
   if (!from._internal_player_id().empty()) {
     _this->_internal_set_player_id(from._internal_player_id());
+  }
+  if (!from._internal_player_name().empty()) {
+    _this->_internal_set_player_name(from._internal_player_name());
   }
   _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
@@ -1015,6 +1116,10 @@ void PlayerOfflineNotify::InternalSwap(PlayerOfflineNotify* other) {
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
       &_impl_.player_id_, lhs_arena,
       &other->_impl_.player_id_, rhs_arena
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &_impl_.player_name_, lhs_arena,
+      &other->_impl_.player_name_, rhs_arena
   );
 }
 

@@ -41,6 +41,8 @@ PROTOBUF_CONSTEXPR CharacterBase::CharacterBase(
     /*decltype(_impl_.skills_)*/{}
   , /*decltype(_impl_.role_id_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
   , /*decltype(_impl_.role_name_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
+  , /*decltype(_impl_.player_id_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
+  , /*decltype(_impl_.player_name_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
   , /*decltype(_impl_.current_hp_)*/0
   , /*decltype(_impl_.max_hp_)*/0
   , /*decltype(_impl_.level_)*/0
@@ -107,6 +109,8 @@ const uint32_t TableStruct_character_2eproto::offsets[] PROTOBUF_SECTION_VARIABL
   PROTOBUF_FIELD_OFFSET(::character::CharacterBase, _impl_.direction_),
   PROTOBUF_FIELD_OFFSET(::character::CharacterBase, _impl_.status_),
   PROTOBUF_FIELD_OFFSET(::character::CharacterBase, _impl_.skills_),
+  PROTOBUF_FIELD_OFFSET(::character::CharacterBase, _impl_.player_id_),
+  PROTOBUF_FIELD_OFFSET(::character::CharacterBase, _impl_.player_name_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::character::MoveRequest, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -121,7 +125,7 @@ const uint32_t TableStruct_character_2eproto::offsets[] PROTOBUF_SECTION_VARIABL
 static const ::_pbi::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, -1, sizeof(::character::SkillSlot)},
   { 9, -1, -1, sizeof(::character::CharacterBase)},
-  { 26, -1, -1, sizeof(::character::MoveRequest)},
+  { 28, -1, -1, sizeof(::character::MoveRequest)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
@@ -133,13 +137,14 @@ static const ::_pb::Message* const file_default_instances[] = {
 const char descriptor_table_protodef_character_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
   "\n\017character.proto\022\tcharacter\032\014common.pro"
   "to\"J\n\tSkillSlot\022\020\n\010skill_id\030\001 \001(\t\022\030\n\020cur"
-  "rent_cooldown\030\002 \001(\002\022\021\n\tis_active\030\003 \001(\010\"\352"
-  "\001\n\rCharacterBase\022\017\n\007role_id\030\001 \001(\t\022\021\n\trol"
+  "rent_cooldown\030\002 \001(\002\022\021\n\tis_active\030\003 \001(\010\"\222"
+  "\002\n\rCharacterBase\022\017\n\007role_id\030\001 \001(\t\022\021\n\trol"
   "e_name\030\002 \001(\t\022\022\n\ncurrent_hp\030\003 \001(\005\022\016\n\006max_"
   "hp\030\004 \001(\005\022\r\n\005level\030\005 \001(\005\022\013\n\003exp\030\006 \001(\005\022\r\n\005"
   "pos_x\030\007 \001(\002\022\r\n\005pos_y\030\010 \001(\002\022\021\n\tdirection\030"
   "\t \001(\002\022\036\n\006status\030\n \001(\0162\016.common.Status\022$\n"
-  "\006skills\030\013 \003(\0132\024.character.SkillSlot\"\\\n\013M"
+  "\006skills\030\013 \003(\0132\024.character.SkillSlot\022\021\n\tp"
+  "layer_id\030\014 \001(\t\022\023\n\013player_name\030\r \001(\t\"\\\n\013M"
   "oveRequest\022\017\n\007role_id\030\001 \001(\t\022\020\n\010target_x\030"
   "\002 \001(\002\022\020\n\010target_y\030\003 \001(\002\022\030\n\020speed_multipl"
   "ier\030\004 \001(\002b\006proto3"
@@ -149,7 +154,7 @@ static const ::_pbi::DescriptorTable* const descriptor_table_character_2eproto_d
 };
 static ::_pbi::once_flag descriptor_table_character_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_character_2eproto = {
-    false, false, 457, descriptor_table_protodef_character_2eproto,
+    false, false, 497, descriptor_table_protodef_character_2eproto,
     "character.proto",
     &descriptor_table_character_2eproto_once, descriptor_table_character_2eproto_deps, 1, 3,
     schemas, file_default_instances, TableStruct_character_2eproto::offsets,
@@ -458,6 +463,8 @@ CharacterBase::CharacterBase(const CharacterBase& from)
       decltype(_impl_.skills_){from._impl_.skills_}
     , decltype(_impl_.role_id_){}
     , decltype(_impl_.role_name_){}
+    , decltype(_impl_.player_id_){}
+    , decltype(_impl_.player_name_){}
     , decltype(_impl_.current_hp_){}
     , decltype(_impl_.max_hp_){}
     , decltype(_impl_.level_){}
@@ -485,6 +492,22 @@ CharacterBase::CharacterBase(const CharacterBase& from)
     _this->_impl_.role_name_.Set(from._internal_role_name(), 
       _this->GetArenaForAllocation());
   }
+  _impl_.player_id_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.player_id_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (!from._internal_player_id().empty()) {
+    _this->_impl_.player_id_.Set(from._internal_player_id(), 
+      _this->GetArenaForAllocation());
+  }
+  _impl_.player_name_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.player_name_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (!from._internal_player_name().empty()) {
+    _this->_impl_.player_name_.Set(from._internal_player_name(), 
+      _this->GetArenaForAllocation());
+  }
   ::memcpy(&_impl_.current_hp_, &from._impl_.current_hp_,
     static_cast<size_t>(reinterpret_cast<char*>(&_impl_.status_) -
     reinterpret_cast<char*>(&_impl_.current_hp_)) + sizeof(_impl_.status_));
@@ -499,6 +522,8 @@ inline void CharacterBase::SharedCtor(
       decltype(_impl_.skills_){arena}
     , decltype(_impl_.role_id_){}
     , decltype(_impl_.role_name_){}
+    , decltype(_impl_.player_id_){}
+    , decltype(_impl_.player_name_){}
     , decltype(_impl_.current_hp_){0}
     , decltype(_impl_.max_hp_){0}
     , decltype(_impl_.level_){0}
@@ -517,6 +542,14 @@ inline void CharacterBase::SharedCtor(
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
     _impl_.role_name_.Set("", GetArenaForAllocation());
   #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  _impl_.player_id_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.player_id_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  _impl_.player_name_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.player_name_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 }
 
 CharacterBase::~CharacterBase() {
@@ -533,6 +566,8 @@ inline void CharacterBase::SharedDtor() {
   _impl_.skills_.~RepeatedPtrField();
   _impl_.role_id_.Destroy();
   _impl_.role_name_.Destroy();
+  _impl_.player_id_.Destroy();
+  _impl_.player_name_.Destroy();
 }
 
 void CharacterBase::SetCachedSize(int size) const {
@@ -548,6 +583,8 @@ void CharacterBase::Clear() {
   _impl_.skills_.Clear();
   _impl_.role_id_.ClearToEmpty();
   _impl_.role_name_.ClearToEmpty();
+  _impl_.player_id_.ClearToEmpty();
+  _impl_.player_name_.ClearToEmpty();
   ::memset(&_impl_.current_hp_, 0, static_cast<size_t>(
       reinterpret_cast<char*>(&_impl_.status_) -
       reinterpret_cast<char*>(&_impl_.current_hp_)) + sizeof(_impl_.status_));
@@ -655,6 +692,26 @@ const char* CharacterBase::_InternalParse(const char* ptr, ::_pbi::ParseContext*
             CHK_(ptr);
             if (!ctx->DataAvailable(ptr)) break;
           } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<90>(ptr));
+        } else
+          goto handle_unusual;
+        continue;
+      // string player_id = 12;
+      case 12:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 98)) {
+          auto str = _internal_mutable_player_id();
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(ptr);
+          CHK_(::_pbi::VerifyUTF8(str, "character.CharacterBase.player_id"));
+        } else
+          goto handle_unusual;
+        continue;
+      // string player_name = 13;
+      case 13:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 106)) {
+          auto str = _internal_mutable_player_name();
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(ptr);
+          CHK_(::_pbi::VerifyUTF8(str, "character.CharacterBase.player_name"));
         } else
           goto handle_unusual;
         continue;
@@ -776,6 +833,26 @@ uint8_t* CharacterBase::_InternalSerialize(
         InternalWriteMessage(11, repfield, repfield.GetCachedSize(), target, stream);
   }
 
+  // string player_id = 12;
+  if (!this->_internal_player_id().empty()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_player_id().data(), static_cast<int>(this->_internal_player_id().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "character.CharacterBase.player_id");
+    target = stream->WriteStringMaybeAliased(
+        12, this->_internal_player_id(), target);
+  }
+
+  // string player_name = 13;
+  if (!this->_internal_player_name().empty()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_player_name().data(), static_cast<int>(this->_internal_player_name().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "character.CharacterBase.player_name");
+    target = stream->WriteStringMaybeAliased(
+        13, this->_internal_player_name(), target);
+  }
+
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
@@ -811,6 +888,20 @@ size_t CharacterBase::ByteSizeLong() const {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
         this->_internal_role_name());
+  }
+
+  // string player_id = 12;
+  if (!this->_internal_player_id().empty()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_player_id());
+  }
+
+  // string player_name = 13;
+  if (!this->_internal_player_name().empty()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_player_name());
   }
 
   // int32 current_hp = 3;
@@ -891,6 +982,12 @@ void CharacterBase::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::
   if (!from._internal_role_name().empty()) {
     _this->_internal_set_role_name(from._internal_role_name());
   }
+  if (!from._internal_player_id().empty()) {
+    _this->_internal_set_player_id(from._internal_player_id());
+  }
+  if (!from._internal_player_name().empty()) {
+    _this->_internal_set_player_name(from._internal_player_name());
+  }
   if (from._internal_current_hp() != 0) {
     _this->_internal_set_current_hp(from._internal_current_hp());
   }
@@ -954,6 +1051,14 @@ void CharacterBase::InternalSwap(CharacterBase* other) {
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
       &_impl_.role_name_, lhs_arena,
       &other->_impl_.role_name_, rhs_arena
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &_impl_.player_id_, lhs_arena,
+      &other->_impl_.player_id_, rhs_arena
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &_impl_.player_name_, lhs_arena,
+      &other->_impl_.player_name_, rhs_arena
   );
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
       PROTOBUF_FIELD_OFFSET(CharacterBase, _impl_.status_)

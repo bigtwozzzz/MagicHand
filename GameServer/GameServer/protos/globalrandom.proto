@@ -1,0 +1,9 @@
+// globalrandom.proto
+
+syntax = "proto3";
+
+package globalrandom;
+
+message GlobalRandomNum {
+  int32 seed = 1;
+}

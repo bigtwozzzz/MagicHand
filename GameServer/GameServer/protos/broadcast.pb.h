@@ -229,6 +229,7 @@ class PlayerOnlineNotify final :
   enum : int {
     kPlayerIdFieldNumber = 1,
     kPlayerNameFieldNumber = 2,
+    kRoleIdFieldNumber = 6,
     kPosXFieldNumber = 3,
     kPosYFieldNumber = 4,
     kStatusFieldNumber = 5,
@@ -259,6 +260,20 @@ class PlayerOnlineNotify final :
   const std::string& _internal_player_name() const;
   inline PROTOBUF_ALWAYS_INLINE void _internal_set_player_name(const std::string& value);
   std::string* _internal_mutable_player_name();
+  public:
+
+  // string role_id = 6;
+  void clear_role_id();
+  const std::string& role_id() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_role_id(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_role_id();
+  PROTOBUF_NODISCARD std::string* release_role_id();
+  void set_allocated_role_id(std::string* role_id);
+  private:
+  const std::string& _internal_role_id() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_role_id(const std::string& value);
+  std::string* _internal_mutable_role_id();
   public:
 
   // float pos_x = 3;
@@ -298,6 +313,7 @@ class PlayerOnlineNotify final :
   struct Impl_ {
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr player_id_;
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr player_name_;
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr role_id_;
     float pos_x_;
     float pos_y_;
     int status_;
@@ -430,6 +446,7 @@ class PlayerOfflineNotify final :
 
   enum : int {
     kPlayerIdFieldNumber = 1,
+    kPlayerNameFieldNumber = 2,
   };
   // string player_id = 1;
   void clear_player_id();
@@ -445,6 +462,20 @@ class PlayerOfflineNotify final :
   std::string* _internal_mutable_player_id();
   public:
 
+  // string player_name = 2;
+  void clear_player_name();
+  const std::string& player_name() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_player_name(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_player_name();
+  PROTOBUF_NODISCARD std::string* release_player_name();
+  void set_allocated_player_name(std::string* player_name);
+  private:
+  const std::string& _internal_player_name() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_player_name(const std::string& value);
+  std::string* _internal_mutable_player_name();
+  public:
+
   // @@protoc_insertion_point(class_scope:broadcast.PlayerOfflineNotify)
  private:
   class _Internal;
@@ -454,6 +485,7 @@ class PlayerOfflineNotify final :
   typedef void DestructorSkippable_;
   struct Impl_ {
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr player_id_;
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr player_name_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
   union { Impl_ _impl_; };
@@ -2727,6 +2759,56 @@ inline void PlayerOnlineNotify::set_status(::common::Status value) {
   // @@protoc_insertion_point(field_set:broadcast.PlayerOnlineNotify.status)
 }
 
+// string role_id = 6;
+inline void PlayerOnlineNotify::clear_role_id() {
+  _impl_.role_id_.ClearToEmpty();
+}
+inline const std::string& PlayerOnlineNotify::role_id() const {
+  // @@protoc_insertion_point(field_get:broadcast.PlayerOnlineNotify.role_id)
+  return _internal_role_id();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void PlayerOnlineNotify::set_role_id(ArgT0&& arg0, ArgT... args) {
+ 
+ _impl_.role_id_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:broadcast.PlayerOnlineNotify.role_id)
+}
+inline std::string* PlayerOnlineNotify::mutable_role_id() {
+  std::string* _s = _internal_mutable_role_id();
+  // @@protoc_insertion_point(field_mutable:broadcast.PlayerOnlineNotify.role_id)
+  return _s;
+}
+inline const std::string& PlayerOnlineNotify::_internal_role_id() const {
+  return _impl_.role_id_.Get();
+}
+inline void PlayerOnlineNotify::_internal_set_role_id(const std::string& value) {
+  
+  _impl_.role_id_.Set(value, GetArenaForAllocation());
+}
+inline std::string* PlayerOnlineNotify::_internal_mutable_role_id() {
+  
+  return _impl_.role_id_.Mutable(GetArenaForAllocation());
+}
+inline std::string* PlayerOnlineNotify::release_role_id() {
+  // @@protoc_insertion_point(field_release:broadcast.PlayerOnlineNotify.role_id)
+  return _impl_.role_id_.Release();
+}
+inline void PlayerOnlineNotify::set_allocated_role_id(std::string* role_id) {
+  if (role_id != nullptr) {
+    
+  } else {
+    
+  }
+  _impl_.role_id_.SetAllocated(role_id, GetArenaForAllocation());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (_impl_.role_id_.IsDefault()) {
+    _impl_.role_id_.Set("", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:broadcast.PlayerOnlineNotify.role_id)
+}
+
 // -------------------------------------------------------------------
 
 // PlayerOfflineNotify
@@ -2779,6 +2861,56 @@ inline void PlayerOfflineNotify::set_allocated_player_id(std::string* player_id)
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   // @@protoc_insertion_point(field_set_allocated:broadcast.PlayerOfflineNotify.player_id)
+}
+
+// string player_name = 2;
+inline void PlayerOfflineNotify::clear_player_name() {
+  _impl_.player_name_.ClearToEmpty();
+}
+inline const std::string& PlayerOfflineNotify::player_name() const {
+  // @@protoc_insertion_point(field_get:broadcast.PlayerOfflineNotify.player_name)
+  return _internal_player_name();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void PlayerOfflineNotify::set_player_name(ArgT0&& arg0, ArgT... args) {
+ 
+ _impl_.player_name_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:broadcast.PlayerOfflineNotify.player_name)
+}
+inline std::string* PlayerOfflineNotify::mutable_player_name() {
+  std::string* _s = _internal_mutable_player_name();
+  // @@protoc_insertion_point(field_mutable:broadcast.PlayerOfflineNotify.player_name)
+  return _s;
+}
+inline const std::string& PlayerOfflineNotify::_internal_player_name() const {
+  return _impl_.player_name_.Get();
+}
+inline void PlayerOfflineNotify::_internal_set_player_name(const std::string& value) {
+  
+  _impl_.player_name_.Set(value, GetArenaForAllocation());
+}
+inline std::string* PlayerOfflineNotify::_internal_mutable_player_name() {
+  
+  return _impl_.player_name_.Mutable(GetArenaForAllocation());
+}
+inline std::string* PlayerOfflineNotify::release_player_name() {
+  // @@protoc_insertion_point(field_release:broadcast.PlayerOfflineNotify.player_name)
+  return _impl_.player_name_.Release();
+}
+inline void PlayerOfflineNotify::set_allocated_player_name(std::string* player_name) {
+  if (player_name != nullptr) {
+    
+  } else {
+    
+  }
+  _impl_.player_name_.SetAllocated(player_name, GetArenaForAllocation());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (_impl_.player_name_.IsDefault()) {
+    _impl_.player_name_.Set("", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:broadcast.PlayerOfflineNotify.player_name)
 }
 
 // -------------------------------------------------------------------

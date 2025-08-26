@@ -364,6 +364,8 @@ class CharacterBase final :
     kSkillsFieldNumber = 11,
     kRoleIdFieldNumber = 1,
     kRoleNameFieldNumber = 2,
+    kPlayerIdFieldNumber = 12,
+    kPlayerNameFieldNumber = 13,
     kCurrentHpFieldNumber = 3,
     kMaxHpFieldNumber = 4,
     kLevelFieldNumber = 5,
@@ -417,6 +419,34 @@ class CharacterBase final :
   const std::string& _internal_role_name() const;
   inline PROTOBUF_ALWAYS_INLINE void _internal_set_role_name(const std::string& value);
   std::string* _internal_mutable_role_name();
+  public:
+
+  // string player_id = 12;
+  void clear_player_id();
+  const std::string& player_id() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_player_id(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_player_id();
+  PROTOBUF_NODISCARD std::string* release_player_id();
+  void set_allocated_player_id(std::string* player_id);
+  private:
+  const std::string& _internal_player_id() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_player_id(const std::string& value);
+  std::string* _internal_mutable_player_id();
+  public:
+
+  // string player_name = 13;
+  void clear_player_name();
+  const std::string& player_name() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_player_name(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_player_name();
+  PROTOBUF_NODISCARD std::string* release_player_name();
+  void set_allocated_player_name(std::string* player_name);
+  private:
+  const std::string& _internal_player_name() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_player_name(const std::string& value);
+  std::string* _internal_mutable_player_name();
   public:
 
   // int32 current_hp = 3;
@@ -502,6 +532,8 @@ class CharacterBase final :
     ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::character::SkillSlot > skills_;
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr role_id_;
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr role_name_;
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr player_id_;
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr player_name_;
     int32_t current_hp_;
     int32_t max_hp_;
     int32_t level_;
@@ -1104,6 +1136,106 @@ inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::character::SkillSlot >
 CharacterBase::skills() const {
   // @@protoc_insertion_point(field_list:character.CharacterBase.skills)
   return _impl_.skills_;
+}
+
+// string player_id = 12;
+inline void CharacterBase::clear_player_id() {
+  _impl_.player_id_.ClearToEmpty();
+}
+inline const std::string& CharacterBase::player_id() const {
+  // @@protoc_insertion_point(field_get:character.CharacterBase.player_id)
+  return _internal_player_id();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void CharacterBase::set_player_id(ArgT0&& arg0, ArgT... args) {
+ 
+ _impl_.player_id_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:character.CharacterBase.player_id)
+}
+inline std::string* CharacterBase::mutable_player_id() {
+  std::string* _s = _internal_mutable_player_id();
+  // @@protoc_insertion_point(field_mutable:character.CharacterBase.player_id)
+  return _s;
+}
+inline const std::string& CharacterBase::_internal_player_id() const {
+  return _impl_.player_id_.Get();
+}
+inline void CharacterBase::_internal_set_player_id(const std::string& value) {
+  
+  _impl_.player_id_.Set(value, GetArenaForAllocation());
+}
+inline std::string* CharacterBase::_internal_mutable_player_id() {
+  
+  return _impl_.player_id_.Mutable(GetArenaForAllocation());
+}
+inline std::string* CharacterBase::release_player_id() {
+  // @@protoc_insertion_point(field_release:character.CharacterBase.player_id)
+  return _impl_.player_id_.Release();
+}
+inline void CharacterBase::set_allocated_player_id(std::string* player_id) {
+  if (player_id != nullptr) {
+    
+  } else {
+    
+  }
+  _impl_.player_id_.SetAllocated(player_id, GetArenaForAllocation());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (_impl_.player_id_.IsDefault()) {
+    _impl_.player_id_.Set("", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:character.CharacterBase.player_id)
+}
+
+// string player_name = 13;
+inline void CharacterBase::clear_player_name() {
+  _impl_.player_name_.ClearToEmpty();
+}
+inline const std::string& CharacterBase::player_name() const {
+  // @@protoc_insertion_point(field_get:character.CharacterBase.player_name)
+  return _internal_player_name();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void CharacterBase::set_player_name(ArgT0&& arg0, ArgT... args) {
+ 
+ _impl_.player_name_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:character.CharacterBase.player_name)
+}
+inline std::string* CharacterBase::mutable_player_name() {
+  std::string* _s = _internal_mutable_player_name();
+  // @@protoc_insertion_point(field_mutable:character.CharacterBase.player_name)
+  return _s;
+}
+inline const std::string& CharacterBase::_internal_player_name() const {
+  return _impl_.player_name_.Get();
+}
+inline void CharacterBase::_internal_set_player_name(const std::string& value) {
+  
+  _impl_.player_name_.Set(value, GetArenaForAllocation());
+}
+inline std::string* CharacterBase::_internal_mutable_player_name() {
+  
+  return _impl_.player_name_.Mutable(GetArenaForAllocation());
+}
+inline std::string* CharacterBase::release_player_name() {
+  // @@protoc_insertion_point(field_release:character.CharacterBase.player_name)
+  return _impl_.player_name_.Release();
+}
+inline void CharacterBase::set_allocated_player_name(std::string* player_name) {
+  if (player_name != nullptr) {
+    
+  } else {
+    
+  }
+  _impl_.player_name_.SetAllocated(player_name, GetArenaForAllocation());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (_impl_.player_name_.IsDefault()) {
+    _impl_.player_name_.Set("", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:character.CharacterBase.player_name)
 }
 
 // -------------------------------------------------------------------

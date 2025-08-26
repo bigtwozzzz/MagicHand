@@ -15,6 +15,7 @@ C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\protos\character.pb.c
 C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\protos\combat.pb.cpp|/home/qzx/projects/GameServer/protos/combat.pb.cpp
 C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\protos\common.pb.cpp|/home/qzx/projects/GameServer/protos/common.pb.cpp
 C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\protos\enemy.pb.cpp|/home/qzx/projects/GameServer/protos/enemy.pb.cpp
+C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\protos\globalrandom.pb.cpp|/home/qzx/projects/GameServer/protos/globalrandom.pb.cpp
 C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\protos\scene.pb.cpp|/home/qzx/projects/GameServer/protos/scene.pb.cpp
 C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\protos\skill.pb.cpp|/home/qzx/projects/GameServer/protos/skill.pb.cpp
 C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\test.cpp|/home/qzx/projects/GameServer/test.cpp
@@ -30,6 +31,7 @@ C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\protos\character.pb.h
 C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\protos\combat.pb.h|/home/qzx/projects/GameServer/protos/combat.pb.h
 C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\protos\common.pb.h|/home/qzx/projects/GameServer/protos/common.pb.h
 C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\protos\enemy.pb.h|/home/qzx/projects/GameServer/protos/enemy.pb.h
+C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\protos\globalrandom.pb.h|/home/qzx/projects/GameServer/protos/globalrandom.pb.h
 C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\protos\scene.pb.h|/home/qzx/projects/GameServer/protos/scene.pb.h
 C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\protos\skill.pb.h|/home/qzx/projects/GameServer/protos/skill.pb.h
 C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\config\characters.yaml|/home/qzx/projects/GameServer/config/characters.yaml

@@ -47,6 +47,7 @@
     <ClInclude Include="protos\combat.pb.h" />
     <ClInclude Include="protos\common.pb.h" />
     <ClInclude Include="protos\enemy.pb.h" />
+    <ClInclude Include="protos\globalrandom.pb.h" />
     <ClInclude Include="protos\scene.pb.h" />
     <ClInclude Include="protos\skill.pb.h" />
     <!-- <DeploymentContent>true</DeploymentContent>
@@ -66,6 +67,7 @@
     <ClCompile Include="protos\combat.pb.cpp" />
     <ClCompile Include="protos\common.pb.cpp" />
     <ClCompile Include="protos\enemy.pb.cpp" />
+    <ClCompile Include="protos\globalrandom.pb.cpp" />
     <ClCompile Include="protos\scene.pb.cpp" />
     <ClCompile Include="protos\skill.pb.cpp" />
     <ClCompile Include="test.cpp" />

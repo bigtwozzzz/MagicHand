@@ -236,15 +236,83 @@ bool DBRequest::InitSkillDefinitions(redisContext* context, const std::vector<sk
 #
 
 bool DBRequest::InitSceneData(redisContext* context, const std::vector<scene::SceneData>& scenes) {
-    for (const auto& scene: scenes) {
+    // 先清空旧的场景顺序列表
+    redisReply* reply = (redisReply*)redisCommand(context, "DEL scene_order");
+    if (reply) freeReplyObject(reply);
+
+    for (const auto& scene : scenes) {
         std::string key = "scene:" + scene.scene_id();
         if (!WriteToRedis(context, key, scene)) {
             return false;
         }
+
+        // 将 scene_id 按顺序推入 Redis list：scene_order
+        reply = (redisReply*)redisCommand(context, "RPUSH scene_order %s", scene.scene_id().c_str());
+        if (!reply || reply->type == REDIS_REPLY_ERROR) {
+            std::cerr << "[ERROR] Failed to add scene_id to scene_order: " << scene.scene_id() << std::endl;
+            if (reply) freeReplyObject(reply);
+            return false;
+        }
+        freeReplyObject(reply);
     }
+
+    std::cout << "[INFO] Scene order initialized with " << scenes.size() << " scenes." << std::endl;
     return true;
 }
+std::string DBRequest::GetFirstSceneId() {
+    auto context = Connect();
+    if (!context || context->err) {
+        std::cerr << "[ERROR] Redis context is invalid or disconnected: "
+            << context->errstr << std::endl;
+        return "";
+    }
 
+    // 读取 scene_order 列表的第一个元素
+    redisReply* reply = (redisReply*)redisCommand(context, "LINDEX scene_order 0");
+    if (!reply || reply->type != REDIS_REPLY_STRING) {
+        std::cerr << "[ERROR] No first scene found in scene_order" << std::endl;
+        freeReplyObject(reply);
+        return "";
+    }
+
+    std::string first_scene_id = reply->str;
+    freeReplyObject(reply);
+    return first_scene_id;
+}
+std::string DBRequest::GetNextSceneId(const std::string& current_scene_id) {
+    auto context = Connect();
+    if (!context) return "";
+
+    // 获取整个 scene_order 列表
+    redisReply* reply = (redisReply*)redisCommand(context, "LRANGE scene_order 0 -1");
+    if (!reply || reply->type != REDIS_REPLY_ARRAY) {
+        std::cerr << "[ERROR] Failed to get scene_order list" << std::endl;
+        freeReplyObject(reply);
+        return "";
+    }
+
+    bool found_current = false;
+    std::string next_scene_id = "";
+
+    for (size_t i = 0; i < reply->elements; ++i) {
+        std::string scene_id = reply->element[i]->str;
+        if (found_current) {
+            next_scene_id = scene_id;
+            break;
+        }
+        if (scene_id == current_scene_id) {
+            found_current = true;
+        }
+    }
+
+    freeReplyObject(reply);
+
+    if (next_scene_id.empty()) {
+        std::cout << "[INFO] No next scene after: " << current_scene_id << std::endl;
+    }
+
+    return next_scene_id;
+}
 bool DBRequest::InitUsername(redisContext* context, const std::vector<base::LoginRequest>& usernames) {
     for (const auto& username: usernames) {
         std::string key = "username:" + username.username();

@@ -4,6 +4,10 @@
   正在验证体系结构
   正在启动远程生成
   正在编译源:
+  DBRequest.cpp
+C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\DBRequest.cpp(166,53): warning : conversion from ‘size_t’ {aka ‘long unsigned int’} to ‘int’ may change value [-Wconversion]
+C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\DBRequest.cpp(166,53): warning :   166 |     if (!message->ParseFromArray(reply->str, reply->len)) {
+C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\DBRequest.cpp(166,53): warning :       |                                              ~~~~~~~^~~
   GameRole.cpp
   正在链接对象
   GameServer.vcxproj -> C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\bin\x64\Debug\GameServer.out

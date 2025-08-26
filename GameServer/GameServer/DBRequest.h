@@ -17,6 +17,8 @@ public:
     bool Init(std::string,int, std::string);
     bool Read(redisContext* context,std::string, google::protobuf::Message*);
     bool Write(redisContext* context,std::string, google::protobuf::Message&);
+    std::string GetFirstSceneId();
+    std::string GetNextSceneId(const std::string& current_scene_id);
     bool Del(redisContext* context, std::string, google::protobuf::Message&);
     redisContext* GetRedisContext();
     // 通用函数：连接 Redis 并认证
@@ -39,6 +41,7 @@ private:
     bool InitMonsterBases(redisContext * context, const std::vector<enemy::MonsterBase>&monsters);
     // 初始化场景基础信息
     bool InitSceneData(redisContext* context, const std::vector<scene::SceneData>& scenes);
+   
     // 初始化用户信息
     bool InitUsername(redisContext* context, const std::vector<base::LoginRequest>& usernames);
     // 加载角色配置

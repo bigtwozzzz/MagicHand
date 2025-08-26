@@ -6,6 +6,7 @@
 #include "protos/enemy.pb.h"
 #include "protos/combat.pb.h"
 #include "protos/skill.pb.h"
+#include "protos/globalrandom.pb.h"
 #include <iomanip>
 GameMsg::GameMsg(MSG_TYPE _type, google::protobuf::Message* _pMsg): enMsgType(_type), m_pMsg(_pMsg)
 {
@@ -100,6 +101,10 @@ GameMsg::GameMsg(MSG_TYPE _type, std::string _pstream)
         break;
     case MSG_TYPE_PLAYER_INFO:
         m_pMsg = new character::CharacterBase();
+        break;
+    case MSG_TYPE_RANDOM_NUMBER:
+        m_pMsg = new globalrandom::GlobalRandomNum();
+        break;
     default:
         // 处理未知消息类型
         

@@ -16,11 +16,13 @@ message PlayerOnlineNotify {
   float pos_x = 3;              // 当前X坐标
   float pos_y = 4;              // 当前Y坐标
   common.Status status = 5;     // 初始状态（如 IDLE）
+  string role_id = 6;
 }
 
 // 玩家下线广播（离开场景）
 message PlayerOfflineNotify {
   string player_id = 1;         // 离线玩家ID
+  string player_name = 2;
 }
 // ==================== 关卡选择相关 ====================
 // 玩家请求进入关卡

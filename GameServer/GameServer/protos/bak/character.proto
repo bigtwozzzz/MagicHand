@@ -26,8 +26,9 @@ message CharacterBase {
    float pos_y = 8;                // 位置Y
    float direction = 9;            // 朝向角度
    common.Status status = 10;      // 当前状态（如 IDLE、CASTING）
-   SkillSlot skills = 11; // 技能栏位列表
-  
+   repeated SkillSlot skills = 11; // 技能栏位列表
+   string player_id = 12;
+   string player_name = 13;
 }
 
 
@@ -37,5 +38,5 @@ message MoveRequest {
   string role_id = 1;
   float target_x = 2;
   float target_y = 3;
-  float speed_multiplier = 4;
+  float speed_multiplier = 4; //没用
 }

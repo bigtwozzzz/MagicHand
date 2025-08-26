@@ -36,7 +36,9 @@ class GameMsg :
             MSG_TYPE_CHARACTER_ATTACK_NOTIFY = 213,
 
             MSG_TYPE_SCENE_DATA= 301, //
-            MSG_TYPE_PLAYER_INFO = 302
+            MSG_TYPE_PLAYER_INFO = 302,
+
+            MSG_TYPE_RANDOM_NUMBER = 401,
             
         } enMsgType;
         //根据已知消息创建对象
