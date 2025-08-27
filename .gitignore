@@ -6,7 +6,7 @@
 /Unity/*/[Bb]uilds/
 /Unity/*/[Ll]ogs/
 /Unity/*/[Uu]ser[Ss]ettings/
-
+/GameExe/*
 # MemoryCaptures can get excessive in size.
 /Unity/*/[Mm]emoryCaptures/
 
