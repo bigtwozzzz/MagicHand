@@ -111,6 +111,7 @@ GameMsg::GameMsg(MSG_TYPE _type, std::string _pstream)
         m_pMsg = nullptr;
         break;
     }
+    std::cout<<"type is: "<<_type<<"content is: "<<_pstream<< std::endl;
 	m_pMsg->ParseFromString(_pstream);
 }
 

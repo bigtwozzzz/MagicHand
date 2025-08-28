@@ -37,6 +37,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8ba5dabaf692bb541be6c3cfac02bab3
+    m_Address: UI/Prefabs/SceneUI
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 913752f6e8c8267498a1a1fc259378cb
     m_Address: UI/Canvas
     m_ReadOnly: 0

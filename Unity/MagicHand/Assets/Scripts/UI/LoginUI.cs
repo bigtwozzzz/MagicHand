@@ -12,7 +12,7 @@ public class LoginUI : BasePanel
     private TMP_InputField usernameField;
     private TMP_InputField passwordField;
     private Button loginButton;
-
+    private string _cachedUsername;
     protected override void Awake()
     {
         // 先调用基类的 Awake，自动注册所有子控件
@@ -56,6 +56,7 @@ public class LoginUI : BasePanel
             Debug.LogWarning("密码不能为空！");
             return;
         }
+        _cachedUsername = username;
 
         var loginCmd = new Gain.PlayerCommandData(E_EventType.Event_Player_Command_Login)
         {
@@ -87,7 +88,11 @@ public class LoginUI : BasePanel
     private void OnLoginSuccess(LoginResponse response)
     {
         Debug.Log($"[LoginUI] 登录成功！用户ID: {response.UserId}, 状态: {response.Status}");
-
+        string playerId = response.UserId;
+        if (!string.IsNullOrEmpty(_cachedUsername))
+        {
+            DataMgr.GetInstance().SetPlayerName(playerId, _cachedUsername);
+        }
         // 隐藏自己
         UIMgr.GetInstance().HidePanel("LoginUI");
         // 获取全屏管理器并锁定全屏
@@ -108,7 +113,7 @@ public class LoginUI : BasePanel
             UIMgr.GetInstance().ShowPanel<MainUI>("MainUI", E_UI_Layer.Mid, (panel) =>
             {
                 Debug.Log("MainUI 面板已创建并显示");
-         
+                
             });
         }
         else

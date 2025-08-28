@@ -26,8 +26,9 @@ message CharacterBase {
    float pos_y = 8;                // 位置Y
    float direction = 9;            // 朝向角度
    common.Status status = 10;      // 当前状态（如 IDLE、CASTING）
-   SkillSlot skills = 11; // 技能栏位列表
-  
+   repeated SkillSlot skills = 11; // 技能栏位列表
+   string player_id = 12;
+   string player_name = 13;
 }
 
 

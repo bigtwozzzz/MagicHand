@@ -1,5 +1,7 @@
 using Broadcast;
 using Common;
+using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,10 +12,10 @@ using UnityEngine.UI;
 public class StageVotePanel : BasePanel
 {
     // UI 控件
-    private Text textMessage;
+    private TextMeshProUGUI textMessage;
     private Button btnConfirm;
     private Button btnReject;
-    private Text textResult;
+    private TextMeshProUGUI textResult;
 
     // 当前投票状态
     private string currentStageId = "";
@@ -24,10 +26,10 @@ public class StageVotePanel : BasePanel
         base.Awake();
 
         // 查找 UI 元素
-        textMessage = GetControl<Text>("Panel/Content/TextMessage");
+        textMessage = GetControl<TextMeshProUGUI>("Panel/Content/TextMessage");
         btnConfirm = GetControl<Button>("Panel/ButtonGroup/ButtonConfirm");
         btnReject = GetControl<Button>("Panel/ButtonGroup/ButtonReject");
-        textResult = GetControl<Text>("Panel/Content/TextResult");
+        textResult = GetControl<TextMeshProUGUI>("Panel/Content/TextResult");
 
         // 验证是否找到
         if (textMessage == null) Debug.LogError("TextMessage 未找到！");
@@ -54,14 +56,10 @@ public class StageVotePanel : BasePanel
     {
         base.ShowMe();
 
-        // 注册事件：收到投票请求
-        EventCenter.GetInstance().AddEventListener<StageSelectRequestNotify>(
-            E_EventType.Event_Stage_Select_Request,
-            OnStageSelectRequestReceived);
-
+        
         // 注册事件：收到投票结果
         EventCenter.GetInstance().AddEventListener<StageSelectResultNotify>(
-            E_EventType.Event_Stage_Select_Result,
+            E_EventType.Event_Stage_Select_Result_Notify,
             OnStageSelectResultWrapper);
 
         // 初始化状态
@@ -71,12 +69,9 @@ public class StageVotePanel : BasePanel
     public override void HideMe()
     {
         // 反注册事件
-        EventCenter.GetInstance().RemoveEventListener<StageSelectRequestNotify>(
-            E_EventType.Event_Stage_Select_Request,
-            OnStageSelectRequestReceived);
-
+        
         EventCenter.GetInstance().RemoveEventListener<StageSelectResultNotify>(
-            E_EventType.Event_Stage_Select_Result,
+            E_EventType.Event_Stage_Select_Result_Notify,
             OnStageSelectResultWrapper);
 
         // 清理
@@ -99,21 +94,7 @@ public class StageVotePanel : BasePanel
         if (btnReject != null) btnReject.interactable = true;
     }
 
-    /// <summary>
-    /// 收到“关卡选择请求”通知
-    /// </summary>
-    private void OnStageSelectRequestReceived(StageSelectRequestNotify notify)
-    {
-        string playerId = notify.PlayerId;
-        string stageId = notify.StageId;
-        string stageName = string.IsNullOrEmpty(notify.StageName) ? stageId : notify.StageName;
-
-        // 获取玩家名称（示例：可从 RoleMgr 获取）
-        string playerName = GetPlayerName(playerId);
-
-        ShowVoteRequest(playerId, playerName, stageId, stageName);
-    }
-
+    
     /// <summary>
     /// 显示投票请求
     /// </summary>
@@ -122,7 +103,7 @@ public class StageVotePanel : BasePanel
         currentStageId = stageId;
         isVoted = false;
 
-        string msg = $"玩家 <color=yellow>[{playerName}]</color> 想进入 <color=cyan>[{stageName}]</color>，你是否同意？";
+        string msg = $"玩家 <color=yellow>[{playerName}]</color> 想进入 <color=blue>[{stageName}]</color>，你是否同意？";
         if (textMessage != null)
             textMessage.text = msg;
 
@@ -168,7 +149,8 @@ public class StageVotePanel : BasePanel
         // 发送命令
         var cmd = new Gain.PlayerCommandData(E_EventType.Event_Player_Command_Confirm_Stage)
         {
-            StringParam1 = currentStageId,
+            StringParam1 = DataMgr.GetInstance().UserId, 
+            StringParam2 = currentStageId,
             IntParam1 = (int)state
         };
 
@@ -200,23 +182,23 @@ public class StageVotePanel : BasePanel
     /// </summary>
     private void OnStageSelectResult(bool isAllConfirmed)
     {
-        SetButtonsInteractable(false);
-
+        SetButtonsInteractable(false); // 禁用按钮
+        Debug.Log($"[StageVotePanel] 收到投票结果：{isAllConfirmed}");
         if (isAllConfirmed)
         {
             if (textResult != null)
-                textResult.text = " 全员同意！准备进入关卡...";
+                textResult.text = "全员同意！准备进入关卡...";
 
-            // 延迟跳转
-            Invoke(nameof(LoadStage), 1.5f);
+            //  延迟跳转（防止瞬间跳转造成体验问题）
+            Invoke(nameof(LoadStage), 0.5f); // 优化：从 1.5s 降到 0.8s
         }
         else
         {
             if (textResult != null)
-                textResult.text = " 投票未通过，关卡选择取消";
+                textResult.text = "投票未通过，关卡选择取消";
 
-            // 延迟隐藏面板
-            Invoke(nameof(HidePanel), 2.0f); // 改成 HidePanel
+            //  快速隐藏
+            Invoke(nameof(HidePanel), 0.5f); // 优化：从 2.0s 降到 1.0s
         }
     }
 
@@ -228,8 +210,28 @@ public class StageVotePanel : BasePanel
         Debug.Log($"[StageVotePanel] 正在加载关卡: {currentStageId}");
         // 实际项目中替换为场景加载
         // SceneLoader.LoadSceneAsync(currentStageId);
+        UIMgr.GetInstance().HidePanel("StageVotePanel");
+        SceneMgr.GetInstance().SafeLoadScene("Scene_1", OnLoadOver);
+    }
 
-        HidePanel(); // 隐藏面板
+    private void OnLoadOver(bool success)
+    {
+        if (success)
+        {
+            Debug.Log("Scene_1 加载完成！");
+
+            UIMgr.GetInstance().ShowPanel<SceneUI>("SceneUI", E_UI_Layer.Mid, (panel) =>
+            {
+                Debug.Log("SceneUI 面板已创建并显示");
+
+            });
+        }
+        else
+        {
+            Debug.LogError("Scene_1 加载失败！");
+            // 可以提示用户重试
+        }
+
     }
 
     /// <summary>
@@ -238,6 +240,7 @@ public class StageVotePanel : BasePanel
     private void HidePanel()
     {
         UIMgr.GetInstance().HidePanel("StageVotePanel");
+        UIMgr.GetInstance().ShowPanel<MainUI>("MainUI");
     }
     /// <summary>
     /// 获取玩家名称（示例实现）

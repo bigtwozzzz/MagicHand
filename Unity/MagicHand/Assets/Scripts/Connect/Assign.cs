@@ -61,7 +61,7 @@ public class Assign : BaseManager<Assign>
                     var stageSelectNotify = StageSelectRequestNotify.Parser.ParseFrom(msgBody);
                     MainThreadDispatcher.Enqueue(() =>
                     {
-                        EventCenter.GetInstance().EventTrigger(E_EventType.Event_Stage_Select_Request, stageSelectNotify);
+                        EventCenter.GetInstance().EventTrigger(E_EventType.Event_Stage_Select_Request_Notify, stageSelectNotify);
                     });
                     break;
 
@@ -69,7 +69,7 @@ public class Assign : BaseManager<Assign>
                     var stageResultNotify = StageSelectResultNotify.Parser.ParseFrom(msgBody);
                     MainThreadDispatcher.Enqueue(() =>
                     {
-                        EventCenter.GetInstance().EventTrigger(E_EventType.Event_Stage_Select_Result, stageResultNotify);
+                        EventCenter.GetInstance().EventTrigger(E_EventType.Event_Stage_Select_Result_Notify, stageResultNotify);
                     });
                     break;
 

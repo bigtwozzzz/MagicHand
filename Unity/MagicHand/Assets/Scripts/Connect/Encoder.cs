@@ -58,9 +58,11 @@ public class Encoder : BaseManager<Encoder>
         try
         {
             packet = Pack(msgId, msgBody);
+            int packetSize = 8 + msgBody.Length; //  计算真实长度
+
             if (NetManager.GetInstance().IsConnected)
             {
-                NetManager.GetInstance().Send(packet); // 明确长度
+                NetManager.GetInstance().Send(packet, packetSize); //  指定长度
             }
             else
             {
@@ -69,7 +71,6 @@ public class Encoder : BaseManager<Encoder>
         }
         finally
         {
-            // 归还数组到池中
             if (packet != null)
                 ArrayPool<byte>.Shared.Return(packet);
         }

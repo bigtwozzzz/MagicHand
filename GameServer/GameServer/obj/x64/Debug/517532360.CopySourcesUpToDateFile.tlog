@@ -1,9 +1,9 @@
 C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\DBRequest.cpp|638918212270631007|~/projects/GameServer/|
 C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\GameChannel.cpp|638906893445026212|~/projects/GameServer/|
-C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\GameMsg.cpp|638913929972185726|~/projects/GameServer/|
-C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\GameProtocol.cpp|638869591966767372|~/projects/GameServer/|
-C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\GameRole.cpp|638918211122098564|~/projects/GameServer/|
-C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\GameWorld.cpp|638871525779616635|~/projects/GameServer/|
+C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\GameMsg.cpp|638918997561426023|~/projects/GameServer/|
+C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\GameProtocol.cpp|638919003972902935|~/projects/GameServer/|
+C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\GameRole.cpp|638919828327874699|~/projects/GameServer/|
+C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\GameWorld.cpp|638919826021266168|~/projects/GameServer/|
 C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\main.cpp|638914569563364824|~/projects/GameServer/|
 C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\protos\base.pb.cpp|638906936710491232|~/projects/GameServer/|
 C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\protos\broadcast.pb.cpp|638917214894548934|~/projects/GameServer/|
@@ -20,7 +20,7 @@ C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\GameChannel.h|6388640
 C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\GameMsg.h|638913918065223462|~/projects/GameServer/|
 C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\GameProtocol.h|638865681324190065|~/projects/GameServer/|
 C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\GameRole.h|638918176238697961|~/projects/GameServer/|
-C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\GameWorld.h|638871526654379095|~/projects/GameServer/|
+C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\GameWorld.h|638919822266408465|~/projects/GameServer/|
 C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\protos\base.pb.h|638906936710546431|~/projects/GameServer/|
 C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\protos\broadcast.pb.h|638917214894635441|~/projects/GameServer/|
 C:\Users\lenovo\Desktop\tmp\Game_tmp\GameServer\GameServer\protos\character.pb.h|638917305088399365|~/projects/GameServer/|

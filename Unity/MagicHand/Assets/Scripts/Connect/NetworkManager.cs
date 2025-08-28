@@ -23,9 +23,9 @@ public class NetManager : BaseManager<NetManager>
     public bool IsConnected => _isConnected;
 
     /// <summary>
-    /// 发送字节数据到服务器
+    /// 发送字节数据到服务器（指定长度）
     /// </summary>
-    public void Send(byte[] packet)
+    public void Send(byte[] packet, int length)
     {
         if (!_isConnected || _socket == null || !_socket.Connected)
         {
@@ -35,8 +35,8 @@ public class NetManager : BaseManager<NetManager>
 
         try
         {
-            _socket.Send(packet);
-            Debug.Log($"[NetManager] 已发送 {packet.Length} 字节数据到服务器。");
+            _socket.Send(packet, 0, length, SocketFlags.None);
+            Debug.Log($"[NetManager] 已发送 {length} 字节数据到服务器。");
         }
         catch (SocketException e)
         {

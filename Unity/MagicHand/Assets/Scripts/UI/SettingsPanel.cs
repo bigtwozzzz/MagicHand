@@ -11,6 +11,13 @@ using UnityEngine.UI;
 public class SettingsPanel : BasePanel
 {
     // 在 Unity 编辑器中为按钮命名（例如 "Btn_Back"）
+    private string returnToPanelName = "MainUI"; // 默认返回 MainUI
+
+    // 新增一个方法，用于设置返回目标
+    public void SetReturnTarget(string panelName)
+    {
+        returnToPanelName = panelName;
+    }
     protected override void Awake()
     {
         base.Awake();
@@ -34,9 +41,9 @@ public class SettingsPanel : BasePanel
         switch (btnName)
         {
             case "Panel/ButtonGroup/ButtonBack": // 返回主界面按钮
-                Debug.Log("返回主界面");
+                Debug.Log("返回"  + returnToPanelName);
                 UIMgr.GetInstance().HidePanel("SettingsPanel"); // 隐藏当前设置面板
-                UIMgr.GetInstance().ShowPanel<MainUI>("MainUI"); // 重新显示主界面
+                UIMgr.GetInstance().ShowPanel(returnToPanelName);
                 break;
 
             //case "Btn_Volume": // 音量设置按钮

@@ -18,9 +18,15 @@ GameProtocol:: ~GameProtocol() {
 }
 // 接受消息转换
 UserData* GameProtocol::raw2request(std::string _szInput) {
+	
 	// 消息长度4bytes, 消息Id4bytes，
 	MultiMsg* pRet = new MultiMsg();
 	szLast.append(_szInput);
+	std::cout << "First bytes: ";
+	for (int i = 0; i < 16 && i < szLast.size(); ++i) {
+		printf("%02X ", (unsigned char)szLast[i]);
+	}
+	std::cout << std::endl;
 	//std::cout<<"input: " + _szInput << std::endl;
 	while (1) {
 		// 判断消息长度, 不够8字节，返回NULL

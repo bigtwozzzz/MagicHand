@@ -509,9 +509,10 @@ void GameRole::broadcastSelectRequestNotify(std::string stage_id, std::string pl
     broadcast::StageSelectRequestNotify*pmsg = new broadcast::StageSelectRequestNotify();
     pmsg->set_stage_id(stage_id);
     pmsg->set_player_id(player_id);
-
+	std::cout<<"[INFO] broadcastSelectRequestNotify"<<std::endl;
 	auto player_list = gameWorld.getPlayers(this);
     for (auto player : player_list) {
+        std::cout<<"[INFO] player"<<std::endl;
           GameMsg* pRet = new GameMsg(GameMsg::MSG_TYPE_STAGE_SELECT_REQUEST_NOTIFY, pmsg);
 		  
           auto pRole = dynamic_cast<GameRole*>(player);
@@ -779,6 +780,8 @@ UserData* GameRole::ProcMsg(UserData& _poUserData) {
 					sendRandomNum();
 					SendFirstScene();
 					std::cout << "[INFO] User " << username << " logged in successfully" << std::endl;
+				} else {
+					std::cout << "[ERROR] Failed to add player to gameWorld" << std::endl;
 				}
 			}
 			else {
@@ -836,8 +839,9 @@ UserData* GameRole::ProcMsg(UserData& _poUserData) {
 			}
 
 			std::string stage_id = selectMsg->stage_id();
-			gameWorld.resetConfirmStates();
-			//std::cout << "测试: " << dynamic_cast<broadcast::PlayerSelectStageRequest*>(single->m_pMsg)->stage_id()<<" "<< dynamic_cast<broadcast::PlayerSelectStageRequest*>(single->m_pMsg)->Utf8DebugString() << std::endl;
+			//gameWorld.resetConfirmStates();
+			gameWorld.StartStageVote(stage_id);
+			std::cout << "测试: " << dynamic_cast<broadcast::PlayerSelectStageRequest*>(single->m_pMsg)->stage_id()<<" "<< dynamic_cast<broadcast::PlayerSelectStageRequest*>(single->m_pMsg)->Utf8DebugString() << std::endl;
 			broadcastSelectRequestNotify(
 				dynamic_cast<broadcast::PlayerSelectStageRequest*>(single->m_pMsg)->stage_id(),
 				dynamic_cast<broadcast::PlayerSelectStageRequest*>(single->m_pMsg)->player_id()
@@ -857,20 +861,29 @@ UserData* GameRole::ProcMsg(UserData& _poUserData) {
 			std::string player_id = confirmMsg->player_id();
 			std::string stage_id = confirmMsg->stage_id();
 			common::StageSelectState state = confirmMsg->state();
-
-			// 3. 更新确认状态
+			std::cout<<"player: " + player_id<<std::endl;
+			// 1. 更新投票状态
 			if (!gameWorld.updateConfirmState(player_id, state)) {
-				std::cerr << "[ERROR] Failed to update confirm state for player: " << player_id << std::endl;
+				break; // 更新失败（如无投票进行中）
 			}
 
-			// 4. 检查是否所有玩家确认
-			bool isSuccess = gameWorld.checkAllConfirmed(stage_id);
+			// 2. 检查是否所有人都已投票
+			if (gameWorld.areAllPlayersVoted()) {
+				// 3. 此时才判断结果
+				bool isSuccess = gameWorld.checkAllConfirmed(stage_id);
+				std::cout<<"isSuccess: "<<isSuccess<<std::endl;
+				// 4. 广播结果（只广播一次）
+				broadcastSelectResultNotify(stage_id, isSuccess);
 
-			broadcastSelectResultNotify(stage_id, isSuccess);
-			if (isSuccess) {
-				broadcastScene(stage_id);
-				broadcastNextScene();
+				if (isSuccess) {
+					broadcastScene(stage_id);
+					broadcastNextScene();
+				}
+
+				// 5. 结束投票
+				gameWorld.resetConfirmStates();
 			}
+
 
 			break;
 		}

@@ -570,8 +570,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1026.4, y: 45.4477}
-  m_SizeDelta: {x: 466.83, y: 257.1089}
+  m_AnchoredPosition: {x: 1026.3488, y: 45.4644}
+  m_SizeDelta: {x: 466.7274, y: 257.0756}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1569827615816783963
 CanvasRenderer:
@@ -603,8 +603,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: ffece1d1e897f2c4daa602986f921b17, type: 2}
+  m_sharedMaterial: {fileID: 4200714575622135060, guid: ffece1d1e897f2c4daa602986f921b17, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1003,7 +1003,7 @@ MonoBehaviour:
   m_Elasticity: 0.1
   m_Inertia: 1
   m_DecelerationRate: 0.135
-  m_ScrollSensitivity: 1
+  m_ScrollSensitivity: 5
   m_Viewport: {fileID: 4246454345893953575}
   m_HorizontalScrollbar: {fileID: 7489417465872689222}
   m_VerticalScrollbar: {fileID: 6360902537383577715}
@@ -1046,10 +1046,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 7546781318568397238}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 173.85141, y: 0}
-  m_SizeDelta: {x: 347.70282, y: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1518719631597881218
 CanvasRenderer:
@@ -1343,8 +1343,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 7382054724304563419}
   m_HandleRect: {fileID: 4470646295424597970}
   m_Direction: 2
-  m_Value: 1
-  m_Size: 0.8714813
+  m_Value: 0
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -1520,7 +1520,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 209.2176, y: 119.03}
+  m_SizeDelta: {x: 200, y: 120}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8168450229882520504
 CanvasRenderer:
@@ -1730,7 +1730,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -914.4009, y: 657.30444}
-  m_SizeDelta: {x: 731.1982, y: 125.3913}
+  m_SizeDelta: {x: 720, y: 125}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &5907312128568933062
 MonoBehaviour:
@@ -1911,8 +1911,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: bc6a6ed4cf8930f4eb9d5db4ac8ae3bd, type: 2}
-  m_sharedMaterial: {fileID: -3842344098540832772, guid: bc6a6ed4cf8930f4eb9d5db4ac8ae3bd, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: ffece1d1e897f2c4daa602986f921b17, type: 2}
+  m_sharedMaterial: {fileID: 4200714575622135060, guid: ffece1d1e897f2c4daa602986f921b17, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -2034,7 +2034,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   contentPanel: {fileID: 7546781318568397238}
   messagePrefab: {fileID: 4932259367252481938}
-  btnStageVote: {fileID: 3326140495779236704}
   textStageRequest: {fileID: 6290597221963298981}
   monsterListContainer: {fileID: 1093645307166208924}
   monsterEntryPrefab: {fileID: 1161612875565684086}
@@ -2257,8 +2256,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 300}
+  m_AnchoredPosition: {x: 70.97988, y: 0}
+  m_SizeDelta: {x: -470.57, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &6911941271898972858
 MonoBehaviour:
@@ -2279,7 +2278,7 @@ MonoBehaviour:
     m_Bottom: 0
   m_ChildAlignment: 0
   m_Spacing: 0
-  m_ChildForceExpandWidth: 1
+  m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 1
   m_ChildControlWidth: 0
   m_ChildControlHeight: 1
@@ -2298,8 +2297,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_HorizontalFit: 2
-  m_VerticalFit: 0
+  m_HorizontalFit: 0
+  m_VerticalFit: 2
 --- !u!1 &8642158578135918806
 GameObject:
   m_ObjectHideFlags: 0
@@ -2421,7 +2420,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 5562961999455022757}
   m_Direction: 0
   m_Value: 0
-  m_Size: 1
+  m_Size: 0.46780488
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:

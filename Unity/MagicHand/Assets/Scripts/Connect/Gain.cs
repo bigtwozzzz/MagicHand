@@ -58,11 +58,11 @@ public class Gain : BaseManager<Gain>
                 break;
 
             case E_EventType.Event_Player_Command_Select_Stage:
-                HandleSelectStage(commandData.StringParam1);
+                HandleSelectStage(commandData.StringParam1, commandData.StringParam2);
                 break;
 
             case E_EventType.Event_Player_Command_Confirm_Stage:
-                HandleConfirmStage(commandData.StringParam1, commandData.IntParam1);
+                HandleConfirmStage(commandData.StringParam1, commandData.StringParam2,commandData.IntParam1);
                 break;
 
             case E_EventType.Event_Player_Command_Move:
@@ -107,8 +107,9 @@ public class Gain : BaseManager<Gain>
     /// <summary>
     /// 处理选择关卡
     /// </summary>
-    private void HandleSelectStage(string stageId)
+    private void HandleSelectStage(string playerId, string stageId)
     {
+        Debug.Log($"[Gain] Processing stage selection for: {playerId}");
         if (string.IsNullOrEmpty(DataMgr.GetInstance().UserId))
         {
             Debug.LogError("[ERROR] You must be logged in to select a stage.");
@@ -122,10 +123,10 @@ public class Gain : BaseManager<Gain>
         }
         if (DataMgr.GetInstance().IsLoggedIn)
         {
-            Debug.Log($"当前用户ID: {DataMgr.GetInstance().UserId}");
+            Debug.Log($"当前用户ID: {playerId}");
             var req = new PlayerSelectStageRequest
             {
-                PlayerId = DataMgr.GetInstance().UserId,
+                PlayerId = playerId,
                 StageId = stageId
             };
             _encoder.Send(5, req); // msgId = 5
@@ -140,7 +141,7 @@ public class Gain : BaseManager<Gain>
     /// <summary>
     /// 处理确认关卡
     /// </summary>
-    private void HandleConfirmStage(string stageId, int state)
+    private void HandleConfirmStage(string playerId, string stageId, int state)
     {
         if (string.IsNullOrEmpty(DataMgr.GetInstance().UserId))
         {
@@ -165,7 +166,7 @@ public class Gain : BaseManager<Gain>
         {
             var resp = new PlayerConfirmStageResponse
             {
-                PlayerId = DataMgr.GetInstance().UserId,
+                PlayerId = playerId,
                 StageId = stageId,
                 State = stateEnum
             };

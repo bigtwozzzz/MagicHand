@@ -200,7 +200,69 @@ public class UIMgr : BaseManager<UIMgr>
         E_UI_Layer.System => system,
         _ => null
     };
+    /// <summary>
+    /// 显示面板（非泛型版本：用于只知道面板名，不关心类型时）
+    /// </summary>
+    public void ShowPanel(string panelName, E_UI_Layer layer = E_UI_Layer.Mid)
+    {
+        if (panelDic.TryGetValue(panelName, out BasePanel panel))
+        {
+            // 面板已存在，直接显示
+            panel.ShowMe();
+            Debug.Log($"[UIMgr] 面板已存在，直接显示: {panelName}");
+            return;
+        }
 
+        // 面板不存在，异步加载
+        string address = "UI/Prefabs/" + panelName;
+        Debug.Log($"[UIMgr] 非泛型加载面板: {address}");
+
+        ResMgr.GetInstance().LoadAsync<GameObject>(address, (prefab) =>
+        {
+            if (prefab == null)
+            {
+                Debug.LogError($"[UIMgr] 加载失败！prefab 为 null: {address}");
+                return;
+            }
+
+            Transform father = GetLayerFather(layer);
+            if (father == null)
+            {
+                Debug.LogError($"[UIMgr] 父节点为 null！layer={layer}");
+                return;
+            }
+
+            // 实例化
+            GameObject instance = Instantiate(prefab, father);
+            instance.name = panelName;
+
+            if (instance.TryGetComponent<RectTransform>(out var rect))
+            {
+                ResetRectTransform(rect);
+            }
+            else
+            {
+                ResetTransform(instance.transform);
+            }
+
+            // 获取 BasePanel 组件
+            BasePanel basePanel = instance.GetComponent<BasePanel>();
+            if (basePanel == null)
+            {
+                Debug.LogError($"[UIMgr] 实例缺少 BasePanel 脚本: {panelName}");
+                Destroy(instance);
+                return;
+            }
+
+            // 缓存
+            panelDic[panelName] = basePanel;
+
+            // 显示
+            basePanel.ShowMe();
+
+            Debug.Log($"[UIMgr] 非泛型面板 {panelName} 创建并显示");
+        }, autoRelease: false);
+    }
     /// <summary>
     /// 显示面板（异步加载 + 分帧实例化）
     /// </summary>

@@ -29,6 +29,8 @@ public class DataMgr : BaseManager<DataMgr>
     private Dictionary<string, CharacterBase> _allCharacterInfos = new Dictionary<string, CharacterBase>();
     // 新增：记录 player_id 到 role_id 的映射
     private Dictionary<string, string> _playerToRoleMap = new Dictionary<string, string>();
+    private Dictionary<string, string> _playerNameDict = new Dictionary<string, string>();
+    public IReadOnlyDictionary<string, string> PlayerNameDict => _playerNameDict;
     // 只读属性，供外部访问
     public IReadOnlyDictionary<string, string> PlayerToRoleMap => _playerToRoleMap;
     // 记录每个玩家是否已经生成了角色（防止重复生成）
@@ -69,8 +71,8 @@ public class DataMgr : BaseManager<DataMgr>
             E_EventType.Event_Global_Random_Seed,
             OnGlobalRandomSeedReceived);
         EventCenter.GetInstance().AddEventListener<PlayerOnlineNotify>(
-        E_EventType.Event_Player_Online,
-        OnPlayerOnline);
+            E_EventType.Event_Player_Online,
+            OnPlayerOnline);
         EventCenter.GetInstance().AddEventListener<SceneData>(
             E_EventType.Event_Scene_Data_Update,
             OnSceneDataUpdate);
@@ -79,6 +81,18 @@ public class DataMgr : BaseManager<DataMgr>
     {
         isMainUIReady = true;
         EventCenter.GetInstance().EventTrigger(E_EventType.Event_Scene_Data_Update_UI, _SceneData);
+    }
+    public void SetPlayerName(string playerId, string playerName)
+    {
+        if (string.IsNullOrEmpty(playerId)) return;
+
+        _playerNameDict[playerId] = playerName ?? string.Empty;
+        Debug.Log($"[DataMgr] 已映射 playerId: {playerId} -> playerName: {playerName}");
+    }
+    // 获取玩家名字
+    public string GetPlayerName(string playerId)
+    {
+        return _playerNameDict.TryGetValue(playerId, out string name) ? name : null;
     }
 
     private void OnSceneDataUpdate(Scene.SceneData sceneData)
@@ -224,7 +238,7 @@ public class DataMgr : BaseManager<DataMgr>
         _allCharacterInfos[characterBase.RoleId] = characterBase;
 
         Debug.Log($"[DataMgr] 收到角色信息更新：{characterBase.RoleName} (ID: {characterBase.RoleId})");
-
+        _playerNameDict[characterBase.PlayerId] = characterBase.PlayerName;
         // 打印角色信息
         PrintCharacterInfo(characterBase);
 

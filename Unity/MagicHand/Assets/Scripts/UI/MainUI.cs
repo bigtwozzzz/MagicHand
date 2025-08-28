@@ -12,7 +12,7 @@ public class MainUI : BasePanel
 {
     [SerializeField] private Transform contentPanel;
     [SerializeField] private GameObject messagePrefab;
-    [SerializeField] private Button btnStageVote; // 新增按钮
+   // [SerializeField] private Button btnStageVote; // 新增按钮
     [SerializeField] private TextMeshProUGUI textStageRequest; // 可选展示面板
     [SerializeField] private Transform monsterListContainer; // 怪物列表容器
     [SerializeField] private GameObject monsterEntryPrefab; // 怪物条目预制体
@@ -49,33 +49,28 @@ public class MainUI : BasePanel
             Debug.LogError($"{nameof(MainUI)}: messagePrefab 未赋值！");
             enabled = false;
         }
-
+        Button btnVote = GetControl<Button>("StageVote");
         // 初始化按钮点击事件
-        if (btnStageVote != null)
+        if (btnVote == null)
         {
-            btnStageVote.onClick.AddListener(OnBtnStageVoteClick);
+            Debug.LogError("Btn_Stage_Vote 未注册");
         }
         
     }
 
-    private void OnBtnStageVoteClick()
-    {
-        // 发起关卡切换请求
-        
-    }
 
     private void RequestStageChange()
     {
         string playerId = DataMgr.GetInstance().UserId; // 假设存在 PlayerMgr
         string stageId = DataMgr.GetInstance().SceneData.SceneId;
 
-        PlayerSelectStageRequest notify = new PlayerSelectStageRequest
+        var selectStageCmd = new Gain.PlayerCommandData(E_EventType.Event_Player_Command_Select_Stage)
         {
-            PlayerId = playerId,
-            StageId = stageId,
+            StringParam1 = playerId,
+            StringParam2 = stageId
         };
-
-        EventCenter.GetInstance().EventTrigger(E_EventType.Event_Stage_Select_Request, notify);
+        Debug.Log($"[DEBUG] Sent stage select request: {stageId}");
+        EventCenter.GetInstance().EventTrigger(E_EventType.Event_Player_Command, selectStageCmd);
     }
 
     protected override void OnClick(string btnName)
@@ -89,18 +84,11 @@ public class MainUI : BasePanel
                 UIMgr.GetInstance().ShowPanel<SettingsPanel>("SettingsPanel", E_UI_Layer.Mid, (panel) =>
                 {
                     Debug.Log("SettingsUI 面板已创建并显示");
+                    panel.SetReturnTarget("MainUI");
                 });
                 break;
             case "StageVote":
-                // case "Btn_Bag": ...
-                // case "Btn_Shop": ...
                 RequestStageChange();
-
-                // 可选：显示本地提示
-                if (textStageRequest != null)
-                {
-                    textStageRequest.text = "已发起关卡切换请求，请等待其他玩家投票";
-                }
                 break;
             default:
                 base.OnClick(btnName);
@@ -118,7 +106,11 @@ public class MainUI : BasePanel
         EventCenter.GetInstance().AddEventListener<SceneData>(
             E_EventType.Event_Scene_Data_Update_UI, OnSceneDataUpdated);
         DataMgr.GetInstance().SetMainUIReady();
-        
+        // 注册事件：收到投票请求
+        EventCenter.GetInstance().AddEventListener<StageSelectRequestNotify>(
+            E_EventType.Event_Stage_Select_Request_Notify,
+            OnStageSelectRequestReceived);
+
         // 可选：启动消息清理协程
         // StartCoroutine(CleanupExpiredMessages());
         // 示例：添加几个测试按钮
@@ -134,7 +126,48 @@ public class MainUI : BasePanel
             E_EventType.Event_Player_Offline, OnPlayerOffline);
         EventCenter.GetInstance().RemoveEventListener<SceneData>(
             E_EventType.Event_Scene_Data_Update_UI, OnSceneDataUpdated);
+        EventCenter.GetInstance().RemoveEventListener<StageSelectRequestNotify>(
+            E_EventType.Event_Stage_Select_Request_Notify,
+            OnStageSelectRequestReceived);
+
     }
+    /// <summary>
+    /// 收到“关卡选择请求”通知
+    /// </summary>
+   private void OnStageSelectRequestReceived(StageSelectRequestNotify notify)
+{
+    string playerId = notify.PlayerId;
+    string stageId = notify.StageId;
+
+    string playerName = null;
+        // 先获取 playerName，检查是否 null
+    var characterInfo = DataMgr.GetInstance().GetCharacterInfo(playerId);
+    if (characterInfo == null)
+    {
+        playerName = DataMgr.GetInstance().GetPlayerName(playerId);
+    } 
+    else
+    {
+        playerName = characterInfo.PlayerName;
+    }
+         
+
+
+   UIMgr.GetInstance().ShowPanel<StageVotePanel>("StageVotePanel", E_UI_Layer.Top, (panel) =>
+    {
+        if (panel == null)
+        {
+            Debug.LogError("[OnStageSelectRequestReceived] StageVotePanel 创建失败，panel 为 null");
+            return;
+        }
+
+        panel.ShowVoteRequest(playerId, playerName, stageId, stageId.ToLower());
+
+        UIMgr.GetInstance().HidePanel("MainUI");
+
+    });
+}
+
     private void OnSceneDataUpdated(SceneData sceneData)
     {
         if (sceneData == null)
@@ -179,7 +212,9 @@ public class MainUI : BasePanel
             TextMeshProUGUI text = entry.GetComponent<TextMeshProUGUI>();
             if (text != null)
             {
-                text.text = FormatMonsterInfo(monster);
+                string info = FormatMonsterInfo(monster);
+                Debug.Log("生成的怪物信息：\n" + info); //  添加这行调试
+                text.text = info;
             }
             else
             {

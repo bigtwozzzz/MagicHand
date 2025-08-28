@@ -60,10 +60,10 @@ public enum E_EventType
     Event_Player_Online,
     Event_Player_Offline,
     Event_Character_Info_Update,
-    Event_Stage_Select_Request,
-    Event_Stage_Select_Result,
     Event_Scene_Data_Update,
     Event_Scene_Data_Update_UI,
+    Event_Stage_Select_Request_Notify,
+    Event_Stage_Select_Result_Notify,
 
     // ϵͳָ��
     Event_Platform_Loaded,
