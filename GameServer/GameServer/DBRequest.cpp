@@ -231,6 +231,7 @@ bool DBRequest::InitSkillDefinitions(redisContext* context, const std::vector<sk
             return false;
         }
     }
+    std::cout << "[INFO] Skill definitions initialized with " << skills.size() << " skills." << std::endl;
     return true;
 }
 #

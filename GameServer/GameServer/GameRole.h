@@ -44,6 +44,7 @@ class GameRole :
     bool updateCharacterPositionInDB(std::string role_id, float pos_x, float pos_y);
     bool updateMonsterPositionInDB(std::string role_id, float pos_x, float pos_y);
     bool UpdateCharacterInfoInDB(std::string player_id, std::string player_name, std::string role_id);
+    void broadcastSkillInfo(std::string player_id, std::string skill_id);
     void broadcastPlayerAttack(std::string entity_id, combat::EntityType entity_type, std::string target_id, float attack_angle, std::string skill_id, float cast_time);
     void broadcastSelectRequestNotify(std::string stage_id, std::string player_id);
     void broadcastSelectResultNotify(std::string stage_id, bool isSuccess);

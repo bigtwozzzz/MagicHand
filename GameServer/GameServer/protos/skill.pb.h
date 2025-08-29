@@ -50,9 +50,13 @@ namespace skill {
 class SkillDefinition;
 struct SkillDefinitionDefaultTypeInternal;
 extern SkillDefinitionDefaultTypeInternal _SkillDefinition_default_instance_;
+class SkillInfoRequest;
+struct SkillInfoRequestDefaultTypeInternal;
+extern SkillInfoRequestDefaultTypeInternal _SkillInfoRequest_default_instance_;
 }  // namespace skill
 PROTOBUF_NAMESPACE_OPEN
 template<> ::skill::SkillDefinition* Arena::CreateMaybeMessage<::skill::SkillDefinition>(Arena*);
+template<> ::skill::SkillInfoRequest* Arena::CreateMaybeMessage<::skill::SkillInfoRequest>(Arena*);
 PROTOBUF_NAMESPACE_CLOSE
 namespace skill {
 
@@ -380,6 +384,175 @@ class SkillDefinition final :
   union { Impl_ _impl_; };
   friend struct ::TableStruct_skill_2eproto;
 };
+// -------------------------------------------------------------------
+
+class SkillInfoRequest final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:skill.SkillInfoRequest) */ {
+ public:
+  inline SkillInfoRequest() : SkillInfoRequest(nullptr) {}
+  ~SkillInfoRequest() override;
+  explicit PROTOBUF_CONSTEXPR SkillInfoRequest(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  SkillInfoRequest(const SkillInfoRequest& from);
+  SkillInfoRequest(SkillInfoRequest&& from) noexcept
+    : SkillInfoRequest() {
+    *this = ::std::move(from);
+  }
+
+  inline SkillInfoRequest& operator=(const SkillInfoRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline SkillInfoRequest& operator=(SkillInfoRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const SkillInfoRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const SkillInfoRequest* internal_default_instance() {
+    return reinterpret_cast<const SkillInfoRequest*>(
+               &_SkillInfoRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    1;
+
+  friend void swap(SkillInfoRequest& a, SkillInfoRequest& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(SkillInfoRequest* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(SkillInfoRequest* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  SkillInfoRequest* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<SkillInfoRequest>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const SkillInfoRequest& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom( const SkillInfoRequest& from) {
+    SkillInfoRequest::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  uint8_t* _InternalSerialize(
+      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(SkillInfoRequest* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "skill.SkillInfoRequest";
+  }
+  protected:
+  explicit SkillInfoRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kPlayerIdFieldNumber = 1,
+    kSkillIdFieldNumber = 2,
+  };
+  // string player_id = 1;
+  void clear_player_id();
+  const std::string& player_id() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_player_id(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_player_id();
+  PROTOBUF_NODISCARD std::string* release_player_id();
+  void set_allocated_player_id(std::string* player_id);
+  private:
+  const std::string& _internal_player_id() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_player_id(const std::string& value);
+  std::string* _internal_mutable_player_id();
+  public:
+
+  // string skill_id = 2;
+  void clear_skill_id();
+  const std::string& skill_id() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_skill_id(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_skill_id();
+  PROTOBUF_NODISCARD std::string* release_skill_id();
+  void set_allocated_skill_id(std::string* skill_id);
+  private:
+  const std::string& _internal_skill_id() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_skill_id(const std::string& value);
+  std::string* _internal_mutable_skill_id();
+  public:
+
+  // @@protoc_insertion_point(class_scope:skill.SkillInfoRequest)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  struct Impl_ {
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr player_id_;
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr skill_id_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_skill_2eproto;
+};
 // ===================================================================
 
 
@@ -674,9 +847,115 @@ inline void SkillDefinition::set_element_type(::common::ElementType value) {
   // @@protoc_insertion_point(field_set:skill.SkillDefinition.element_type)
 }
 
+// -------------------------------------------------------------------
+
+// SkillInfoRequest
+
+// string player_id = 1;
+inline void SkillInfoRequest::clear_player_id() {
+  _impl_.player_id_.ClearToEmpty();
+}
+inline const std::string& SkillInfoRequest::player_id() const {
+  // @@protoc_insertion_point(field_get:skill.SkillInfoRequest.player_id)
+  return _internal_player_id();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void SkillInfoRequest::set_player_id(ArgT0&& arg0, ArgT... args) {
+ 
+ _impl_.player_id_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:skill.SkillInfoRequest.player_id)
+}
+inline std::string* SkillInfoRequest::mutable_player_id() {
+  std::string* _s = _internal_mutable_player_id();
+  // @@protoc_insertion_point(field_mutable:skill.SkillInfoRequest.player_id)
+  return _s;
+}
+inline const std::string& SkillInfoRequest::_internal_player_id() const {
+  return _impl_.player_id_.Get();
+}
+inline void SkillInfoRequest::_internal_set_player_id(const std::string& value) {
+  
+  _impl_.player_id_.Set(value, GetArenaForAllocation());
+}
+inline std::string* SkillInfoRequest::_internal_mutable_player_id() {
+  
+  return _impl_.player_id_.Mutable(GetArenaForAllocation());
+}
+inline std::string* SkillInfoRequest::release_player_id() {
+  // @@protoc_insertion_point(field_release:skill.SkillInfoRequest.player_id)
+  return _impl_.player_id_.Release();
+}
+inline void SkillInfoRequest::set_allocated_player_id(std::string* player_id) {
+  if (player_id != nullptr) {
+    
+  } else {
+    
+  }
+  _impl_.player_id_.SetAllocated(player_id, GetArenaForAllocation());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (_impl_.player_id_.IsDefault()) {
+    _impl_.player_id_.Set("", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:skill.SkillInfoRequest.player_id)
+}
+
+// string skill_id = 2;
+inline void SkillInfoRequest::clear_skill_id() {
+  _impl_.skill_id_.ClearToEmpty();
+}
+inline const std::string& SkillInfoRequest::skill_id() const {
+  // @@protoc_insertion_point(field_get:skill.SkillInfoRequest.skill_id)
+  return _internal_skill_id();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void SkillInfoRequest::set_skill_id(ArgT0&& arg0, ArgT... args) {
+ 
+ _impl_.skill_id_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:skill.SkillInfoRequest.skill_id)
+}
+inline std::string* SkillInfoRequest::mutable_skill_id() {
+  std::string* _s = _internal_mutable_skill_id();
+  // @@protoc_insertion_point(field_mutable:skill.SkillInfoRequest.skill_id)
+  return _s;
+}
+inline const std::string& SkillInfoRequest::_internal_skill_id() const {
+  return _impl_.skill_id_.Get();
+}
+inline void SkillInfoRequest::_internal_set_skill_id(const std::string& value) {
+  
+  _impl_.skill_id_.Set(value, GetArenaForAllocation());
+}
+inline std::string* SkillInfoRequest::_internal_mutable_skill_id() {
+  
+  return _impl_.skill_id_.Mutable(GetArenaForAllocation());
+}
+inline std::string* SkillInfoRequest::release_skill_id() {
+  // @@protoc_insertion_point(field_release:skill.SkillInfoRequest.skill_id)
+  return _impl_.skill_id_.Release();
+}
+inline void SkillInfoRequest::set_allocated_skill_id(std::string* skill_id) {
+  if (skill_id != nullptr) {
+    
+  } else {
+    
+  }
+  _impl_.skill_id_.SetAllocated(skill_id, GetArenaForAllocation());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (_impl_.skill_id_.IsDefault()) {
+    _impl_.skill_id_.Set("", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:skill.SkillInfoRequest.skill_id)
+}
+
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
 
 // @@protoc_insertion_point(namespace_scope)
 

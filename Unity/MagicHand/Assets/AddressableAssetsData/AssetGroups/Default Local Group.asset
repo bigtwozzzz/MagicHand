@@ -17,8 +17,18 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: 3fa14bc2516d76b459db027bf1619dfc
   m_SerializeEntries:
+  - m_GUID: 0c86139914de17442ab299832ad5b364
+    m_Address: UI/Prefabs/GraphicPanel
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 13cc898d399c610469bac21bc743fdef
     m_Address: UI/Prefabs/LoginUI
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 20516fba51a76f2479a9bb97ad6fd24f
+    m_Address: UI/Prefabs/SoundPanel
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

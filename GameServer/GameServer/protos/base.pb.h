@@ -72,207 +72,6 @@ namespace base {
 
 // ===================================================================
 
-class User final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:base.User) */ {
- public:
-  inline User() : User(nullptr) {}
-  ~User() override;
-  explicit PROTOBUF_CONSTEXPR User(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
-
-  User(const User& from);
-  User(User&& from) noexcept
-    : User() {
-    *this = ::std::move(from);
-  }
-
-  inline User& operator=(const User& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline User& operator=(User&& from) noexcept {
-    if (this == &from) return *this;
-    if (GetOwningArena() == from.GetOwningArena()
-  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
-        && GetOwningArena() != nullptr
-  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
-    ) {
-      InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
-    return GetDescriptor();
-  }
-  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
-    return default_instance().GetMetadata().descriptor;
-  }
-  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
-    return default_instance().GetMetadata().reflection;
-  }
-  static const User& default_instance() {
-    return *internal_default_instance();
-  }
-  static inline const User* internal_default_instance() {
-    return reinterpret_cast<const User*>(
-               &_User_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages =
-    0;
-
-  friend void swap(User& a, User& b) {
-    a.Swap(&b);
-  }
-  inline void Swap(User* other) {
-    if (other == this) return;
-  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
-    if (GetOwningArena() != nullptr &&
-        GetOwningArena() == other->GetOwningArena()) {
-   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
-    if (GetOwningArena() == other->GetOwningArena()) {
-  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
-      InternalSwap(other);
-    } else {
-      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
-    }
-  }
-  void UnsafeArenaSwap(User* other) {
-    if (other == this) return;
-    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  User* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<User>(arena);
-  }
-  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
-  void CopyFrom(const User& from);
-  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
-  void MergeFrom( const User& from) {
-    User::MergeImpl(*this, from);
-  }
-  private:
-  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
-  public:
-  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
-  bool IsInitialized() const final;
-
-  size_t ByteSizeLong() const final;
-  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
-  uint8_t* _InternalSerialize(
-      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
-  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
-
-  private:
-  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
-  void SharedDtor();
-  void SetCachedSize(int size) const final;
-  void InternalSwap(User* other);
-
-  private:
-  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
-  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "base.User";
-  }
-  protected:
-  explicit User(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                       bool is_message_owned = false);
-  public:
-
-  static const ClassData _class_data_;
-  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
-
-  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  enum : int {
-    kUserIdFieldNumber = 1,
-    kUsernameFieldNumber = 2,
-    kPasswordFieldNumber = 3,
-    kRoleIdFieldNumber = 4,
-  };
-  // string user_id = 1;
-  void clear_user_id();
-  const std::string& user_id() const;
-  template <typename ArgT0 = const std::string&, typename... ArgT>
-  void set_user_id(ArgT0&& arg0, ArgT... args);
-  std::string* mutable_user_id();
-  PROTOBUF_NODISCARD std::string* release_user_id();
-  void set_allocated_user_id(std::string* user_id);
-  private:
-  const std::string& _internal_user_id() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_user_id(const std::string& value);
-  std::string* _internal_mutable_user_id();
-  public:
-
-  // string username = 2;
-  void clear_username();
-  const std::string& username() const;
-  template <typename ArgT0 = const std::string&, typename... ArgT>
-  void set_username(ArgT0&& arg0, ArgT... args);
-  std::string* mutable_username();
-  PROTOBUF_NODISCARD std::string* release_username();
-  void set_allocated_username(std::string* username);
-  private:
-  const std::string& _internal_username() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_username(const std::string& value);
-  std::string* _internal_mutable_username();
-  public:
-
-  // string password = 3;
-  void clear_password();
-  const std::string& password() const;
-  template <typename ArgT0 = const std::string&, typename... ArgT>
-  void set_password(ArgT0&& arg0, ArgT... args);
-  std::string* mutable_password();
-  PROTOBUF_NODISCARD std::string* release_password();
-  void set_allocated_password(std::string* password);
-  private:
-  const std::string& _internal_password() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_password(const std::string& value);
-  std::string* _internal_mutable_password();
-  public:
-
-  // string role_id = 4;
-  void clear_role_id();
-  const std::string& role_id() const;
-  template <typename ArgT0 = const std::string&, typename... ArgT>
-  void set_role_id(ArgT0&& arg0, ArgT... args);
-  std::string* mutable_role_id();
-  PROTOBUF_NODISCARD std::string* release_role_id();
-  void set_allocated_role_id(std::string* role_id);
-  private:
-  const std::string& _internal_role_id() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_role_id(const std::string& value);
-  std::string* _internal_mutable_role_id();
-  public:
-
-  // @@protoc_insertion_point(class_scope:base.User)
- private:
-  class _Internal;
-
-  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
-  typedef void InternalArenaConstructable_;
-  typedef void DestructorSkippable_;
-  struct Impl_ {
-    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr user_id_;
-    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr username_;
-    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr password_;
-    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr role_id_;
-    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
-  };
-  union { Impl_ _impl_; };
-  friend struct ::TableStruct_base_2eproto;
-};
-// -------------------------------------------------------------------
-
 class LoginRequest final :
     public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:base.LoginRequest) */ {
  public:
@@ -321,7 +120,7 @@ class LoginRequest final :
                &_LoginRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    1;
+    0;
 
   friend void swap(LoginRequest& a, LoginRequest& b) {
     a.Swap(&b);
@@ -490,7 +289,7 @@ class LogoutRequest final :
                &_LogoutRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    2;
+    1;
 
   friend void swap(LogoutRequest& a, LogoutRequest& b) {
     a.Swap(&b);
@@ -643,7 +442,7 @@ class LoginResponse final :
                &_LoginResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    3;
+    2;
 
   friend void swap(LoginResponse& a, LoginResponse& b) {
     a.Swap(&b);
@@ -812,7 +611,7 @@ class LogoutResponse final :
                &_LogoutResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    4;
+    3;
 
   friend void swap(LogoutResponse& a, LogoutResponse& b) {
     a.Swap(&b);
@@ -931,6 +730,207 @@ class LogoutResponse final :
   union { Impl_ _impl_; };
   friend struct ::TableStruct_base_2eproto;
 };
+// -------------------------------------------------------------------
+
+class User final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:base.User) */ {
+ public:
+  inline User() : User(nullptr) {}
+  ~User() override;
+  explicit PROTOBUF_CONSTEXPR User(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  User(const User& from);
+  User(User&& from) noexcept
+    : User() {
+    *this = ::std::move(from);
+  }
+
+  inline User& operator=(const User& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline User& operator=(User&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const User& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const User* internal_default_instance() {
+    return reinterpret_cast<const User*>(
+               &_User_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    4;
+
+  friend void swap(User& a, User& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(User* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(User* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  User* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<User>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const User& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom( const User& from) {
+    User::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  uint8_t* _InternalSerialize(
+      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(User* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "base.User";
+  }
+  protected:
+  explicit User(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kUserIdFieldNumber = 1,
+    kUsernameFieldNumber = 2,
+    kPasswordFieldNumber = 3,
+    kRoleIdFieldNumber = 4,
+  };
+  // string user_id = 1;
+  void clear_user_id();
+  const std::string& user_id() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_user_id(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_user_id();
+  PROTOBUF_NODISCARD std::string* release_user_id();
+  void set_allocated_user_id(std::string* user_id);
+  private:
+  const std::string& _internal_user_id() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_user_id(const std::string& value);
+  std::string* _internal_mutable_user_id();
+  public:
+
+  // string username = 2;
+  void clear_username();
+  const std::string& username() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_username(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_username();
+  PROTOBUF_NODISCARD std::string* release_username();
+  void set_allocated_username(std::string* username);
+  private:
+  const std::string& _internal_username() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_username(const std::string& value);
+  std::string* _internal_mutable_username();
+  public:
+
+  // string password = 3;
+  void clear_password();
+  const std::string& password() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_password(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_password();
+  PROTOBUF_NODISCARD std::string* release_password();
+  void set_allocated_password(std::string* password);
+  private:
+  const std::string& _internal_password() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_password(const std::string& value);
+  std::string* _internal_mutable_password();
+  public:
+
+  // string role_id = 4;
+  void clear_role_id();
+  const std::string& role_id() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_role_id(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_role_id();
+  PROTOBUF_NODISCARD std::string* release_role_id();
+  void set_allocated_role_id(std::string* role_id);
+  private:
+  const std::string& _internal_role_id() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_role_id(const std::string& value);
+  std::string* _internal_mutable_role_id();
+  public:
+
+  // @@protoc_insertion_point(class_scope:base.User)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  struct Impl_ {
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr user_id_;
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr username_;
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr password_;
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr role_id_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_base_2eproto;
+};
 // ===================================================================
 
 
@@ -940,210 +940,6 @@ class LogoutResponse final :
   #pragma GCC diagnostic push
   #pragma GCC diagnostic ignored "-Wstrict-aliasing"
 #endif  // __GNUC__
-// User
-
-// string user_id = 1;
-inline void User::clear_user_id() {
-  _impl_.user_id_.ClearToEmpty();
-}
-inline const std::string& User::user_id() const {
-  // @@protoc_insertion_point(field_get:base.User.user_id)
-  return _internal_user_id();
-}
-template <typename ArgT0, typename... ArgT>
-inline PROTOBUF_ALWAYS_INLINE
-void User::set_user_id(ArgT0&& arg0, ArgT... args) {
- 
- _impl_.user_id_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:base.User.user_id)
-}
-inline std::string* User::mutable_user_id() {
-  std::string* _s = _internal_mutable_user_id();
-  // @@protoc_insertion_point(field_mutable:base.User.user_id)
-  return _s;
-}
-inline const std::string& User::_internal_user_id() const {
-  return _impl_.user_id_.Get();
-}
-inline void User::_internal_set_user_id(const std::string& value) {
-  
-  _impl_.user_id_.Set(value, GetArenaForAllocation());
-}
-inline std::string* User::_internal_mutable_user_id() {
-  
-  return _impl_.user_id_.Mutable(GetArenaForAllocation());
-}
-inline std::string* User::release_user_id() {
-  // @@protoc_insertion_point(field_release:base.User.user_id)
-  return _impl_.user_id_.Release();
-}
-inline void User::set_allocated_user_id(std::string* user_id) {
-  if (user_id != nullptr) {
-    
-  } else {
-    
-  }
-  _impl_.user_id_.SetAllocated(user_id, GetArenaForAllocation());
-#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (_impl_.user_id_.IsDefault()) {
-    _impl_.user_id_.Set("", GetArenaForAllocation());
-  }
-#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:base.User.user_id)
-}
-
-// string username = 2;
-inline void User::clear_username() {
-  _impl_.username_.ClearToEmpty();
-}
-inline const std::string& User::username() const {
-  // @@protoc_insertion_point(field_get:base.User.username)
-  return _internal_username();
-}
-template <typename ArgT0, typename... ArgT>
-inline PROTOBUF_ALWAYS_INLINE
-void User::set_username(ArgT0&& arg0, ArgT... args) {
- 
- _impl_.username_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:base.User.username)
-}
-inline std::string* User::mutable_username() {
-  std::string* _s = _internal_mutable_username();
-  // @@protoc_insertion_point(field_mutable:base.User.username)
-  return _s;
-}
-inline const std::string& User::_internal_username() const {
-  return _impl_.username_.Get();
-}
-inline void User::_internal_set_username(const std::string& value) {
-  
-  _impl_.username_.Set(value, GetArenaForAllocation());
-}
-inline std::string* User::_internal_mutable_username() {
-  
-  return _impl_.username_.Mutable(GetArenaForAllocation());
-}
-inline std::string* User::release_username() {
-  // @@protoc_insertion_point(field_release:base.User.username)
-  return _impl_.username_.Release();
-}
-inline void User::set_allocated_username(std::string* username) {
-  if (username != nullptr) {
-    
-  } else {
-    
-  }
-  _impl_.username_.SetAllocated(username, GetArenaForAllocation());
-#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (_impl_.username_.IsDefault()) {
-    _impl_.username_.Set("", GetArenaForAllocation());
-  }
-#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:base.User.username)
-}
-
-// string password = 3;
-inline void User::clear_password() {
-  _impl_.password_.ClearToEmpty();
-}
-inline const std::string& User::password() const {
-  // @@protoc_insertion_point(field_get:base.User.password)
-  return _internal_password();
-}
-template <typename ArgT0, typename... ArgT>
-inline PROTOBUF_ALWAYS_INLINE
-void User::set_password(ArgT0&& arg0, ArgT... args) {
- 
- _impl_.password_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:base.User.password)
-}
-inline std::string* User::mutable_password() {
-  std::string* _s = _internal_mutable_password();
-  // @@protoc_insertion_point(field_mutable:base.User.password)
-  return _s;
-}
-inline const std::string& User::_internal_password() const {
-  return _impl_.password_.Get();
-}
-inline void User::_internal_set_password(const std::string& value) {
-  
-  _impl_.password_.Set(value, GetArenaForAllocation());
-}
-inline std::string* User::_internal_mutable_password() {
-  
-  return _impl_.password_.Mutable(GetArenaForAllocation());
-}
-inline std::string* User::release_password() {
-  // @@protoc_insertion_point(field_release:base.User.password)
-  return _impl_.password_.Release();
-}
-inline void User::set_allocated_password(std::string* password) {
-  if (password != nullptr) {
-    
-  } else {
-    
-  }
-  _impl_.password_.SetAllocated(password, GetArenaForAllocation());
-#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (_impl_.password_.IsDefault()) {
-    _impl_.password_.Set("", GetArenaForAllocation());
-  }
-#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:base.User.password)
-}
-
-// string role_id = 4;
-inline void User::clear_role_id() {
-  _impl_.role_id_.ClearToEmpty();
-}
-inline const std::string& User::role_id() const {
-  // @@protoc_insertion_point(field_get:base.User.role_id)
-  return _internal_role_id();
-}
-template <typename ArgT0, typename... ArgT>
-inline PROTOBUF_ALWAYS_INLINE
-void User::set_role_id(ArgT0&& arg0, ArgT... args) {
- 
- _impl_.role_id_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:base.User.role_id)
-}
-inline std::string* User::mutable_role_id() {
-  std::string* _s = _internal_mutable_role_id();
-  // @@protoc_insertion_point(field_mutable:base.User.role_id)
-  return _s;
-}
-inline const std::string& User::_internal_role_id() const {
-  return _impl_.role_id_.Get();
-}
-inline void User::_internal_set_role_id(const std::string& value) {
-  
-  _impl_.role_id_.Set(value, GetArenaForAllocation());
-}
-inline std::string* User::_internal_mutable_role_id() {
-  
-  return _impl_.role_id_.Mutable(GetArenaForAllocation());
-}
-inline std::string* User::release_role_id() {
-  // @@protoc_insertion_point(field_release:base.User.role_id)
-  return _impl_.role_id_.Release();
-}
-inline void User::set_allocated_role_id(std::string* role_id) {
-  if (role_id != nullptr) {
-    
-  } else {
-    
-  }
-  _impl_.role_id_.SetAllocated(role_id, GetArenaForAllocation());
-#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (_impl_.role_id_.IsDefault()) {
-    _impl_.role_id_.Set("", GetArenaForAllocation());
-  }
-#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:base.User.role_id)
-}
-
-// -------------------------------------------------------------------
-
 // LoginRequest
 
 // string username = 1;
@@ -1506,6 +1302,210 @@ inline void LogoutResponse::set_allocated_status(std::string* status) {
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   // @@protoc_insertion_point(field_set_allocated:base.LogoutResponse.status)
+}
+
+// -------------------------------------------------------------------
+
+// User
+
+// string user_id = 1;
+inline void User::clear_user_id() {
+  _impl_.user_id_.ClearToEmpty();
+}
+inline const std::string& User::user_id() const {
+  // @@protoc_insertion_point(field_get:base.User.user_id)
+  return _internal_user_id();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void User::set_user_id(ArgT0&& arg0, ArgT... args) {
+ 
+ _impl_.user_id_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:base.User.user_id)
+}
+inline std::string* User::mutable_user_id() {
+  std::string* _s = _internal_mutable_user_id();
+  // @@protoc_insertion_point(field_mutable:base.User.user_id)
+  return _s;
+}
+inline const std::string& User::_internal_user_id() const {
+  return _impl_.user_id_.Get();
+}
+inline void User::_internal_set_user_id(const std::string& value) {
+  
+  _impl_.user_id_.Set(value, GetArenaForAllocation());
+}
+inline std::string* User::_internal_mutable_user_id() {
+  
+  return _impl_.user_id_.Mutable(GetArenaForAllocation());
+}
+inline std::string* User::release_user_id() {
+  // @@protoc_insertion_point(field_release:base.User.user_id)
+  return _impl_.user_id_.Release();
+}
+inline void User::set_allocated_user_id(std::string* user_id) {
+  if (user_id != nullptr) {
+    
+  } else {
+    
+  }
+  _impl_.user_id_.SetAllocated(user_id, GetArenaForAllocation());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (_impl_.user_id_.IsDefault()) {
+    _impl_.user_id_.Set("", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:base.User.user_id)
+}
+
+// string username = 2;
+inline void User::clear_username() {
+  _impl_.username_.ClearToEmpty();
+}
+inline const std::string& User::username() const {
+  // @@protoc_insertion_point(field_get:base.User.username)
+  return _internal_username();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void User::set_username(ArgT0&& arg0, ArgT... args) {
+ 
+ _impl_.username_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:base.User.username)
+}
+inline std::string* User::mutable_username() {
+  std::string* _s = _internal_mutable_username();
+  // @@protoc_insertion_point(field_mutable:base.User.username)
+  return _s;
+}
+inline const std::string& User::_internal_username() const {
+  return _impl_.username_.Get();
+}
+inline void User::_internal_set_username(const std::string& value) {
+  
+  _impl_.username_.Set(value, GetArenaForAllocation());
+}
+inline std::string* User::_internal_mutable_username() {
+  
+  return _impl_.username_.Mutable(GetArenaForAllocation());
+}
+inline std::string* User::release_username() {
+  // @@protoc_insertion_point(field_release:base.User.username)
+  return _impl_.username_.Release();
+}
+inline void User::set_allocated_username(std::string* username) {
+  if (username != nullptr) {
+    
+  } else {
+    
+  }
+  _impl_.username_.SetAllocated(username, GetArenaForAllocation());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (_impl_.username_.IsDefault()) {
+    _impl_.username_.Set("", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:base.User.username)
+}
+
+// string password = 3;
+inline void User::clear_password() {
+  _impl_.password_.ClearToEmpty();
+}
+inline const std::string& User::password() const {
+  // @@protoc_insertion_point(field_get:base.User.password)
+  return _internal_password();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void User::set_password(ArgT0&& arg0, ArgT... args) {
+ 
+ _impl_.password_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:base.User.password)
+}
+inline std::string* User::mutable_password() {
+  std::string* _s = _internal_mutable_password();
+  // @@protoc_insertion_point(field_mutable:base.User.password)
+  return _s;
+}
+inline const std::string& User::_internal_password() const {
+  return _impl_.password_.Get();
+}
+inline void User::_internal_set_password(const std::string& value) {
+  
+  _impl_.password_.Set(value, GetArenaForAllocation());
+}
+inline std::string* User::_internal_mutable_password() {
+  
+  return _impl_.password_.Mutable(GetArenaForAllocation());
+}
+inline std::string* User::release_password() {
+  // @@protoc_insertion_point(field_release:base.User.password)
+  return _impl_.password_.Release();
+}
+inline void User::set_allocated_password(std::string* password) {
+  if (password != nullptr) {
+    
+  } else {
+    
+  }
+  _impl_.password_.SetAllocated(password, GetArenaForAllocation());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (_impl_.password_.IsDefault()) {
+    _impl_.password_.Set("", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:base.User.password)
+}
+
+// string role_id = 4;
+inline void User::clear_role_id() {
+  _impl_.role_id_.ClearToEmpty();
+}
+inline const std::string& User::role_id() const {
+  // @@protoc_insertion_point(field_get:base.User.role_id)
+  return _internal_role_id();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void User::set_role_id(ArgT0&& arg0, ArgT... args) {
+ 
+ _impl_.role_id_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:base.User.role_id)
+}
+inline std::string* User::mutable_role_id() {
+  std::string* _s = _internal_mutable_role_id();
+  // @@protoc_insertion_point(field_mutable:base.User.role_id)
+  return _s;
+}
+inline const std::string& User::_internal_role_id() const {
+  return _impl_.role_id_.Get();
+}
+inline void User::_internal_set_role_id(const std::string& value) {
+  
+  _impl_.role_id_.Set(value, GetArenaForAllocation());
+}
+inline std::string* User::_internal_mutable_role_id() {
+  
+  return _impl_.role_id_.Mutable(GetArenaForAllocation());
+}
+inline std::string* User::release_role_id() {
+  // @@protoc_insertion_point(field_release:base.User.role_id)
+  return _impl_.role_id_.Release();
+}
+inline void User::set_allocated_role_id(std::string* role_id) {
+  if (role_id != nullptr) {
+    
+  } else {
+    
+  }
+  _impl_.role_id_.SetAllocated(role_id, GetArenaForAllocation());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (_impl_.role_id_.IsDefault()) {
+    _impl_.role_id_.Set("", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:base.User.role_id)
 }
 
 #ifdef __GNUC__

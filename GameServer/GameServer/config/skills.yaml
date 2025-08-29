@@ -10,3 +10,68 @@
     - 0  # DAMAGE
     - 5  # ELEMENTAL_DAMAGE
   element_type: 1  # FIRE
+- skill_id: "skill_002"
+  skill_name: "Ice Lance"
+  skill_type: 1  # ELEMENTAL_SPELL
+  base_damage: 18
+  cast_time: 0.4
+  cool_down: 6.0
+  duration: 4.0
+  mana_cost: 12
+  effects:
+    - 0  # DAMAGE
+    - 5  # ELEMENTAL_DAMAGE
+    - 7  # SLOW
+  element_type: 2  # WATER/ICE
+
+- skill_id: "skill_003"
+  skill_name: "Lightning Bolt"
+  skill_type: 1  # ELEMENTAL_SPELL
+  base_damage: 25
+  cast_time: 0.3
+  cool_down: 8.0
+  duration: 0.0
+  mana_cost: 18
+  effects:
+    - 0  # DAMAGE
+    - 5  # ELEMENTAL_DAMAGE
+    - 8  # STUN (短暂)
+  element_type: 3  # LIGHTNING
+
+- skill_id: "skill_004"
+  skill_name: "Healing Light"
+  skill_type: 2  # HEALING
+  base_damage: -30  # 负值表示治疗
+  cast_time: 1.2
+  cool_down: 10.0
+  duration: 0.0
+  mana_cost: 15
+  effects:
+    - 2  # HEAL
+  element_type: 0  # NEUTRAL
+
+- skill_id: "skill_005"
+  skill_name: "Poison Cloud"
+  skill_type: 3  # DOT_SPELL
+  base_damage: 5
+  cast_time: 1.0
+  cool_down: 12.0
+  duration: 15.0
+  mana_cost: 20
+  effects:
+    - 1  # DOT
+    - 5  # ELEMENTAL_DAMAGE
+  element_type: 4  # NATURE/POISON
+
+- skill_id: "skill_006"
+  skill_name: "Shield of Flame"
+  skill_type: 4  # BUFF
+  base_damage: 0
+  cast_time: 0.6
+  cool_down: 20.0
+  duration: 10.0
+  mana_cost: 25
+  effects:
+    - 3  # DAMAGE_REDUCTION
+    - 6  # COUNTER_DAMAGE
+  element_type: 1  # FIRE

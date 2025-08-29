@@ -35,6 +35,10 @@ public class SettingsPanel : BasePanel
         if (buttonExit == null) {
             Debug.LogError("ButtonExit 未正确注册！");
         }
+        Button buttonSound = GetControl<Button>("Panel/ButtonGroup/ButtonSound");
+        if (buttonSound == null) {
+            Debug.LogError("ButtonSound 未正确注册！");
+        }
     }
     protected override void OnClick(string btnName)
     {
@@ -54,6 +58,13 @@ public class SettingsPanel : BasePanel
             case "Panel/ButtonGroup/ButtonGraphic": // 图形设置按钮
                 Debug.Log("打开图形设置");
                 // 打开图形设置子面板（如果需要）
+                UIMgr.GetInstance().ShowPanel("GraphicPanel");
+                UIMgr.GetInstance().HidePanel("SettingsPanel");
+                break;
+            case "Panel/ButtonGroup/ButtonSound":
+                Debug.Log("打开音效设置");
+                UIMgr.GetInstance().ShowPanel("SoundPanel");
+                UIMgr.GetInstance().HidePanel("SettingsPanel");
                 break;
             case "Panel/ButtonGroup/ButtonExit":
                 Debug.Log("退出游戏");

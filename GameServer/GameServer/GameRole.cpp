@@ -488,7 +488,46 @@ bool GameRole::UpdateCharacterInfoInDB(std::string player_id, std::string player
 	redisFree(context);
 
 	return true;
+}
+void GameRole::broadcastSkillInfo(std::string player_id, std::string skill_id) {
+	skill::SkillDefinition *pmsg = new skill::SkillDefinition();
+	// 获取 Redis 连接
+	auto context = db_request->Connect();
+	if (!context) {
+		throw std::runtime_error("Failed to connect to Redis.");
+	}
+	std::string skill_key = "skill:" + skill_id;
+    if (!db_request->Read(context, skill_key, pmsg)) {
+		redisFree(context);
+		std::cerr << "[ERROR] Skill not found for ID: " << skill_id << std::endl;
+		return;
+	}
+	std::cout << "[DEBUG] SkillDefinition loaded:" << std::endl;
+	std::cout << "  skill_id: " << pmsg->skill_id() << std::endl;
+	std::cout << "  skill_name: " << pmsg->skill_name() << std::endl;
+	std::cout << "  skill_type: " << pmsg->skill_type() << std::endl;
+	std::cout << "  base_damage: " << pmsg->base_damage() << std::endl;
+	std::cout << "  cast_time: " << pmsg->cast_time() << "s" << std::endl;
+	std::cout << "  cool_down: " << pmsg->cool_down() << "s" << std::endl;
+	std::cout << "  duration: " << pmsg->duration() << "s" << std::endl;
+	std::cout << "  mana_cost: " << pmsg->mana_cost() << std::endl;
 
+	// 打印 effects 列表
+	std::cout << "  effects: [";
+	for (int i = 0; i < pmsg->effects_size(); ++i) {
+		std::cout << pmsg->effects(i);
+		if (i != pmsg->effects_size() - 1) std::cout << ", ";
+	}
+	std::cout << "]" << std::endl;
+
+	std::cout << "  element_type: " << pmsg->element_type() << std::endl;
+
+	auto player_list = gameWorld.getPlayers(this);
+	for (auto player : player_list) {
+		GameMsg* pRet = new GameMsg(GameMsg::MSG_TYPE_SKILL_INFO_DATA, pmsg);
+		auto pRole = dynamic_cast<GameRole*>(player);
+		ZinxKernel::Zinx_SendOut(*pRet, *(pRole->m_pGameProtocol));
+	}
 }
 void GameRole::broadcastPlayerAttack(std::string entity_id, combat::EntityType entity_type, std::string target_id, float attack_angle, std::string skill_id, float cast_time) {
 	broadcast::EntityAttackNotify *pmsg = new broadcast::EntityAttackNotify();
@@ -627,7 +666,7 @@ std::string GameRole::verifyLogin(std::string username, std::string password) {
 		user.set_username(username);
         user.set_password(password);
         user.set_role_id(role_id);
-		
+
 		std::cout << "[INFO] login success - User ID: " << user_id << ", character ID: " << role_id << std::endl;
 		db_request->Write(context, "user:" + user_id, user);
 		UpdateCharacterInfoInDB(m_iID, username, role_id);
@@ -885,6 +924,18 @@ UserData* GameRole::ProcMsg(UserData& _poUserData) {
 			}
 
 
+			break;
+		}
+
+		case GameMsg::MSG_TYPE_SKILL_INFO_REQUEST: //接收技能信息请求 no: 7
+		{
+			auto skillInfoMsg = dynamic_cast<skill::SkillInfoRequest*>(single->m_pMsg);
+			if (!skillInfoMsg) {
+                std::cerr << "[ERROR] Failed to parse SkillInfoRequest" << std::endl;
+				break;
+			}
+			broadcastSkillInfo(dynamic_cast<skill::SkillInfoRequest*>(single->m_pMsg)->player_id(),
+				dynamic_cast<skill::SkillInfoRequest*>(single->m_pMsg)->skill_id());
 			break;
 		}
 		default:

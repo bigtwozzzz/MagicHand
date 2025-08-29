@@ -44,8 +44,22 @@ struct SkillDefinitionDefaultTypeInternal {
   };
 };
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SkillDefinitionDefaultTypeInternal _SkillDefinition_default_instance_;
+PROTOBUF_CONSTEXPR SkillInfoRequest::SkillInfoRequest(
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_.player_id_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
+  , /*decltype(_impl_.skill_id_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
+  , /*decltype(_impl_._cached_size_)*/{}} {}
+struct SkillInfoRequestDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR SkillInfoRequestDefaultTypeInternal()
+      : _instance(::_pbi::ConstantInitialized{}) {}
+  ~SkillInfoRequestDefaultTypeInternal() {}
+  union {
+    SkillInfoRequest _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SkillInfoRequestDefaultTypeInternal _SkillInfoRequest_default_instance_;
 }  // namespace skill
-static ::_pb::Metadata file_level_metadata_skill_2eproto[1];
+static ::_pb::Metadata file_level_metadata_skill_2eproto[2];
 static const ::_pb::EnumDescriptor* file_level_enum_descriptors_skill_2eproto[2];
 static constexpr ::_pb::ServiceDescriptor const** file_level_service_descriptors_skill_2eproto = nullptr;
 
@@ -66,13 +80,23 @@ const uint32_t TableStruct_skill_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(pr
   PROTOBUF_FIELD_OFFSET(::skill::SkillDefinition, _impl_.mana_cost_),
   PROTOBUF_FIELD_OFFSET(::skill::SkillDefinition, _impl_.effects_),
   PROTOBUF_FIELD_OFFSET(::skill::SkillDefinition, _impl_.element_type_),
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::skill::SkillInfoRequest, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
+  PROTOBUF_FIELD_OFFSET(::skill::SkillInfoRequest, _impl_.player_id_),
+  PROTOBUF_FIELD_OFFSET(::skill::SkillInfoRequest, _impl_.skill_id_),
 };
 static const ::_pbi::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, -1, sizeof(::skill::SkillDefinition)},
+  { 16, -1, -1, sizeof(::skill::SkillInfoRequest)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
   &::skill::_SkillDefinition_default_instance_._instance,
+  &::skill::_SkillInfoRequest_default_instance_._instance,
 };
 
 const char descriptor_table_protodef_skill_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
@@ -83,22 +107,23 @@ const char descriptor_table_protodef_skill_2eproto[] PROTOBUF_SECTION_VARIABLE(p
   "time\030\005 \001(\002\022\021\n\tcool_down\030\006 \001(\002\022\020\n\010duratio"
   "n\030\007 \001(\002\022\021\n\tmana_cost\030\010 \001(\005\022\"\n\007effects\030\t "
   "\003(\0162\021.skill.EffectType\022)\n\014element_type\030\n"
-  " \001(\0162\023.common.ElementType*l\n\tSkillType\022\020"
-  "\n\014BASIC_ATTACK\020\000\022\023\n\017ELEMENTAL_SPELL\020\001\022\022\n"
-  "\016CONTROL_EFFECT\020\002\022\017\n\013BUFF_DEBUFF\020\003\022\023\n\017SP"
-  "ECIAL_ABILITY\020\004*l\n\nEffectType\022\n\n\006DAMAGE\020"
-  "\000\022\010\n\004HEAL\020\001\022\010\n\004STUN\020\002\022\010\n\004SLOW\020\003\022\017\n\013SPEED"
-  "_BOOST\020\004\022\r\n\tINVISIBLE\020\005\022\024\n\020ELEMENTAL_DAM"
-  "AGE\020\006b\006proto3"
+  " \001(\0162\023.common.ElementType\"7\n\020SkillInfoRe"
+  "quest\022\021\n\tplayer_id\030\001 \001(\t\022\020\n\010skill_id\030\002 \001"
+  "(\t*l\n\tSkillType\022\020\n\014BASIC_ATTACK\020\000\022\023\n\017ELE"
+  "MENTAL_SPELL\020\001\022\022\n\016CONTROL_EFFECT\020\002\022\017\n\013BU"
+  "FF_DEBUFF\020\003\022\023\n\017SPECIAL_ABILITY\020\004*l\n\nEffe"
+  "ctType\022\n\n\006DAMAGE\020\000\022\010\n\004HEAL\020\001\022\010\n\004STUN\020\002\022\010"
+  "\n\004SLOW\020\003\022\017\n\013SPEED_BOOST\020\004\022\r\n\tINVISIBLE\020\005"
+  "\022\024\n\020ELEMENTAL_DAMAGE\020\006b\006proto3"
   ;
 static const ::_pbi::DescriptorTable* const descriptor_table_skill_2eproto_deps[1] = {
   &::descriptor_table_common_2eproto,
 };
 static ::_pbi::once_flag descriptor_table_skill_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_skill_2eproto = {
-    false, false, 533, descriptor_table_protodef_skill_2eproto,
+    false, false, 590, descriptor_table_protodef_skill_2eproto,
     "skill.proto",
-    &descriptor_table_skill_2eproto_once, descriptor_table_skill_2eproto_deps, 1, 1,
+    &descriptor_table_skill_2eproto_once, descriptor_table_skill_2eproto_deps, 1, 2,
     schemas, file_default_instances, TableStruct_skill_2eproto::offsets,
     file_level_metadata_skill_2eproto, file_level_enum_descriptors_skill_2eproto,
     file_level_service_descriptors_skill_2eproto,
@@ -668,12 +693,269 @@ void SkillDefinition::InternalSwap(SkillDefinition* other) {
       file_level_metadata_skill_2eproto[0]);
 }
 
+// ===================================================================
+
+class SkillInfoRequest::_Internal {
+ public:
+};
+
+SkillInfoRequest::SkillInfoRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
+  SharedCtor(arena, is_message_owned);
+  // @@protoc_insertion_point(arena_constructor:skill.SkillInfoRequest)
+}
+SkillInfoRequest::SkillInfoRequest(const SkillInfoRequest& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  SkillInfoRequest* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_.player_id_){}
+    , decltype(_impl_.skill_id_){}
+    , /*decltype(_impl_._cached_size_)*/{}};
+
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _impl_.player_id_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.player_id_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (!from._internal_player_id().empty()) {
+    _this->_impl_.player_id_.Set(from._internal_player_id(), 
+      _this->GetArenaForAllocation());
+  }
+  _impl_.skill_id_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.skill_id_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (!from._internal_skill_id().empty()) {
+    _this->_impl_.skill_id_.Set(from._internal_skill_id(), 
+      _this->GetArenaForAllocation());
+  }
+  // @@protoc_insertion_point(copy_constructor:skill.SkillInfoRequest)
+}
+
+inline void SkillInfoRequest::SharedCtor(
+    ::_pb::Arena* arena, bool is_message_owned) {
+  (void)arena;
+  (void)is_message_owned;
+  new (&_impl_) Impl_{
+      decltype(_impl_.player_id_){}
+    , decltype(_impl_.skill_id_){}
+    , /*decltype(_impl_._cached_size_)*/{}
+  };
+  _impl_.player_id_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.player_id_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  _impl_.skill_id_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.skill_id_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+}
+
+SkillInfoRequest::~SkillInfoRequest() {
+  // @@protoc_insertion_point(destructor:skill.SkillInfoRequest)
+  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
+  (void)arena;
+    return;
+  }
+  SharedDtor();
+}
+
+inline void SkillInfoRequest::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  _impl_.player_id_.Destroy();
+  _impl_.skill_id_.Destroy();
+}
+
+void SkillInfoRequest::SetCachedSize(int size) const {
+  _impl_._cached_size_.Set(size);
+}
+
+void SkillInfoRequest::Clear() {
+// @@protoc_insertion_point(message_clear_start:skill.SkillInfoRequest)
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.player_id_.ClearToEmpty();
+  _impl_.skill_id_.ClearToEmpty();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* SkillInfoRequest::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    uint32_t tag;
+    ptr = ::_pbi::ReadTag(ptr, &tag);
+    switch (tag >> 3) {
+      // string player_id = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+          auto str = _internal_mutable_player_id();
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(ptr);
+          CHK_(::_pbi::VerifyUTF8(str, "skill.SkillInfoRequest.player_id"));
+        } else
+          goto handle_unusual;
+        continue;
+      // string skill_id = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
+          auto str = _internal_mutable_skill_id();
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(ptr);
+          CHK_(::_pbi::VerifyUTF8(str, "skill.SkillInfoRequest.skill_id"));
+        } else
+          goto handle_unusual;
+        continue;
+      default:
+        goto handle_unusual;
+    }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
+  }  // while
+message_done:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto message_done;
+#undef CHK_
+}
+
+uint8_t* SkillInfoRequest::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:skill.SkillInfoRequest)
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // string player_id = 1;
+  if (!this->_internal_player_id().empty()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_player_id().data(), static_cast<int>(this->_internal_player_id().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "skill.SkillInfoRequest.player_id");
+    target = stream->WriteStringMaybeAliased(
+        1, this->_internal_player_id(), target);
+  }
+
+  // string skill_id = 2;
+  if (!this->_internal_skill_id().empty()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_skill_id().data(), static_cast<int>(this->_internal_skill_id().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "skill.SkillInfoRequest.skill_id");
+    target = stream->WriteStringMaybeAliased(
+        2, this->_internal_skill_id(), target);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:skill.SkillInfoRequest)
+  return target;
+}
+
+size_t SkillInfoRequest::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:skill.SkillInfoRequest)
+  size_t total_size = 0;
+
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // string player_id = 1;
+  if (!this->_internal_player_id().empty()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_player_id());
+  }
+
+  // string skill_id = 2;
+  if (!this->_internal_skill_id().empty()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_skill_id());
+  }
+
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
+}
+
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData SkillInfoRequest::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
+    SkillInfoRequest::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*SkillInfoRequest::GetClassData() const { return &_class_data_; }
+
+
+void SkillInfoRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<SkillInfoRequest*>(&to_msg);
+  auto& from = static_cast<const SkillInfoRequest&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:skill.SkillInfoRequest)
+  GOOGLE_DCHECK_NE(&from, _this);
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (!from._internal_player_id().empty()) {
+    _this->_internal_set_player_id(from._internal_player_id());
+  }
+  if (!from._internal_skill_id().empty()) {
+    _this->_internal_set_skill_id(from._internal_skill_id());
+  }
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void SkillInfoRequest::CopyFrom(const SkillInfoRequest& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:skill.SkillInfoRequest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool SkillInfoRequest::IsInitialized() const {
+  return true;
+}
+
+void SkillInfoRequest::InternalSwap(SkillInfoRequest* other) {
+  using std::swap;
+  auto* lhs_arena = GetArenaForAllocation();
+  auto* rhs_arena = other->GetArenaForAllocation();
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &_impl_.player_id_, lhs_arena,
+      &other->_impl_.player_id_, rhs_arena
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &_impl_.skill_id_, lhs_arena,
+      &other->_impl_.skill_id_, rhs_arena
+  );
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata SkillInfoRequest::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_skill_2eproto_getter, &descriptor_table_skill_2eproto_once,
+      file_level_metadata_skill_2eproto[1]);
+}
+
 // @@protoc_insertion_point(namespace_scope)
 }  // namespace skill
 PROTOBUF_NAMESPACE_OPEN
 template<> PROTOBUF_NOINLINE ::skill::SkillDefinition*
 Arena::CreateMaybeMessage< ::skill::SkillDefinition >(Arena* arena) {
   return Arena::CreateMessageInternal< ::skill::SkillDefinition >(arena);
+}
+template<> PROTOBUF_NOINLINE ::skill::SkillInfoRequest*
+Arena::CreateMaybeMessage< ::skill::SkillInfoRequest >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::skill::SkillInfoRequest >(arena);
 }
 PROTOBUF_NAMESPACE_CLOSE
 

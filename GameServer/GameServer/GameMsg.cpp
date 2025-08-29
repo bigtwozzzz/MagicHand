@@ -32,7 +32,9 @@ GameMsg::GameMsg(MSG_TYPE _type, std::string _pstream)
     case MSG_TYPE_ATTACK_REQUEST:
         m_pMsg = new combat::AttackRequest();
         break;
-
+    case MSG_TYPE_SKILL_INFO_REQUEST:
+        m_pMsg = new skill::SkillInfoRequest();
+        break;
     case MSG_TYPE_PLAYER_SELECT_STAGE_REQUEST:
         m_pMsg = new broadcast::PlayerSelectStageRequest();
         break;
@@ -84,7 +86,9 @@ GameMsg::GameMsg(MSG_TYPE _type, std::string _pstream)
     case MSG_TYPE_SKILL_CAST_NOTIFY:
         m_pMsg = new broadcast::SkillCastNotify();
         break;
-
+    case MSG_TYPE_SKILL_INFO_DATA:
+        m_pMsg = new skill::SkillDefinition();
+        break;
     case MSG_TYPE_ENTITY_ATTACK_NOTIFY:
         m_pMsg = new broadcast::EntityAttackNotify();
         break;

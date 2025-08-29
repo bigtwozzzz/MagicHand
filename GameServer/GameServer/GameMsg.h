@@ -17,6 +17,7 @@ class GameMsg :
             MSG_TYPE_ATTACK_REQUEST = 4,
             MSG_TYPE_PLAYER_SELECT_STAGE_REQUEST = 5,
             MSG_TYPE_PLAYER_CONFIRM_STAGE_RESPONSE = 6,
+            MSG_TYPE_SKILL_INFO_REQUEST = 7,
 
             MSG_TYPE_LOGIN_RESPONSE = 101,
             MSG_TYPE_LOGOUT_RESPONSE = 102,
@@ -37,7 +38,8 @@ class GameMsg :
 
             MSG_TYPE_SCENE_DATA= 301, //
             MSG_TYPE_PLAYER_INFO = 302,
-
+            MSG_TYPE_SKILL_INFO_DATA = 303,
+           
             MSG_TYPE_RANDOM_NUMBER = 401,
             
         } enMsgType;

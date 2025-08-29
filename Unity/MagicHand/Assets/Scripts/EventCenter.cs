@@ -53,6 +53,7 @@ public enum E_EventType
     Event_Player_Command_UseSkill,
     Event_Player_Command_Logout,
     Event_Button_Setting_Click,
+    Event_Player_Skill_Info_Request,
     // ������ָ��
     Event_Global_Random_Seed,
     Event_Login_Success,
@@ -64,7 +65,7 @@ public enum E_EventType
     Event_Scene_Data_Update_UI,
     Event_Stage_Select_Request_Notify,
     Event_Stage_Select_Result_Notify,
-
+    Event_Player_Skill_Info_Notify,
     // ϵͳָ��
     Event_Platform_Loaded,
     Event_LoadScene_Progress,

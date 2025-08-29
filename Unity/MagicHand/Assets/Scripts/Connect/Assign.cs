@@ -4,6 +4,7 @@ using Broadcast;
 using Character;
 using Globalrandom;
 using Scene;
+using Skill;
 using System;
 using UnityEngine;
 
@@ -78,6 +79,13 @@ public class Assign : BaseManager<Assign>
                     MainThreadDispatcher.Enqueue(() =>
                     {
                         EventCenter.GetInstance().EventTrigger(E_EventType.Event_Scene_Data_Update, sceneData);
+                    });
+                    break;
+                case 303: //技能信息广播
+                    var skillInfo = SkillDefinition.Parser.ParseFrom(msgBody);
+                    MainThreadDispatcher.Enqueue(() =>
+                    {
+                        EventCenter.GetInstance().EventTrigger(E_EventType.Event_Player_Skill_Info_Notify, skillInfo);
                     });
                     break;
                 case 401: // 随机种子广播

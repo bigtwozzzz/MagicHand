@@ -2,6 +2,7 @@ using Base;
 using Broadcast;
 using Character;
 using Common;
+using Skill;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -72,11 +73,47 @@ public class Gain : BaseManager<Gain>
             case E_EventType.Event_Player_Command_Logout:
                 HandleLogout();
                 break;
+            case E_EventType.Event_Player_Skill_Info_Request:
+                HandleSkillInfoRequest(commandData.StringParam1, commandData.StringParam2);
+                break;
 
             default:
                 Debug.LogWarning($"[Gain] Unhandled command type: {commandData.CommandType}");
                 break;
         }
+    }
+
+    /// <summary>
+    /// 处理技能信息请求
+    /// 向服务器请求指定技能的详细信息
+    /// </summary>
+    /// <param name="playerId">玩家唯一ID</param>
+    /// <param name="skillId">技能唯一ID</param>
+    private void HandleSkillInfoRequest(string playerId, string skillId)
+    {
+        Debug.Log($"[Gain] Requesting skill info - Player: {playerId}, Skill: {skillId}");
+
+        // 参数校验
+        if (string.IsNullOrEmpty(playerId))
+        {
+            Debug.LogError("[Gain] Player ID is null or empty!");
+            return;
+        }
+        if (string.IsNullOrEmpty(skillId))
+        {
+            Debug.LogError("[Gain] Skill ID is null or empty!");
+            return;
+        }
+
+        // 构造 Protobuf 消息：SkillInfoRequest
+        var skillInfoRequest = new SkillInfoRequest
+        {
+            PlayerId = playerId,
+            SkillId = skillId
+        };
+        _encoder.Send(7, skillInfoRequest);
+
+        Debug.Log($"[Gain] Skill info request sent to server. SkillId: {skillId}");
     }
 
     /// <summary>

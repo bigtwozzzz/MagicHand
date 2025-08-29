@@ -5,6 +5,7 @@ using Common;
 using Enemy;
 using Globalrandom;
 using Scene;
+using Skill;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -76,6 +77,9 @@ public class DataMgr : BaseManager<DataMgr>
         EventCenter.GetInstance().AddEventListener<SceneData>(
             E_EventType.Event_Scene_Data_Update,
             OnSceneDataUpdate);
+        EventCenter.GetInstance().AddEventListener<SkillDefinition>(
+            E_EventType.Event_Player_Skill_Info_Notify,
+            OnSkillInfoNotify);
     }
     public void SetMainUIReady()
     {
@@ -106,6 +110,23 @@ public class DataMgr : BaseManager<DataMgr>
             // 缓存数据，等待 MainUI 准备好
             _SceneData = sceneData;
         }
+    }
+    public void OnSkillInfoNotify(SkillDefinition skillInfo)
+    {
+        Debug.Log($"[DataMgr] 收到技能信息更新：{skillInfo}");
+        Debug.Log($@"
+            skill_id:       {skillInfo.SkillId}
+            skill_name:     {skillInfo.SkillName}
+            skill_type:     {skillInfo.SkillType}
+            base_damage:    {skillInfo.BaseDamage}
+            cast_time:      {skillInfo.CastTime:F1}s
+            cool_down:      {skillInfo.CoolDown:F1}s
+            duration:       {skillInfo.Duration:F1}s
+            mana_cost:      {skillInfo.ManaCost}
+            effects:        [{string.Join(", ", skillInfo.Effects)}]
+            element_type:   {skillInfo.ElementType}
+            ");
+
     }
     /// <summary>
     /// 处理玩家上线通知
@@ -156,6 +177,7 @@ public class DataMgr : BaseManager<DataMgr>
             eventCenter.RemoveEventListener<GlobalRandomNum>(E_EventType.Event_Global_Random_Seed, OnGlobalRandomSeedReceived);
             eventCenter.RemoveEventListener<PlayerOnlineNotify>(E_EventType.Event_Player_Online, OnPlayerOnline);
             eventCenter.RemoveEventListener<SceneData>(E_EventType.Event_Scene_Data_Update, OnSceneDataUpdate);
+            eventCenter.RemoveEventListener<SkillDefinition>(E_EventType.Event_Player_Skill_Info_Notify, OnSkillInfoNotify);
         }
 
         ClearUserData();
@@ -306,6 +328,12 @@ public class DataMgr : BaseManager<DataMgr>
             foreach (var skill in characterBase.Skills)
             {
                 Debug.Log($"  技能ID: {skill.SkillId}, 冷却: {skill.CurrentCooldown}");
+                var skillInfoRequest = new Gain.PlayerCommandData(E_EventType.Event_Player_Skill_Info_Request)
+                {
+                    StringParam1 = characterBase.PlayerId,
+                    StringParam2 = skill.SkillId
+                };
+                EventCenter.GetInstance().EventTrigger(E_EventType.Event_Player_Command, skillInfoRequest);
             }
         }
         else

@@ -38,3 +38,8 @@ message SkillDefinition {
   repeated EffectType effects = 9;  // 技能效果列表
   common.ElementType element_type = 10;  // 元素类型（用于相克判定）
 }
+
+message SkillInfoRequest {
+  string player_id = 1;
+  string skill_id = 2;
+}

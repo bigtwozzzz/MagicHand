@@ -42,7 +42,7 @@ public class AutoHeadPosition : MonoBehaviour
             referenceRenderer = GetComponentInChildren<Renderer>(includeInactive: false);
             if (referenceRenderer == null)
             {
-                Debug.LogWarning($"[AutoHeadPosition] 未找到 Renderer，将使用默认偏移。", this);
+                Debug.Log($"[AutoHeadPosition] 未找到 Renderer，将使用默认偏移。", this);
                 // 即使没有 Renderer，也设置一个默认位置并标记为已初始化
                 transform.localPosition = new Vector3(additionalOffset.x, manualOffset + additionalOffset.y, additionalOffset.z);
                 isInitialized = true;
