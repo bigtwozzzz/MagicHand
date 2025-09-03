@@ -128,9 +128,9 @@ public class GraphicsSettingsPanel : BasePanel
 
         var options = new System.Collections.Generic.List<TMP_Dropdown.OptionData>
         {
-            new TMP_Dropdown.OptionData("窗口化"),
-            new TMP_Dropdown.OptionData("无边框窗口"),
-            new TMP_Dropdown.OptionData("全屏")
+            new("窗口化"),
+            new("无边框窗口"),
+            new("全屏")
         };
 
         fullscreenDropdown.ClearOptions();
@@ -153,10 +153,10 @@ public class GraphicsSettingsPanel : BasePanel
 
         var options = new System.Collections.Generic.List<TMP_Dropdown.OptionData>
         {
-            new TMP_Dropdown.OptionData("关闭 (Off)"),
-            new TMP_Dropdown.OptionData("2x"),
-            new TMP_Dropdown.OptionData("4x"),
-            new TMP_Dropdown.OptionData("8x")
+            new("关闭 (Off)"),
+            new("2x"),
+            new("4x"),
+            new("8x")
         };
 
         antiAliasingDropdown.ClearOptions();
@@ -380,7 +380,7 @@ public class GraphicsSettingsPanel : BasePanel
         base.HideMe();
     }
 
-    private void OnDestroy()
+    protected override void OnDestroy()
     {
         isInitialized = false;
     }

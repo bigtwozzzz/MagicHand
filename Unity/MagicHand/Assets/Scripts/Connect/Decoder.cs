@@ -106,7 +106,7 @@ public class Decoder : BaseManager<Decoder>
     }
 
     // 可选：在 OnDestroy 中调用
-    protected  void OnDestroy()
+    protected override void OnDestroy()
     {
         Clear();
     }

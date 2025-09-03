@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
 
 /// <summary>
 /// 主场景资源加载控制器
@@ -93,7 +90,7 @@ public class MainScene : MonoBehaviour
     /// <param name="count">要生成的数量</param>
     private void SpawnPositionEffects(GameObject effectPrefab, int count)
     {
-        PositionManager posManager = platformInstance?.GetComponentInChildren<PositionManager>();
+        PositionManager posManager = platformInstance.GetComponentInChildren<PositionManager>();
         if (posManager == null)
         {
             Debug.LogError("未找到 PositionManager 组件！");

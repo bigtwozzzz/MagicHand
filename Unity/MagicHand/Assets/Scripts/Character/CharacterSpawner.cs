@@ -10,11 +10,11 @@ public class CharacterSpawner : MonoBehaviour
     public Transform platformRoot; // 平台根节点
 
     private bool isPlatformReady = false;
-    private Queue<string> pendingSpawnRequests = new Queue<string>(); // 缓存 roleId
+    private Queue<string> pendingSpawnRequests = new(); // 缓存 roleId
 
     // 新增：存储已生成的角色实例，便于销毁
-    private Dictionary<string, GameObject> spawnedCharacters = new Dictionary<string, GameObject>();
-    private Dictionary<string, int> characterToPositionId = new Dictionary<string, int>();
+    private Dictionary<string, GameObject> spawnedCharacters = new();
+    private Dictionary<string, int> characterToPositionId = new();
 
     private void OnEnable()
     {
@@ -149,10 +149,10 @@ public class CharacterSpawner : MonoBehaviour
         if (!isPlatformReady || platformRoot == null)
             return;
 
-        List<string> pendingRoleIds = new List<string>();
+        List<string> pendingRoleIds = new();
 
         // 提取唯一 roleId，避免重复
-        HashSet<string> processed = new HashSet<string>();
+        HashSet<string> processed = new();
         while (pendingSpawnRequests.Count > 0)
         {
             string roleId = pendingSpawnRequests.Dequeue();
@@ -206,7 +206,7 @@ public class CharacterSpawner : MonoBehaviour
     private bool TrySpawnSingleCharacterWithConsistentPosition(CharacterBase charInfo, PositionManager posManager)
     {
         // 1. 获取所有未被占用的点位 ID（从小到大排序）
-        List<int> availablePositions = new List<int>();
+        List<int> availablePositions = new();
         for (int i = 0; i < posManager.positionCount; i++)
         {
             if (!posManager.IsPositionOccupied(i))
@@ -248,8 +248,7 @@ public class CharacterSpawner : MonoBehaviour
                 GameObject roleInstance = Instantiate(prefab, spawnPos, Quaternion.identity);
                 roleInstance.name = $"Role_{charInfo.RoleName}_{charInfo.RoleId}";
 
-                CharacterInit charInit = roleInstance.GetComponent<CharacterInit>();
-                if (charInit != null)
+                if (roleInstance.TryGetComponent<CharacterInit>(out var charInit))
                 {
                     charInit.ApplyData(charInfo);
                 }
@@ -400,7 +399,7 @@ public class CharacterSpawner : MonoBehaviour
             return -1;
         }
 
-        List<int> available = new List<int>();
+        List<int> available = new();
         for (int i = 0; i < posManager.positionCount; i++)
         {
             if (!posManager.IsPositionOccupied(i))

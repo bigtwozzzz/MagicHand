@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -14,7 +13,7 @@ public class BootLoader : MonoBehaviour
     {
         if (FindObjectOfType<BootLoader>() == null)
         {
-            GameObject bootObj = new GameObject("BootLoader");
+            GameObject bootObj = new("BootLoader");
             bootObj.AddComponent<BootLoader>();
             DontDestroyOnLoad(bootObj);
         }
@@ -165,8 +164,7 @@ public class BootLoader : MonoBehaviour
 
     private void Cleanup()
     {
-        // 如果你有事件系统，记得取消订阅
-        // EventCenter.RemoveListener("OnGameStart", OnLoadOver);
+        
     }
 
     private void OnDestroy()

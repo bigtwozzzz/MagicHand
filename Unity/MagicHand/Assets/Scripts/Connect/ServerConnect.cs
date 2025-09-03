@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Net;
 using System.Net.Sockets;
 using UnityEngine;
@@ -35,9 +34,6 @@ public class ServerConnect : BaseManager<ServerConnect>
     {
         base.Awake();
         if (autoConnectOnStart && !Application.isPlaying) return;
-
-        // 可选：自动连接
-        // HandleConnect();
     }
 
     /// <summary>

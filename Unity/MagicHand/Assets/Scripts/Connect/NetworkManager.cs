@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using System.Net.Sockets;
 using UnityEngine;
 
@@ -44,24 +42,6 @@ public class NetManager : BaseManager<NetManager>
             Disconnect();
         }
     }
-    //public void Flush()
-    //{
-    //    // 如果是 TCP，可以调用 NetworkStream.Flush()
-    //    // 如果是 Socket，可以尝试发送一个空包或等待
-    //    try
-    //    {
-    //        if (_socket != null && _socket.Connected)
-    //        {
-    //            // 小延迟确保发送完成（实际项目可用更优雅方式）
-    //            System.Threading.Thread.Sleep(100);
-    //            Debug.Log("[NetManager] Flush: Sent all pending data.");
-    //        }
-    //    }
-    //    catch
-    //    {
-    //        // 忽略异常，因为正在关闭
-    //    }
-    //}
     public void Disconnect()
     {
         if (_socket != null)

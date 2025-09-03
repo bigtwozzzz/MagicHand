@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 /// <summary>
 /// Mono控制基类：为非MonoBehaviour对象提供协程、帧更新、延迟调用等功能

@@ -267,7 +267,7 @@ public class UnityMainThreadDispatcher : MonoBehaviour
             // 在主线程中创建实例
             if (UnityEngine.Application.isPlaying)
             {
-                GameObject go = new GameObject("UnityMainThreadDispatcher");
+                GameObject go = new("UnityMainThreadDispatcher");
                 _instance = go.AddComponent<UnityMainThreadDispatcher>();
                 DontDestroyOnLoad(go);
             }

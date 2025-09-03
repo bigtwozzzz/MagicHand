@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -33,7 +32,6 @@ public class MusicMgr : BaseManager<MusicMgr>
 
     public MusicMgr()
     {
-        //  安全：GlobalMonoMgr.GetInstance().AddUpdateListener 是纯 C# 逻辑，可在构造函数中调用
         GlobalMonoMgr.GetInstance().AddUpdateListener(Update);
     }
 
@@ -67,7 +65,7 @@ public class MusicMgr : BaseManager<MusicMgr>
     {
         if (bkMusic == null)
         {
-            GameObject obj = new GameObject { name = "BkMusic" };
+            GameObject obj = new() { name = "BkMusic" };
             obj.transform.SetParent(GlobalMonoMgr.GetInstance().transform);
             bkMusic = obj.AddComponent<AudioSource>();
         }

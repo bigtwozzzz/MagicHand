@@ -1,13 +1,6 @@
-using Base;
-using Broadcast;
-using Character;
-using Common;
 using Google.Protobuf;
-using Scene;
 using System;
 using System.Buffers;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 
@@ -77,17 +70,6 @@ public class Encoder : BaseManager<Encoder>
 
         Debug.Log($"[Encoder] Sent message: ID={msgId}, Length={msgBody?.Length ?? 0}");
     }
-    //public void Flush()
-    //{
-    //    if (netManager.IsConnected)
-    //    {
-    //        netManager.Flush();
-    //    }
-    //    else
-    //    {
-    //        Debug.LogWarning("[Encoder] Network is not connected, cannot flush.");
-    //    }
-    //}
     /// <summary>
     /// 使用泛型 + Protobuf 序列化发送（推荐）
     /// </summary>

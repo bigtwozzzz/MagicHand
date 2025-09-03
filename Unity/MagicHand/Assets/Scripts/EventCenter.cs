@@ -1,17 +1,15 @@
-using System.Collections;
 using System.Collections.Generic;
-using Unity.Burst.Intrinsics;
 using UnityEngine;
 using UnityEngine.Events;
 
 
 /// <summary>
-/// ͨ���¼��ӿ�
+/// ͨ事件接口
 /// </summary>
 public interface IEventInfo { }
 
 /// <summary>
-/// �����Ͳ������¼���װ��
+/// 泛型实现
 /// </summary>
 /// <typeparam name="T"></typeparam>
 public class EventInfo<T> : IEventInfo
@@ -25,7 +23,7 @@ public class EventInfo<T> : IEventInfo
 }
 
 /// <summary>
-/// �޲��¼���װ��
+/// 实现
 /// </summary>
 public class EventInfo : IEventInfo
 {
@@ -38,11 +36,11 @@ public class EventInfo : IEventInfo
 }
 
 /// <summary>  
-/// �¼�����ö��
+/// 事件种类
 /// </summary>  
 public enum E_EventType
 {
-    // ���ָ��
+    // 用户指令
     Event_Login_Request,
     Event_Player_Command,
     Event_Player_Command_Login,
@@ -54,7 +52,7 @@ public enum E_EventType
     Event_Player_Command_Logout,
     Event_Button_Setting_Click,
     Event_Player_Skill_Info_Request,
-    // ������ָ��
+    // 服务器指令
     Event_Global_Random_Seed,
     Event_Login_Success,
     Event_Logout,
@@ -66,17 +64,17 @@ public enum E_EventType
     Event_Stage_Select_Request_Notify,
     Event_Stage_Select_Result_Notify,
     Event_Player_Skill_Info_Notify,
-    // ϵͳָ��
+    // 系统指令
     Event_Platform_Loaded,
     Event_LoadScene_Progress,
     Event_Lock_Window,
 
-    // ��Ϸ�߼�
+    // 场景指令
     Event_Character_Spawn_Ready,
     Event_Monster_Dead,
     Event_Player_Dead,
     Event_Stage_Vote_Result,
-    // �����¼�
+    // 输出指令
     Event_Keycode_Input,
     Event_Mouse_Input,
     Event_MouseX_Input,
@@ -86,12 +84,7 @@ public enum E_EventType
 }
 
 /// <summary>
-/// �¼����� ���� ����ģʽ
-/// ���ܣ��¼�ע�ᡢ�ַ����Ƴ�
-/// ���ģʽ���۲���ģʽ + ���� + �ֵ�
-/// ע�⣺
-/// - ��֧�� lambda ����ʽ��Ϊ�����������޷���ȷ�Ƴ���
-/// - �����л�ʱ������� Clear() �����糡������
+/// 事件中心
 /// </summary>
 public class EventCenter : BaseManager<EventCenter>
 {
@@ -99,20 +92,16 @@ public class EventCenter : BaseManager<EventCenter>
 
     protected override void Awake()
     {
-        //  1. �ȵ��ø��࣬ȷ�������߼�
         base.Awake();
 
-        //  2. ȷ��ֻ��ʼ��һ��
         if (eventDic != null) return;
 
         eventDic = new Dictionary<E_EventType, IEventInfo>();
-
-        //  3. ���Ϊ���泡�����٣������� Awake �е��ã�
         DontDestroyOnLoad(gameObject);
     }
 
     /// <summary>
-    /// ���Ӵ��������¼�����
+    /// 监听事件泛型
     /// </summary>
     public void AddEventListener<T>(E_EventType name, UnityAction<T> action)
     {
@@ -134,7 +123,7 @@ public class EventCenter : BaseManager<EventCenter>
     }
 
     /// <summary>
-    /// �����޲��¼�����
+    /// 监听事件
     /// </summary>
     public void AddEventListener(E_EventType name, UnityAction action)
     {
@@ -152,12 +141,10 @@ public class EventCenter : BaseManager<EventCenter>
     }
 
     /// <summary>
-    /// �Ƴ����������¼�����
-    /// ע�⣺��֧�� lambda�����봫����ͬ��������
+    /// 移除监听泛型
     /// </summary>
     public void RemoveEventListener<T>(E_EventType name, UnityAction<T> action)
     {
-        // ���� null ���
         if (eventDic == null)
         {
             Debug.LogWarning($"[EventCenter] eventDic Ϊ null���޷��Ƴ��¼�����: {name}");
@@ -179,7 +166,7 @@ public class EventCenter : BaseManager<EventCenter>
     }
 
     /// <summary>
-    /// �Ƴ��޲��¼�����
+    /// 移除监听
     /// </summary>
     public void RemoveEventListener(E_EventType name, UnityAction action)
     {
@@ -203,11 +190,11 @@ public class EventCenter : BaseManager<EventCenter>
         }
     }
     /// <summary>
-    /// �������������¼�
+    /// 监听触发泛型
     /// </summary>
     public void EventTrigger<T>(E_EventType name, T info)
     {
-        //Debug.Log($"[EventCenter] �����¼�: {name}, ��������: {typeof(T)}, ֵ: {info}");
+        //Debug.Log($"[EventCenter] 监听类型: {name}, 监听信息: {typeof(T)}, ֵ: {info}");
         if (eventDic.TryGetValue(name, out IEventInfo existing))
         {
             if (existing is EventInfo<T> eventInfo && eventInfo.actions != null)
@@ -229,7 +216,7 @@ public class EventCenter : BaseManager<EventCenter>
     }
 
     /// <summary>
-    /// �����޲��¼�
+    /// 监听触发
     /// </summary>
     public void EventTrigger(E_EventType name)
     {
@@ -243,35 +230,21 @@ public class EventCenter : BaseManager<EventCenter>
                 }
                 catch (System.Exception e)
                 {
-                    Debug.LogError($"[EventCenter] �����¼� {name} ʱ�����쳣: {e.Message}");
+                    Debug.LogError($"[EventCenter] 监听 {name} 错误: {e.Message}");
                 }
             }
         }
     }
 
-    /// <summary>
-    /// ��������¼�����������ʹ�ã�
-    /// �����ڳ����л���ģ������ʱ����
-    /// </summary>
     public void Clear()
     {
-        if (eventDic != null)
-        {
-            eventDic.Clear();
-            // Debug.Log("[EventCenter] �����¼������������"); 
-            //  ��ѡ������ʱ����ע�͵���־������ OnDestroy ʱ��ӡʧ��
-        }
+        eventDic?.Clear();
     }
 
     protected override void OnDestroy()
     {
-        //  1. �����¼�
         Clear();
-
-        //  2. �����������絥�������ÿգ�
         base.OnDestroy();
-
-        //  3. ��ѡ��־��ע�⣺��ʱ OnDestroy �д�ӡ��ʧ�ܣ�
-        Debug.Log("[EventCenter] �����٣���Դ�ͷ���ɡ�");
+        Debug.Log("[EventCenter] 销毁");
     }
 }

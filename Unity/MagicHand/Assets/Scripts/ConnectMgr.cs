@@ -79,7 +79,7 @@ public class ConnectMgr : BaseManager<ConnectMgr>
         // Debug.Log("ConnectMgr 帧更新");
     }
 
-    protected void OnDestroy()
+    protected override void OnDestroy()
     {
         // 1. 移除帧更新监听（防止内存泄漏）
         GlobalMonoMgr instance = GlobalMonoMgr.GetInstance();

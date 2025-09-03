@@ -1,6 +1,5 @@
 using Broadcast;
 using Common;
-using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -247,11 +246,6 @@ public class StageVotePanel : BasePanel
     /// </summary>
     private string GetPlayerName(string playerId)
     {
-        // 方案1：直接返回 ID 截取
-        return $"玩家{playerId.Substring(playerId.Length - 6)}";
-
-        // 方案2：从角色管理器获取（推荐）
-        // var role = RoleMgr.GetInstance().GetRoleByPlayerId(playerId);
-        // return role?.RoleName ?? $"玩家{playerId}";
+        return $"玩家{playerId[^6..]}";
     }
 }

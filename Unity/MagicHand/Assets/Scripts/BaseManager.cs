@@ -11,9 +11,9 @@ public class BaseManager<T> : MonoBehaviour where T : BaseManager<T>
             instance = FindObjectOfType<T>();
             if (instance == null)
             {
-                GameObject obj = new GameObject($"[{typeof(T).Name}]");
+                GameObject obj = new($"[{typeof(T).Name}]");
                 instance = obj.AddComponent<T>();
-                DontDestroyOnLoad(obj); // �����
+                DontDestroyOnLoad(obj); 
             }
         }
         return instance;

@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -49,12 +47,6 @@ public class SettingsPanel : BasePanel
                 UIMgr.GetInstance().HidePanel("SettingsPanel"); // 隐藏当前设置面板
                 UIMgr.GetInstance().ShowPanel(returnToPanelName);
                 break;
-
-            //case "Btn_Volume": // 音量设置按钮
-            //    Debug.Log("打开音量设置");
-            //    // 打开音量设置子面板（如果需要）
-            //    break;
-
             case "Panel/ButtonGroup/ButtonGraphic": // 图形设置按钮
                 Debug.Log("打开图形设置");
                 // 打开图形设置子面板（如果需要）
@@ -83,18 +75,14 @@ public class SettingsPanel : BasePanel
     public override void ShowMe()
     {
         base.ShowMe();
-        //EventCenter.GetInstance().AddEventListener<string>(E_EventType.Event_Button_Setting_Click, OnLoadOver);
-        // 可选：注册事件（如设置修改后的回调）
     }
 
     public override void HideMe()
     {
-        //EventCenter.GetInstance().RemoveEventListener<string>(E_EventType.Event_Button_Setting_Click, OnLoadOver);
         base.HideMe();
-        // 可选：反注册事件
     }
 
-    private void OnLoadOver(string arg0)
+    private void OnLoadOver()
     {
         Debug.Log("设置面板已显示");
         throw new NotImplementedException();

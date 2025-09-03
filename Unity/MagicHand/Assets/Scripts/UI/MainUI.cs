@@ -1,4 +1,3 @@
-using Base;
 using Broadcast;
 using Enemy;
 using Scene;
@@ -12,7 +11,6 @@ public class MainUI : BasePanel
 {
     [SerializeField] private Transform contentPanel;
     [SerializeField] private GameObject messagePrefab;
-   // [SerializeField] private Button btnStageVote; // 新增按钮
     [SerializeField] private TextMeshProUGUI textStageRequest; // 可选展示面板
     [SerializeField] private Transform monsterListContainer; // 怪物列表容器
     [SerializeField] private GameObject monsterEntryPrefab; // 怪物条目预制体
@@ -110,10 +108,6 @@ public class MainUI : BasePanel
         EventCenter.GetInstance().AddEventListener<StageSelectRequestNotify>(
             E_EventType.Event_Stage_Select_Request_Notify,
             OnStageSelectRequestReceived);
-
-        // 可选：启动消息清理协程
-        // StartCoroutine(CleanupExpiredMessages());
-        // 示例：添加几个测试按钮
     }
 
     public override void HideMe()
@@ -209,8 +203,7 @@ public class MainUI : BasePanel
             if (monster == null) continue; // 防空判断
 
             GameObject entry = Instantiate(monsterEntryPrefab, monsterListContainer);
-            TextMeshProUGUI text = entry.GetComponent<TextMeshProUGUI>();
-            if (text != null)
+            if (entry.TryGetComponent<TextMeshProUGUI>(out var text))
             {
                 string info = FormatMonsterInfo(monster);
                 Debug.Log("生成的怪物信息：\n" + info); //  添加这行调试
@@ -238,22 +231,21 @@ public class MainUI : BasePanel
 
     private string GetMonsterTypeName(Common.MonsterType type)
     {
-        switch (type)
+        return type switch
         {
-            case Common.MonsterType.ZombieBasic: return "ZOMBIE_BASIC";
-            case Common.MonsterType.ZombieFast: return "ZOMBIE_FAST";
-            default: return "未知类型";
-        }
+            Common.MonsterType.ZombieBasic => "ZOMBIE_BASIC",
+            Common.MonsterType.ZombieFast => "ZOMBIE_FAST",
+            _ => "未知类型",
+        };
     }
 
     private string GetMonsterStateName(Common.MonsterState state)
     {
-        switch (state)
+        return state switch
         {
-            case Common.MonsterState.MMove: return "M_MOVE";
-
-            default: return "未知状态";
-        }
+            Common.MonsterState.MMove => "M_MOVE",
+            _ => "未知状态",
+        };
     }
     private void OnPlayerOnline(object data)
     {

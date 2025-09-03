@@ -20,7 +20,7 @@ public class AutoHeadPosition : MonoBehaviour
     [SerializeField] private Renderer referenceRenderer;
 
     [Tooltip("最终偏移的额外调整值（可微调），可通过 SetAdditionalOffset 动态修改")]
-    [SerializeField] private Vector3 additionalOffset = new Vector3(0, 0.1f, 0);
+    [SerializeField] private Vector3 additionalOffset = new(0, 0.1f, 0);
 
     private bool isInitialized = false;
 
@@ -61,7 +61,7 @@ public class AutoHeadPosition : MonoBehaviour
         float baseY = autoDetect ? autoOffset : manualOffset;
 
         // 计算最终位置
-        Vector3 finalPosition = new Vector3(
+        Vector3 finalPosition = new(
             additionalOffset.x,
             baseY + additionalOffset.y,
             additionalOffset.z

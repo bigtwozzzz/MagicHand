@@ -23,7 +23,7 @@ public class PositionManager : MonoBehaviour
         for (int i = 0; i < positionCount; i++)
         {
             float angle = angleStep * i * Mathf.Deg2Rad;
-            Vector3 position = new Vector3(
+            Vector3 position = new(
                 platformCenter.position.x + Mathf.Cos(angle) * radius,
                 platformCenter.position.y + 30,
                 platformCenter.position.z + Mathf.Sin(angle) * radius
@@ -57,7 +57,7 @@ public class PositionManager : MonoBehaviour
     // 获取所有点位 ID（用于分配）
     public List<int> GetAllPositionIds()
     {
-        List<int> ids = new List<int>();
+        List<int> ids = new();
         for (int i = 0; i < positionCount; i++)
         {
             ids.Add(i);
@@ -79,7 +79,7 @@ public class PositionManager : MonoBehaviour
     }
 
     // 可扩展：记录点位占用状态
-    private HashSet<int> occupiedPositions = new HashSet<int>();
+    private HashSet<int> occupiedPositions = new();
     public void OccupyPosition(int id) => occupiedPositions.Add(id);
     public void ReleasePosition(int id) => occupiedPositions.Remove(id);
     public bool IsPositionOccupied(int id) => occupiedPositions.Contains(id);

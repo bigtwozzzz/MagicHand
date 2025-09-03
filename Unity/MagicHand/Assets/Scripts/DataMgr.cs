@@ -1,7 +1,6 @@
 using Base;        // CharacterBase 来自这里
 using Broadcast;
 using Character;
-using Common;
 using Enemy;
 using Globalrandom;
 using Scene;
@@ -27,15 +26,19 @@ public class DataMgr : BaseManager<DataMgr>
     private string _loginStatus = "OffLine";
 
     // 存储所有玩家的角色信息
-    private Dictionary<string, CharacterBase> _allCharacterInfos = new Dictionary<string, CharacterBase>();
+    private readonly Dictionary<string, CharacterBase> _allCharacterInfos = new();
     // 新增：记录 player_id 到 role_id 的映射
-    private Dictionary<string, string> _playerToRoleMap = new Dictionary<string, string>();
-    private Dictionary<string, string> _playerNameDict = new Dictionary<string, string>();
+    private readonly Dictionary<string, string> _playerToRoleMap = new();
+    private readonly Dictionary<string, string> _playerNameDict = new();
     public IReadOnlyDictionary<string, string> PlayerNameDict => _playerNameDict;
     // 只读属性，供外部访问
     public IReadOnlyDictionary<string, string> PlayerToRoleMap => _playerToRoleMap;
+    /// <summary>
+    /// 获取所有角色信息
+    /// </summary>
+    public IEnumerable<CharacterBase> AllCharacterInfos => _allCharacterInfos.Values;
     // 记录每个玩家是否已经生成了角色（防止重复生成）
-    public HashSet<string> _spawnedPlayers = new HashSet<string>();
+    public HashSet<string> _spawnedPlayers = new();
 
     // 角色详细信息（来自服务器广播）
     private CharacterBase _characterInfo;
@@ -167,7 +170,7 @@ public class DataMgr : BaseManager<DataMgr>
         return _SceneData.Monsters.ToList();
     }
 
-    protected void OnDestroy()
+    protected override void OnDestroy()
     {
         var eventCenter = EventCenter.GetInstance();
         if (eventCenter != null)
@@ -389,10 +392,7 @@ public class DataMgr : BaseManager<DataMgr>
         // 3. 尝试生成该角色（如果条件满足）
         TrySpawnCharacterForPlayer(characterBase);
     }
-    /// <summary>
-    /// 获取所有角色信息
-    /// </summary>
-    public IEnumerable<CharacterBase> AllCharacterInfos => _allCharacterInfos.Values;
+    
 
     /// <summary>
     /// 根据 ID 获取角色

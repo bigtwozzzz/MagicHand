@@ -3,9 +3,6 @@ using Broadcast;
 using Character;
 using Common;
 using Skill;
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Gain : BaseManager<Gain>
@@ -264,7 +261,7 @@ public class Gain : BaseManager<Gain>
         _encoder.Send(2, logoutRequest);
         Debug.Log("[Gain] Logout request sent.");
     }
-    protected  void OnDestroy()
+    protected  override void OnDestroy()
     {
         //  安全移除事件监听
         var eventCenter = EventCenter.GetInstance();
@@ -291,13 +288,6 @@ public class Gain : BaseManager<Gain>
 
         var req = new LogoutRequest { UserId = DataMgr.GetInstance().UserId };
         _encoder.Send(2, req);
-
-        // 如果有 Flush 方法，确保调用
-        // _encoder.Flush();
-
-        // 可选：短暂停顿（不推荐在主线程 Sleep）
-        // 更好的方式是使用协程 + yield，但在 OnApplicationQuit 中协程可能不执行
-
         Debug.Log("[Gain] SyncLogout: Completed.");
     }
 }

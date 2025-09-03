@@ -1,5 +1,4 @@
 // Scripts/Components/DataSyncComponent.cs
-using Base;
 using Character;
 using UnityEngine;
 
@@ -44,15 +43,13 @@ public class CharacterInit : MonoBehaviour, IComponent
         status.SetStatus(data.Status);
         
         // --- 设置头顶名称 ---
-        var headPlate = GetComponent<HeadPlateComponent>();
-        if (headPlate != null)
+        if (TryGetComponent<HeadPlateComponent>(out var headPlate))
         {
             headPlate.Initialize(); // 确保 HeadPlate 初始化
             headPlate.SetNames(data.PlayerName, data.RoleName); // 设置文本
 
             // --- 关键：协调 AutoHeadPosition 和 HeadPlate ---
-            AutoHeadPosition autoHead = GetComponent<AutoHeadPosition>();
-            if (autoHead != null)
+            if (TryGetComponent<AutoHeadPosition>(out var autoHead))
             {
                 // 获取 HeadPlate 需要的垂直空间
                 float requiredHeight = headPlate.GetRequiredHeight();
@@ -62,7 +59,7 @@ public class CharacterInit : MonoBehaviour, IComponent
 
                 Vector3 currentOffset = autoHead.GetAdditionalOffset();
                 // 只调整 Y 轴，保留 X/Z 的手动微调
-                Vector3 newOffset = new Vector3(currentOffset.x, heightInMeters, currentOffset.z);
+                Vector3 newOffset = new(currentOffset.x, heightInMeters, currentOffset.z);
                 autoHead.SetAdditionalOffset(newOffset);
             }
         }
