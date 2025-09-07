@@ -6,11 +6,11 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 /// <summary>
-/// UI²ã¼¶
+/// UIï¿½ã¼¶
 /// </summary>
 
 /// <summary>
-/// UI²ã¼¶
+/// UIï¿½ã¼¶
 /// </summary>
 public enum E_UI_Layer
 {
@@ -21,11 +21,11 @@ public enum E_UI_Layer
 }
 
 /// <summary>
-/// Ãæ°å»ùÀà - °´Ğè²éÕÒ¿Ø¼ş£¬±ÜÃâ Awake ¿¨¶Ù
+/// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ - ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò¿Ø¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Awake ï¿½ï¿½ï¿½ï¿½
 /// </summary>
 public class BasePanel : MonoBehaviour
 {
-    // ¿Ø¼ş»º´æ£ºÖ»»º´æÒÑ²éÕÒ¹ıµÄ
+    // ï¿½Ø¼ï¿½ï¿½ï¿½ï¿½æ£ºÖ»ï¿½ï¿½ï¿½ï¿½ï¿½Ñ²ï¿½ï¿½Ò¹ï¿½ï¿½ï¿½
     private Dictionary<string, UIBehaviour> controlCache = new();
     protected virtual void Awake()
     {
@@ -38,36 +38,36 @@ public class BasePanel : MonoBehaviour
     protected virtual void OnValueChanged(string toggleName, bool value) { }
 
     /// <summary>
-    /// °´Ğè²éÕÒ¿Ø¼ş£¨Ê×´Î²éÕÒºó»º´æ£©
+    /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò¿Ø¼ï¿½ï¿½ï¿½ï¿½×´Î²ï¿½ï¿½Òºó»º´æ£©
     /// </summary>
     protected T GetControl<T>(string controlName) where T : UIBehaviour
     {
         if (string.IsNullOrEmpty(controlName))
             return null;
 
-        // ÏÈ²é»º´æ
+        // ï¿½È²é»ºï¿½ï¿½
         if (controlCache.TryGetValue(controlName, out var ctrl))
             return ctrl as T;
 
-        // °´Â·¾¶²éÕÒ£¨Ö§³ÖÇ¶Ì×£ºBtn/Close¡¢Input/Name µÈ£©
+        // ï¿½ï¿½Â·ï¿½ï¿½ï¿½ï¿½ï¿½Ò£ï¿½Ö§ï¿½ï¿½Ç¶ï¿½×£ï¿½Btn/Closeï¿½ï¿½Input/Name ï¿½È£ï¿½
         Transform tf = transform.Find(controlName);
         if (tf == null)
         {
-            Debug.LogWarning($"[BasePanel] ÕÒ²»µ½¿Ø¼ş: {controlName} (Â·¾¶¿ÉÄÜ´íÎó)");
+            Debug.LogWarning($"[BasePanel] ï¿½Ò²ï¿½ï¿½ï¿½ï¿½Ø¼ï¿½: {controlName} (Â·ï¿½ï¿½ï¿½ï¿½ï¿½Ü´ï¿½ï¿½ï¿½)");
             return null;
         }
 
         T component = tf.GetComponent<T>();
         if (component == null)
         {
-            Debug.LogWarning($"[BasePanel] ¿Ø¼ş {controlName} È±ÉÙ×é¼ş: {typeof(T).Name}");
+            Debug.LogWarning($"[BasePanel] ï¿½Ø¼ï¿½ {controlName} È±ï¿½ï¿½ï¿½ï¿½ï¿½: {typeof(T).Name}");
             return null;
         }
 
-        // »º´æ
+        // ï¿½ï¿½ï¿½ï¿½
         controlCache[controlName] = component;
 
-        // ×Ô¶¯×¢²áÊÂ¼ş£¨Èç¹ûĞèÒª£©
+        // ï¿½Ô¶ï¿½×¢ï¿½ï¿½ï¿½Â¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½
         if (component is Button btn)
         {
             btn.onClick.AddListener(() => OnClick(controlName));
@@ -81,7 +81,7 @@ public class BasePanel : MonoBehaviour
     }
 
     /// <summary>
-    /// ÇåÀí»º´æ£¨¿ÉÑ¡£ºÃæ°åÏú»ÙÊ±µ÷ÓÃ£©
+    /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½æ£¨ï¿½ï¿½Ñ¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½Ã£ï¿½
     /// </summary>
     protected virtual void OnDestroy()
     {
@@ -89,7 +89,7 @@ public class BasePanel : MonoBehaviour
     }
 
     /// <summary>
-    /// Ìí¼Ó×Ô¶¨ÒåÊÂ¼ş£¨¾²Ì¬¹¤¾ß£©
+    /// ï¿½ï¿½ï¿½ï¿½ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½Â¼ï¿½ï¿½ï¿½ï¿½ï¿½Ì¬ï¿½ï¿½ï¿½ß£ï¿½
     /// </summary>
     public static void AddCustomEventListener(UIBehaviour control, EventTriggerType type, UnityEngine.Events.UnityAction<BaseEventData> callBack)
     {
@@ -102,7 +102,7 @@ public class BasePanel : MonoBehaviour
     }
 }
 /// <summary>
-/// UI¹ÜÀíÆ÷£¨°²È«¼ÓÔØ + ·ÖÖ¡ÊµÀı»¯ + ÕıÈ·ÊÍ·Å£©
+/// UIï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È«ï¿½ï¿½ï¿½ï¿½ + ï¿½ï¿½Ö¡Êµï¿½ï¿½ï¿½ï¿½ + ï¿½ï¿½È·ï¿½Í·Å£ï¿½
 /// </summary>
 public class UIMgr : BaseManager<UIMgr>
 {
@@ -117,14 +117,14 @@ public class UIMgr : BaseManager<UIMgr>
         base.Awake();
         if (isInitialized) return;
         isInitialized = true;
-        Debug.Log("[UIMgr] Awake ±»µ÷ÓÃ£¬¿ªÊ¼³õÊ¼»¯...");
+        Debug.Log("[UIMgr] Awake ï¿½ï¿½ï¿½ï¿½ï¿½Ã£ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½Ê¼ï¿½ï¿½...");
 
         GlobalMonoMgr.GetInstance().SafeStartCoroutine(InitializeAsync());
     }
 
     private IEnumerator InitializeAsync()
     {
-        Debug.Log("[UIMgr] ¿ªÊ¼Òì²½³õÊ¼»¯...");
+        Debug.Log("[UIMgr] ï¿½ï¿½Ê¼ï¿½ì²½ï¿½ï¿½Ê¼ï¿½ï¿½...");
 
         string canvasAddress = "UI/Canvas";
         GameObject canvasPrefab = null;
@@ -143,11 +143,11 @@ public class UIMgr : BaseManager<UIMgr>
 
         if (canvasPrefab == null)
         {
-            Debug.LogError($"[UIMgr] ¼ÓÔØ Canvas Ê§°Ü: {canvasAddress}");
+            Debug.LogError($"[UIMgr] ï¿½ï¿½ï¿½ï¿½ Canvas Ê§ï¿½ï¿½: {canvasAddress}");
             yield break;
         }
 
-        // ÊµÀı»¯ Canvas£¨¿É·ÖÖ¡£©
+        // Êµï¿½ï¿½ï¿½ï¿½ Canvasï¿½ï¿½ï¿½É·ï¿½Ö¡ï¿½ï¿½
         yield return null;
 
         GameObject canvasObj = Instantiate(canvasPrefab);
@@ -157,7 +157,7 @@ public class UIMgr : BaseManager<UIMgr>
         canvas = canvasObj.GetComponent<RectTransform>();
         if (canvas == null)
         {
-            Debug.LogError("[UIMgr] Canvas È±ÉÙ RectTransform ×é¼ş£¡");
+            Debug.LogError("[UIMgr] Canvas È±ï¿½ï¿½ RectTransform ï¿½ï¿½ï¿½ï¿½ï¿½");
             yield break;
         }
 
@@ -168,25 +168,41 @@ public class UIMgr : BaseManager<UIMgr>
 
         yield return null;
 
-        // ¼ÓÔØ EventSystem
-        ResMgr.GetInstance().LoadAsync<GameObject>("UI/EventSystem", (eventSysPrefab) =>
+        // åˆ›å»º EventSystemï¼ˆæ£€æŸ¥æ˜¯å¦å·²å­˜åœ¨ï¼‰
+        if (FindObjectOfType<EventSystem>() == null)
         {
-            if (eventSysPrefab != null)
+            ResMgr.GetInstance().LoadAsync<GameObject>("UI/EventSystem", (eventSysPrefab) =>
             {
-                GameObject eventSysObj = Instantiate(eventSysPrefab);
-                eventSysObj.name = "UI-EventSystem";
-                DontDestroyOnLoad(eventSysObj);
-            }
-        }, autoRelease: false);
+                if (eventSysPrefab != null)
+                {
+                    // å†æ¬¡æ£€æŸ¥ï¼Œé˜²æ­¢å¼‚æ­¥åŠ è½½æœŸé—´å…¶ä»–åœ°æ–¹åˆ›å»ºäº†EventSystem
+                    if (FindObjectOfType<EventSystem>() == null)
+                    {
+                        GameObject eventSysObj = Instantiate(eventSysPrefab);
+                        eventSysObj.name = "UI-EventSystem";
+                        DontDestroyOnLoad(eventSysObj);
+                        Debug.Log("[UIMgr] EventSystem åˆ›å»ºæˆåŠŸ");
+                    }
+                    else
+                    {
+                        Debug.Log("[UIMgr] EventSystem å·²å­˜åœ¨ï¼Œè·³è¿‡åˆ›å»º");
+                    }
+                }
+            }, autoRelease: false);
+        }
+        else
+        {
+            Debug.Log("[UIMgr] EventSystem å·²å­˜åœ¨ï¼Œè·³è¿‡åˆ›å»º");
+        }
 
-        Debug.Log("[UIMgr] ³õÊ¼»¯Íê³É£¡");
+        Debug.Log("[UIMgr] ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½É£ï¿½");
     }
 
     private Transform FindChild(string name)
     {
         Transform child = canvas?.Find(name);
         if (child == null)
-            Debug.LogError($"[UIMgr] ÕÒ²»µ½×Ó¶ÔÏó: {name}");
+            Debug.LogError($"[UIMgr] ï¿½Ò²ï¿½ï¿½ï¿½ï¿½Ó¶ï¿½ï¿½ï¿½: {name}");
         return child;
     }
 
@@ -199,38 +215,38 @@ public class UIMgr : BaseManager<UIMgr>
         _ => null
     };
     /// <summary>
-    /// ÏÔÊ¾Ãæ°å£¨·Ç·ºĞÍ°æ±¾£ºÓÃÓÚÖ»ÖªµÀÃæ°åÃû£¬²»¹ØĞÄÀàĞÍÊ±£©
+    /// ï¿½ï¿½Ê¾ï¿½ï¿½å£¨ï¿½Ç·ï¿½ï¿½Í°æ±¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö»Öªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½
     /// </summary>
     public void ShowPanel(string panelName, E_UI_Layer layer = E_UI_Layer.Mid)
     {
         if (panelDic.TryGetValue(panelName, out BasePanel panel))
         {
-            // Ãæ°åÒÑ´æÔÚ£¬Ö±½ÓÏÔÊ¾
+            // ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½ï¿½Ú£ï¿½Ö±ï¿½ï¿½ï¿½ï¿½Ê¾
             panel.ShowMe();
-            Debug.Log($"[UIMgr] Ãæ°åÒÑ´æÔÚ£¬Ö±½ÓÏÔÊ¾: {panelName}");
+            Debug.Log($"[UIMgr] ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½ï¿½Ú£ï¿½Ö±ï¿½ï¿½ï¿½ï¿½Ê¾: {panelName}");
             return;
         }
 
-        // Ãæ°å²»´æÔÚ£¬Òì²½¼ÓÔØ
+        // ï¿½ï¿½å²»ï¿½ï¿½ï¿½Ú£ï¿½ï¿½ì²½ï¿½ï¿½ï¿½ï¿½
         string address = "UI/Prefabs/" + panelName;
-        Debug.Log($"[UIMgr] ·Ç·ºĞÍ¼ÓÔØÃæ°å: {address}");
+        Debug.Log($"[UIMgr] ï¿½Ç·ï¿½ï¿½Í¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½: {address}");
 
         ResMgr.GetInstance().LoadAsync<GameObject>(address, (prefab) =>
         {
             if (prefab == null)
             {
-                Debug.LogError($"[UIMgr] ¼ÓÔØÊ§°Ü£¡prefab Îª null: {address}");
+                Debug.LogError($"[UIMgr] ï¿½ï¿½ï¿½ï¿½Ê§ï¿½Ü£ï¿½prefab Îª null: {address}");
                 return;
             }
 
             Transform father = GetLayerFather(layer);
             if (father == null)
             {
-                Debug.LogError($"[UIMgr] ¸¸½ÚµãÎª null£¡layer={layer}");
+                Debug.LogError($"[UIMgr] ï¿½ï¿½ï¿½Úµï¿½Îª nullï¿½ï¿½layer={layer}");
                 return;
             }
 
-            // ÊµÀı»¯
+            // Êµï¿½ï¿½ï¿½ï¿½
             GameObject instance = Instantiate(prefab, father);
             instance.name = panelName;
 
@@ -243,26 +259,26 @@ public class UIMgr : BaseManager<UIMgr>
                 ResetTransform(instance.transform);
             }
 
-            // »ñÈ¡ BasePanel ×é¼ş
+            // ï¿½ï¿½È¡ BasePanel ï¿½ï¿½ï¿½
             BasePanel basePanel = instance.GetComponent<BasePanel>();
             if (basePanel == null)
             {
-                Debug.LogError($"[UIMgr] ÊµÀıÈ±ÉÙ BasePanel ½Å±¾: {panelName}");
+                Debug.LogError($"[UIMgr] Êµï¿½ï¿½È±ï¿½ï¿½ BasePanel ï¿½Å±ï¿½: {panelName}");
                 Destroy(instance);
                 return;
             }
 
-            // »º´æ
+            // ï¿½ï¿½ï¿½ï¿½
             panelDic[panelName] = basePanel;
 
-            // ÏÔÊ¾
+            // ï¿½ï¿½Ê¾
             basePanel.ShowMe();
 
-            Debug.Log($"[UIMgr] ·Ç·ºĞÍÃæ°å {panelName} ´´½¨²¢ÏÔÊ¾");
+            Debug.Log($"[UIMgr] ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ {panelName} ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾");
         }, autoRelease: false);
     }
     /// <summary>
-    /// ÏÔÊ¾Ãæ°å£¨Òì²½¼ÓÔØ + ·ÖÖ¡ÊµÀı»¯£©
+    /// ï¿½ï¿½Ê¾ï¿½ï¿½å£¨ï¿½ì²½ï¿½ï¿½ï¿½ï¿½ + ï¿½ï¿½Ö¡Êµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     /// </summary>
     public void ShowPanel<T>(string panelName, E_UI_Layer layer = E_UI_Layer.Mid, UnityAction<T> callBack = null) where T : BasePanel
     {
@@ -270,41 +286,41 @@ public class UIMgr : BaseManager<UIMgr>
         {
             panelDic[panelName].ShowMe();
             callBack?.Invoke(panelDic[panelName] as T);
-            Debug.Log($"[UIMgr] Ãæ°åÒÑ´æÔÚ£¬Ö±½ÓÏÔÊ¾: {panelName}");
+            Debug.Log($"[UIMgr] ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½ï¿½Ú£ï¿½Ö±ï¿½ï¿½ï¿½ï¿½Ê¾: {panelName}");
             return;
         }
 
         string address = "UI/Prefabs/" + panelName;
-        Debug.Log($"[UIMgr] ¿ªÊ¼¼ÓÔØÃæ°å: {address}");
+        Debug.Log($"[UIMgr] ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½: {address}");
 
         ResMgr.GetInstance().LoadAsync<GameObject>(address, (prefab) =>
         {
             if (prefab == null)
             {
-                Debug.LogError($"[UIMgr] ¼ÓÔØÊ§°Ü£¡prefab Îª null£¬Çë¼ì²é Addressables µØÖ·: {address}");
+                Debug.LogError($"[UIMgr] ï¿½ï¿½ï¿½ï¿½Ê§ï¿½Ü£ï¿½prefab Îª nullï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Addressables ï¿½ï¿½Ö·: {address}");
                 return;
             }
 
             Transform father = GetLayerFather(layer);
             if (father == null)
             {
-                Debug.LogError($"[UIMgr] ¸¸½ÚµãÎª null£¡layer={layer}");
+                Debug.LogError($"[UIMgr] ï¿½ï¿½ï¿½Úµï¿½Îª nullï¿½ï¿½layer={layer}");
                 return;
             }
 
-            // Æô¶¯·ÖÖ¡´´½¨Ğ­³Ì
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¡ï¿½ï¿½ï¿½ï¿½Ğ­ï¿½ï¿½
             GlobalMonoMgr.GetInstance().SafeStartCoroutine(CreatePanelAsync(prefab, father, panelName, callBack));
         }, autoRelease: false);
     }
 
     /// <summary>
-    /// ·ÖÖ¡ÊµÀı»¯Ãæ°å£¨±ÜÃâµ¥Ö¡¿¨¶Ù£©
+    /// ï¿½ï¿½Ö¡Êµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½å£¨ï¿½ï¿½ï¿½âµ¥Ö¡ï¿½ï¿½ï¿½Ù£ï¿½
     /// </summary>
     private IEnumerator CreatePanelAsync<T>(GameObject prefab, Transform father, string panelName, UnityAction<T> callBack) where T : BasePanel
     {
         float startTime = Time.realtimeSinceStartup;
 
-        // Step 1: ÊµÀı»¯
+        // Step 1: Êµï¿½ï¿½ï¿½ï¿½
         GameObject instance = Instantiate(prefab, father);
         instance.name = panelName;
         if (instance.TryGetComponent<RectTransform>(out var rect))
@@ -313,39 +329,39 @@ public class UIMgr : BaseManager<UIMgr>
         }
         else
         {
-            // Èç¹ûÃ»ÓĞ RectTransform£¬ÖÁÉÙÖØÖÃ Transform
+            // ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ RectTransformï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Transform
             ResetTransform(instance.transform);
         }
-        yield return null; // ·ÖÖ¡£ºÈÃ Canvas ÓĞ»ú»áÖØ½¨
+        yield return null; // ï¿½ï¿½Ö¡ï¿½ï¿½ï¿½ï¿½ Canvas ï¿½Ğ»ï¿½ï¿½ï¿½ï¿½Ø½ï¿½
 
-        // Step 2: »ñÈ¡×é¼ş
+        // Step 2: ï¿½ï¿½È¡ï¿½ï¿½ï¿½
         T panel = instance.GetComponent<T>();
         if (panel == null)
         {
-            Debug.LogError($"[UIMgr] ÊµÀıÉÏÈ±ÉÙ½Å±¾×é¼ş: {typeof(T).Name}");
+            Debug.LogError($"[UIMgr] Êµï¿½ï¿½ï¿½ï¿½È±ï¿½Ù½Å±ï¿½ï¿½ï¿½ï¿½: {typeof(T).Name}");
             Destroy(instance);
             yield break;
         }
 
-        // Step 3: »º´æ
+        // Step 3: ï¿½ï¿½ï¿½ï¿½
         panelDic[panelName] = panel;
 
         yield return null;
 
-        // Step 4: ÏÔÊ¾
+        // Step 4: ï¿½ï¿½Ê¾
         panel.ShowMe();
 
         yield return null;
 
-        // Step 5: »Øµ÷
+        // Step 5: ï¿½Øµï¿½
         callBack?.Invoke(panel);
 
         float cost = (Time.realtimeSinceStartup - startTime) * 1000;
-        Debug.Log($"[UIMgr] Ãæ°å {panelName} ·ÖÖ¡´´½¨Íê³É£¡ºÄÊ±: {cost:F2}ms");
+        Debug.Log($"[UIMgr] ï¿½ï¿½ï¿½ {panelName} ï¿½ï¿½Ö¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É£ï¿½ï¿½ï¿½Ê±: {cost:F2}ms");
     }
 
     /// <summary>
-    /// ÖØÖÃ Transform
+    /// ï¿½ï¿½ï¿½ï¿½ Transform
     /// </summary>
     private void ResetTransform(Transform tf)
     {
@@ -355,23 +371,23 @@ public class UIMgr : BaseManager<UIMgr>
     }
     private void ResetRectTransform(RectTransform rectTransform)
     {
-        // 1. ÖØÖÃÃªµã£ºËÄ½ÇÀ­Éì£¨ÌîÂú¸¸ÈİÆ÷£©
+        // 1. ï¿½ï¿½ï¿½ï¿½Ãªï¿½ã£ºï¿½Ä½ï¿½ï¿½ï¿½ï¿½ì£¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         rectTransform.anchorMin = Vector2.zero;
         rectTransform.anchorMax = Vector2.one;
 
-        // 2. ÖØÖÃÖáĞÄ£º¾ÓÖĞ
+        // 2. ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä£ï¿½ï¿½ï¿½ï¿½ï¿½
         rectTransform.pivot = new Vector2(0.5f, 0.5f);
 
-        // 3. ÖØÖÃÎ»ÖÃºÍ³ß´ç
+        // 3. ï¿½ï¿½ï¿½ï¿½Î»ï¿½ÃºÍ³ß´ï¿½
         rectTransform.anchoredPosition = Vector2.zero;
-        rectTransform.sizeDelta = Vector2.zero; // sizeDelta=0 ±íÊ¾×Ô¶¯ÊÊÅäÃªµã
+        rectTransform.sizeDelta = Vector2.zero; // sizeDelta=0 ï¿½ï¿½Ê¾ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ï¿½Ãªï¿½ï¿½
 
-        // 4. ÖØÖÃËõ·ÅºÍĞı×ª
+        // 4. ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Åºï¿½ï¿½ï¿½×ª
         rectTransform.localScale = Vector3.one;
         rectTransform.localRotation = Quaternion.identity;
     }
     /// <summary>
-    /// Òş²ØÃæ°å£¨Ïú»ÙÊµÀı£©
+    /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½å£¨ï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½ï¿½ï¿½
     /// </summary>
     public void HidePanel(string panelName)
     {
@@ -383,7 +399,7 @@ public class UIMgr : BaseManager<UIMgr>
     }
 
     /// <summary>
-    /// »ñÈ¡ÒÑÏÔÊ¾µÄÃæ°å
+    /// ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½
     /// </summary>
     public T GetPanel<T>(string name) where T : BasePanel
     {
@@ -391,11 +407,11 @@ public class UIMgr : BaseManager<UIMgr>
     }
 
     /// <summary>
-    /// ÊÍ·ÅËùÓĞ UI ×ÊÔ´£¨³¡¾°ÇĞ»»Ê±µ÷ÓÃ£©
+    /// ï¿½Í·ï¿½ï¿½ï¿½ï¿½ï¿½ UI ï¿½ï¿½Ô´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ğ»ï¿½Ê±ï¿½ï¿½ï¿½Ã£ï¿½
     /// </summary>
     public void ReleaseAllUIResources()
     {
-        Debug.Log("[UIMgr] ¿ªÊ¼ÊÍ·ÅËùÓĞ UI ×ÊÔ´...");
+        Debug.Log("[UIMgr] ï¿½ï¿½Ê¼ï¿½Í·ï¿½ï¿½ï¿½ï¿½ï¿½ UI ï¿½ï¿½Ô´...");
 
         foreach (var pair in panelDic)
         {
@@ -406,6 +422,6 @@ public class UIMgr : BaseManager<UIMgr>
         }
         panelDic.Clear();
 
-        Debug.Log("[UIMgr] UI ×ÊÔ´ÊÍ·ÅÍê³É¡£");
+        Debug.Log("[UIMgr] UI ï¿½ï¿½Ô´ï¿½Í·ï¿½ï¿½ï¿½É¡ï¿½");
     }
 }

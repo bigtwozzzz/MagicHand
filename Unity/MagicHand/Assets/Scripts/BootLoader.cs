@@ -4,10 +4,14 @@ using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
 /// <summary>
-/// ÓÎÏ·Æô¶¯¼ÓÔØÆ÷£¨È·±£ Addressables ºÍ UIMgr ³õÊ¼»¯Íê³ÉºóÔÙ¼ÓÔØ UI£©
+/// ï¿½ï¿½Ï·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È·ï¿½ï¿½ Addressables ï¿½ï¿½ UIMgr ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½Éºï¿½ï¿½Ù¼ï¿½ï¿½ï¿½ UIï¿½ï¿½
 /// </summary>
 public class BootLoader : MonoBehaviour
 {
+    [Header("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¡ï¿½ï¿½")]
+    [SerializeField] private bool skipLogin = true;
+    [SerializeField] private string debugPlayerName = "DebugPlayer";
+    [SerializeField] private string debugPlayerId = "debug_001";
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     static void LoadBootLoader()
     {
@@ -21,7 +25,7 @@ public class BootLoader : MonoBehaviour
 
     private void Awake()
     {
-        // È·±£Î¨Ò»
+        // È·ï¿½ï¿½Î¨Ò»
         BootLoader[] loaders = FindObjectsOfType<BootLoader>();
         if (loaders.Length > 1)
         {
@@ -31,17 +35,17 @@ public class BootLoader : MonoBehaviour
 
         DontDestroyOnLoad(gameObject);
 
-        //  ÑÓ³ÙÒ»Ö¡£¬È·±£ËùÓÐ BaseManager ÒÑ³õÊ¼»¯
+        //  ï¿½Ó³ï¿½Ò»Ö¡ï¿½ï¿½È·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ BaseManager ï¿½Ñ³ï¿½Ê¼ï¿½ï¿½
         StartCoroutine(DelayedStart());
     }
 
     private IEnumerator DelayedStart()
     {
-        yield return null; // µÈÒ»Ö¡£¬ÈÃ BaseManager Íê³É³õÊ¼»¯
+        yield return null; // ï¿½ï¿½Ò»Ö¡ï¿½ï¿½ï¿½ï¿½ BaseManager ï¿½ï¿½É³ï¿½Ê¼ï¿½ï¿½
 
         if (UIMgr.GetInstance() == null)
         {
-            Debug.LogError("[BootLoader] UIMgr ÉÐÎ´³õÊ¼»¯£¬Çë¼ì²é BaseManager ÊÇ·ñÕýÈ·ÊµÏÖµ¥Àý¡£");
+            Debug.LogError("[BootLoader] UIMgr ï¿½ï¿½Î´ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ BaseManager ï¿½Ç·ï¿½ï¿½ï¿½È·Êµï¿½Öµï¿½ï¿½ï¿½ï¿½ï¿½");
             yield break;
         }
 
@@ -50,14 +54,14 @@ public class BootLoader : MonoBehaviour
 
     private IEnumerator StartGameRoutine()
     {
-        Debug.Log("¡¾BootLoader¡¿¿ªÊ¼Æô¶¯Á÷³Ì...");
+        Debug.Log("ï¿½ï¿½BootLoaderï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½...");
 
-        // Step 1: ³õÊ¼»¯ Addressables
+        // Step 1: ï¿½ï¿½Ê¼ï¿½ï¿½ Addressables
         var initHandle = Addressables.InitializeAsync();
 
         if (!initHandle.IsValid())
         {
-            Debug.LogError(" Addressables ³õÊ¼»¯ handle ÎÞÐ§£¡");
+            Debug.LogError(" Addressables ï¿½ï¿½Ê¼ï¿½ï¿½ handle ï¿½ï¿½Ð§ï¿½ï¿½");
             yield break;
         }
 
@@ -67,31 +71,31 @@ public class BootLoader : MonoBehaviour
         {
             if (op.Status == AsyncOperationStatus.Succeeded)
             {
-                Debug.Log(" Addressables ³õÊ¼»¯³É¹¦");
+                Debug.Log(" Addressables ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½É¹ï¿½");
                 initSuccess = true;
             }
             else
             {
-                Debug.LogError($" Addressables ³õÊ¼»¯Ê§°Ü: {op.OperationException}");
+                Debug.LogError($" Addressables ï¿½ï¿½Ê¼ï¿½ï¿½Ê§ï¿½ï¿½: {op.OperationException}");
                 initSuccess = false;
             }
         };
 
-        // Ö»ÓÃÕâÒ»¾äµÈ´ý
+        // Ö»ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½È´ï¿½
         yield return initHandle;
 
-        //  ´ËÊ± initHandle ÒÑÍê³É£¬initSuccess ÒÑ±»»Øµ÷ÉèÖÃ
+        //  ï¿½ï¿½Ê± initHandle ï¿½ï¿½ï¿½ï¿½É£ï¿½initSuccess ï¿½Ñ±ï¿½ï¿½Øµï¿½ï¿½ï¿½ï¿½ï¿½
         if (!initSuccess)
         {
-            Debug.LogError(" Addressables ³õÊ¼»¯Ê§°Ü£¬ÓÎÏ·ÎÞ·¨Æô¶¯¡£");
+            Debug.LogError(" Addressables ï¿½ï¿½Ê¼ï¿½ï¿½Ê§ï¿½Ü£ï¿½ï¿½ï¿½Ï·ï¿½Þ·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
             yield break;
         }
-        // Step 2: µÈ´ý UIMgr Íê³É Canvas ³õÊ¼»¯
-        Debug.Log("¡¾BootLoader¡¿µÈ´ý UIMgr ³õÊ¼»¯...");
+        // Step 2: ï¿½È´ï¿½ UIMgr ï¿½ï¿½ï¿½ Canvas ï¿½ï¿½Ê¼ï¿½ï¿½
+        Debug.Log("ï¿½ï¿½BootLoaderï¿½ï¿½ï¿½È´ï¿½ UIMgr ï¿½ï¿½Ê¼ï¿½ï¿½...");
         yield return StartCoroutine(WaitForUIMgrReady());
 
-        // Step 3: ¼ÓÔØÖ÷³¡¾°£¨StartScene£©
-        Debug.Log("¡¾BootLoader¡¿¿ªÊ¼¼ÓÔØ StartScene...");
+        // Step 3: ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½StartSceneï¿½ï¿½
+        Debug.Log("ï¿½ï¿½BootLoaderï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ StartScene...");
         bool sceneLoaded = false;
         GlobalMonoMgr.GetInstance().StartCoroutine(
                 SceneMgr.GetInstance().LoadSceneAsync("StartScene", (success) =>
@@ -99,42 +103,94 @@ public class BootLoader : MonoBehaviour
             sceneLoaded = success;
             if (success)
             {
-                Debug.Log(" ³¡¾°¼ÓÔØ³É¹¦: StartScene");
+                Debug.Log(" ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ø³É¹ï¿½: StartScene");
             }
             else
             {
-                Debug.LogError(" ³¡¾°¼ÓÔØÊ§°Ü: StartScene");
+                Debug.LogError(" ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê§ï¿½ï¿½: StartScene");
             }
         }));
 
-        // µÈ´ý³¡¾°¼ÓÔØÍê³É
+        // ï¿½È´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         while (!sceneLoaded)
         {
             yield return null;
         }
 
-        // Step 4: ÏÔÊ¾ LoginUI Ãæ°å
-        Debug.Log("¡¾BootLoader¡¿³¢ÊÔÏÔÊ¾ LoginUI...");
-        UIMgr.GetInstance().ShowPanel<LoginUI>("LoginUI", E_UI_Layer.Mid, (panel) =>
+        // Step 4: ï¿½ï¿½ï¿½Ý¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¡ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â¼
+        if (skipLogin)
         {
-            if (panel != null)
+            Debug.Log("ï¿½ï¿½BootLoaderï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä£Ê½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½ï¿½Ö±ï¿½Ó½ï¿½ï¿½ï¿½Ï·");
+            SkipLoginAndEnterGame();
+        }
+        else
+        {
+            Debug.Log("ï¿½ï¿½BootLoaderï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ LoginUI...");
+            UIMgr.GetInstance().ShowPanel<LoginUI>("LoginUI", E_UI_Layer.Mid, (panel) =>
             {
-                Debug.Log(" LoginUI Ãæ°åÒÑ³É¹¦´´½¨²¢ÏÔÊ¾£¡");
-            }
-            else
-            {
-                Debug.LogError(" LoginUI Ãæ°å´´½¨Ê§°Ü£¬¿ÉÄÜ prefab È±Ê§»ò½Å±¾Î´¹ÒÔØ¡£");
-            }
-        });
+                if (panel != null)
+                {
+                    Debug.Log(" LoginUI ï¿½ï¿½ï¿½ï¿½Ñ³É¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½");
+                }
+                else
+                {
+                    Debug.LogError(" LoginUI ï¿½ï¿½å´´ï¿½ï¿½Ê§ï¿½Ü£ï¿½ï¿½ï¿½ï¿½ï¿½ prefab È±Ê§ï¿½ï¿½Å±ï¿½Î´ï¿½ï¿½ï¿½Ø¡ï¿½");
+                }
+            });
+        }
 
-        // Step 5: Æô¶¯Íê³É£¬Ïú»Ù BootLoader
+        // Step 5: ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É£ï¿½ï¿½ï¿½ï¿½ï¿½ BootLoader
         OnLoadOver();
         Cleanup();
         Destroy(gameObject);
     }
 
     /// <summary>
-    /// µÈ´ý UIMgr Íê³É Canvas ³õÊ¼»¯
+    /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â¼Ö±ï¿½Ó½ï¿½ï¿½ï¿½Ï·ï¿½Ä·ï¿½ï¿½ï¿½
+    /// </summary>
+    private void SkipLoginAndEnterGame()
+    {
+        // ï¿½ï¿½ï¿½Ãµï¿½ï¿½ï¿½ï¿½ï¿½Ãµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        DataMgr.GetInstance().SetPlayerName(debugPlayerId, debugPlayerName);
+        
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½ï¿½ï¿½ï¿½ï¿½Ä£ï¿½ï¿½ï¿½ï¿½Â¼ï¿½É¹ï¿½ï¿½ï¿½ï¿½Ä½ï¿½Îªï¿½ï¿½
+        EventCenter.GetInstance().EventTrigger(E_EventType.Event_Lock_Window);
+        
+        // Ö±ï¿½Ó¼ï¿½ï¿½ï¿½ï¿½ï¿½Ï·ï¿½ï¿½ï¿½ï¿½
+        SceneMgr.GetInstance().SafeLoadScene("GamingScene", OnDebugLoadOver);
+    }
+    
+    /// <summary>
+    /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä£Ê½ï¿½Â³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÉµÄ»Øµï¿½
+    /// </summary>
+    /// <param name="success">ï¿½Ç·ï¿½ï¿½ï¿½ï¿½É¹ï¿½</param>
+    private void OnDebugLoadOver(bool success)
+    {
+        if (success)
+        {
+            Debug.Log("ï¿½ï¿½BootLoaderï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä£Ê½ï¿½ï¿½GamingScene ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É¡ï¿½");
+            
+            // ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+            UIMgr.GetInstance().ShowPanel<MainUI>("MainUI", E_UI_Layer.Mid, (panel) =>
+            {
+                if (panel != null)
+                {
+                    Debug.Log("ï¿½ï¿½BootLoaderï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä£Ê½ï¿½ï¿½MainUI ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾");
+                }
+                else
+                {
+                    Debug.LogError("ï¿½ï¿½BootLoaderï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä£Ê½ï¿½ï¿½MainUI ï¿½ï¿½å´´ï¿½ï¿½Ê§ï¿½ï¿½");
+                }
+            });
+        }
+        else
+        {
+            Debug.LogError("ï¿½ï¿½BootLoaderï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä£Ê½ï¿½ï¿½GamingScene ï¿½ï¿½ï¿½ï¿½Ê§ï¿½ï¿½");
+        }
+    }
+
+    /// <summary>
+    /// ï¿½È´ï¿½ UIMgr ï¿½ï¿½ï¿½ Canvas ï¿½ï¿½Ê¼ï¿½ï¿½
     /// </summary>
     private IEnumerator WaitForUIMgrReady()
     {
@@ -149,17 +205,17 @@ public class BootLoader : MonoBehaviour
 
         if (UIMgr.GetInstance().canvas == null)
         {
-            Debug.LogError(" UIMgr ³õÊ¼»¯³¬Ê±£¡Çë¼ì²é Canvas Prefab µØÖ·ÊÇ·ñÕýÈ·£ºUI/Canvas");
+            Debug.LogError(" UIMgr ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Canvas Prefab ï¿½ï¿½Ö·ï¿½Ç·ï¿½ï¿½ï¿½È·ï¿½ï¿½UI/Canvas");
         }
         else
         {
-            Debug.Log(" UIMgr ³õÊ¼»¯Íê³É£¬Canvas ÒÑ¾ÍÐ÷¡£");
+            Debug.Log(" UIMgr ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½É£ï¿½Canvas ï¿½Ñ¾ï¿½ï¿½ï¿½ï¿½ï¿½");
         }
     }
 
     private void OnLoadOver()
     {
-        Debug.Log(" ÓÎÏ·Æô¶¯Íê³É£¡");
+        Debug.Log(" ï¿½ï¿½Ï·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É£ï¿½");
     }
 
     private void Cleanup()
@@ -169,6 +225,6 @@ public class BootLoader : MonoBehaviour
 
     private void OnDestroy()
     {
-        Debug.Log("BootLoader ÒÑÏú»Ù¡£");
+        Debug.Log("BootLoader ï¿½ï¿½ï¿½ï¿½ï¿½Ù¡ï¿½");
     }
 }

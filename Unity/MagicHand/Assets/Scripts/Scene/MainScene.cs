@@ -1,35 +1,35 @@
 using UnityEngine;
 
 /// <summary>
-/// Ö÷³¡¾°×ÊÔ´¼ÓÔØ¿ØÖÆÆ÷
-/// ¹¦ÄÜ£ºÒì²½¼ÓÔØÆ½Ì¨Ô¤ÖÆÌå£¬²¢ÔÚ¿ÉÓÃµãÎ»ÉÏÉú³ÉµãÎ»ÌØÐ§£¨Èç¹âÐ§¡¢±ê¼ÇµÈ£©
-/// ºóÐø¿ÉÀ©Õ¹ÎªÌØÐ§¡¢UI±ê¼Ç¡¢¶¯»­µÈÊÓ¾õ·´À¡
+/// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô´ï¿½ï¿½ï¿½Ø¿ï¿½ï¿½ï¿½ï¿½ï¿½
+/// ï¿½ï¿½ï¿½Ü£ï¿½ï¿½ì²½ï¿½ï¿½ï¿½ï¿½Æ½Ì¨Ô¤ï¿½ï¿½ï¿½å£¬ï¿½ï¿½ï¿½Ú¿ï¿½ï¿½Ãµï¿½Î»ï¿½ï¿½ï¿½ï¿½ï¿½Éµï¿½Î»ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ï¿½ÇµÈ£ï¿½
+/// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Õ¹Îªï¿½ï¿½Ð§ï¿½ï¿½UIï¿½ï¿½Ç¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¾ï¿½ï¿½ï¿½ï¿½ï¿½
 /// </summary>
 public class MainScene : MonoBehaviour
 {
-    // Ô¤ÖÆÌå×ÊÔ´µØÖ·
-    private const string PLATFORM_ADDRESS = "Scene/Prefabs/CircularPlatform";     // Æ½Ì¨Ô¤ÖÆÌå
-    private const string POSITION_EFFECT_ADDRESS = "Effect/Position";      // µãÎ»ÌØÐ§Ô¤ÖÆÌå£¨Ô­¡°½ÇÉ«¡±£©
+    // Ô¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô´ï¿½ï¿½Ö·
+    private const string PLATFORM_ADDRESS = "Scene/Prefabs/CircularPlatform";     // Æ½Ì¨Ô¤ï¿½ï¿½ï¿½ï¿½
+    private const string POSITION_EFFECT_ADDRESS = "Effect/Position";      // ï¿½ï¿½Î»ï¿½ï¿½Ð§Ô¤ï¿½ï¿½ï¿½å£¨Ô­ï¿½ï¿½ï¿½ï¿½É«ï¿½ï¿½ï¿½ï¿½
 
-    [Header("ÔËÐÐÊ±ÊµÀý")]
-    [SerializeField] private GameObject platformInstance;       // Æ½Ì¨ÊµÀý
-    // ×¢Òâ£ºµãÎ»ÌØÐ§¿ÉÄÜÓÐ¶à¸ö£¬²»µ¥¶À±£´æÒýÓÃ£¬¿ÉÍ¨¹ýÆäËû·½Ê½¹ÜÀí
+    [Header("ï¿½ï¿½ï¿½ï¿½Ê±Êµï¿½ï¿½")]
+    [SerializeField] private GameObject platformInstance;       // Æ½Ì¨Êµï¿½ï¿½
+    // ×¢ï¿½â£ºï¿½ï¿½Î»ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ï¿½ï¿½Ð¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã£ï¿½ï¿½ï¿½Í¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê½ï¿½ï¿½ï¿½ï¿½
 
     void Start()
     {
-        // ³õÊ¼»¯ Addressables ÏµÍ³
+        // ï¿½ï¿½Ê¼ï¿½ï¿½ Addressables ÏµÍ³
         StartCoroutine(ResMgr.GetInstance().InitializeAsync());
 
-        // ÑÓ³Ùµ÷ÓÃ£¬È·±£³õÊ¼»¯Íê³É
+        // ï¿½Ó³Ùµï¿½ï¿½Ã£ï¿½È·ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½
         Invoke(nameof(LoadPlatform), 0.1f);
     }
 
     /// <summary>
-    /// ¼ÓÔØ²¢ÊµÀý»¯Æ½Ì¨
+    /// ï¿½ï¿½ï¿½Ø²ï¿½Êµï¿½ï¿½ï¿½ï¿½Æ½Ì¨
     /// </summary>
     public void LoadPlatform()
     {
-        Debug.Log("¿ªÊ¼¼ÓÔØÆ½Ì¨...");
+        Debug.Log("ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½Æ½Ì¨...");
 
         ResMgr.GetInstance().LoadAndInstantiateAsync(
             key: PLATFORM_ADDRESS,
@@ -42,91 +42,91 @@ public class MainScene : MonoBehaviour
                     platformInstance = platformObj;
                     platformInstance.name = "CircularPlatform_Instance";
 
-                    Debug.Log("¡¾MainScene¡¿Æ½Ì¨ÒÑ¼ÓÔØ£¬¼´½«Í¨Öª DataMgr"); //  ¼ÓÕâÐÐ
+                    Debug.Log("ï¿½ï¿½MainSceneï¿½ï¿½Æ½Ì¨ï¿½Ñ¼ï¿½ï¿½Ø£ï¿½ï¿½ï¿½ï¿½ï¿½Í¨Öª DataMgr"); //  ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
                     EventCenter.GetInstance().EventTrigger(E_EventType.Event_Platform_Loaded, platformObj);
                     LoadPositionEffectAndSpawn();
                 }
                 else
                 {
-                    Debug.LogError("¡¾MainScene¡¿Æ½Ì¨¼ÓÔØÊ§°Ü£¡");
+                    Debug.LogError("ï¿½ï¿½MainSceneï¿½ï¿½Æ½Ì¨ï¿½ï¿½ï¿½ï¿½Ê§ï¿½Ü£ï¿½");
                 }
             }
         );
     }
 
     /// <summary>
-    /// ¼ÓÔØµãÎ»ÌØÐ§Ô¤ÖÆÌå£¬²¢ÅúÁ¿Éú³Éµ½¿ÉÓÃÎ»ÖÃ
+    /// ï¿½ï¿½ï¿½Øµï¿½Î»ï¿½ï¿½Ð§Ô¤ï¿½ï¿½ï¿½å£¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Éµï¿½ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½
     /// </summary>
     private void LoadPositionEffectAndSpawn()
     {
-        Debug.Log("¿ªÊ¼¼ÓÔØµãÎ»ÌØÐ§Ô¤ÖÆÌå...");
+        Debug.Log("ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½Øµï¿½Î»ï¿½ï¿½Ð§Ô¤ï¿½ï¿½ï¿½ï¿½...");
 
         ResMgr.GetInstance().LoadAsync<GameObject>(
             address: POSITION_EFFECT_ADDRESS,
-            autoRelease: false, // ±£ÁôÔ¤ÖÆÌåÒýÓÃ£¬ÓÃÓÚ¶à´ÎÊµÀý»¯
+            autoRelease: false, // ï¿½ï¿½ï¿½ï¿½Ô¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã£ï¿½ï¿½ï¿½ï¿½Ú¶ï¿½ï¿½Êµï¿½ï¿½ï¿½ï¿½
             callback: (effectPrefab) =>
             {
                 if (effectPrefab != null)
                 {
-                    Debug.Log("µãÎ»ÌØÐ§Ô¤ÖÆÌå¼ÓÔØ³É¹¦£¡");
+                    Debug.Log("ï¿½ï¿½Î»ï¿½ï¿½Ð§Ô¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ø³É¹ï¿½ï¿½ï¿½");
 
-                    // Éú³É¶à¸öµãÎ»ÌØÐ§£¬ÀýÈç 5 ¸ö
+                    // ï¿½ï¿½ï¿½É¶ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 5 ï¿½ï¿½
                     int spawnCount = 5;
                     SpawnPositionEffects(effectPrefab, spawnCount);
                 }
                 else
                 {
-                    Debug.LogError("µãÎ»ÌØÐ§Ô¤ÖÆÌå¼ÓÔØÊ§°Ü£¡");
+                    Debug.LogError("ï¿½ï¿½Î»ï¿½ï¿½Ð§Ô¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê§ï¿½Ü£ï¿½");
                 }
             }
         );
     }
 
     /// <summary>
-    /// ÔÚ¿ÉÓÃµãÎ»ÉÏÅúÁ¿Éú³ÉÌØÐ§ÊµÀý
+    /// ï¿½Ú¿ï¿½ï¿½Ãµï¿½Î»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð§Êµï¿½ï¿½
     /// </summary>
-    /// <param name="effectPrefab">ÌØÐ§Ô¤ÖÆÌå</param>
-    /// <param name="count">ÒªÉú³ÉµÄÊýÁ¿</param>
+    /// <param name="effectPrefab">ï¿½ï¿½Ð§Ô¤ï¿½ï¿½ï¿½ï¿½</param>
+    /// <param name="count">Òªï¿½ï¿½ï¿½Éµï¿½ï¿½ï¿½ï¿½ï¿½</param>
     private void SpawnPositionEffects(GameObject effectPrefab, int count)
     {
         PositionManager posManager = platformInstance.GetComponentInChildren<PositionManager>();
         if (posManager == null)
         {
-            Debug.LogError("Î´ÕÒµ½ PositionManager ×é¼þ£¡");
+            Debug.LogError("Î´ï¿½Òµï¿½ PositionManager ï¿½ï¿½ï¿½ï¿½ï¿½");
             return;
         }
 
-        // ²»Ê¹ÓÃ GetAvailablePositionId()£¬ÒòÎªÌØÐ§²»ÐèÒª¡°·ÖÅä¡±
+        // ï¿½ï¿½Ê¹ï¿½ï¿½ GetAvailablePositionId()ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½Ð§ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ä¡±
         for (int i = 0; i < count; i++)
         {
             Vector3 spawnPos = posManager.GetPosition(i);
 
-            // ÊµÀý»¯ÌØÐ§
+            // Êµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð§
             GameObject effectInstance = Instantiate(effectPrefab, spawnPos, Quaternion.identity);
             effectInstance.name = $"PositionEffect_{i}";
 
-            Debug.Log($"µãÎ»ÌØÐ§ÒÑÉú³ÉÓÚÎ»ÖÃ {i}£¬×ø±ê£º{spawnPos}");
+            Debug.Log($"ï¿½ï¿½Î»ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½ {i}ï¿½ï¿½ï¿½ï¿½ï¿½ê£º{spawnPos}");
         }
 
-        Debug.Log($"[MainScene] ÒÑÉú³É {count} ¸öµãÎ»ÌØÐ§£¬È«²¿¿É¼ûÇÒ²»Õ¼ÓÃ¡£");
+        Debug.Log($"[MainScene] ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ {count} ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½Ð§ï¿½ï¿½È«ï¿½ï¿½ï¿½É¼ï¿½ï¿½Ò²ï¿½Õ¼ï¿½Ã¡ï¿½");
     }
     /// <summary>
-    /// ¿ÉÑ¡£ºÏú»ÙÄ³¸öÌØÐ§ÊµÀý£¨Ðè´«ÈëÒýÓÃ£©
+    /// ï¿½ï¿½Ñ¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä³ï¿½ï¿½ï¿½ï¿½Ð§Êµï¿½ï¿½ï¿½ï¿½ï¿½è´«ï¿½ï¿½ï¿½ï¿½ï¿½Ã£ï¿½
     /// </summary>
-    /// <param name="effectInstance">ÒªÏú»ÙµÄÌØÐ§ÊµÀý</param>
+    /// <param name="effectInstance">Òªï¿½ï¿½ï¿½Ùµï¿½ï¿½ï¿½Ð§Êµï¿½ï¿½</param>
     private void DestroyPositionEffect(GameObject effectInstance)
     {
         if (effectInstance != null)
         {
-            // Èç¹ûÊÇ Addressables.Instantiate Éú³ÉµÄ²ÅÐèÒª ReleaseInstance
-            // ´Ë´¦ÊÇÆÕÍ¨ Instantiate£¬Ö±½Ó Destroy ¼´¿É
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ Addressables.Instantiate ï¿½ï¿½ï¿½ÉµÄ²ï¿½ï¿½ï¿½Òª ReleaseInstance
+            // ï¿½Ë´ï¿½ï¿½ï¿½ï¿½ï¿½Í¨ Instantiateï¿½ï¿½Ö±ï¿½ï¿½ Destroy ï¿½ï¿½ï¿½ï¿½
             Destroy(effectInstance);
         }
     }
 
     /// <summary>
-    /// ¿ÉÑ¡£ºÏú»ÙÆ½Ì¨£¨»áÊÍ·ÅËùÓÐ¹ØÁª×ÊÔ´£©
+    /// ï¿½ï¿½Ñ¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ½Ì¨ï¿½ï¿½ï¿½ï¿½ï¿½Í·ï¿½ï¿½ï¿½ï¿½Ð¹ï¿½ï¿½ï¿½ï¿½ï¿½Ô´ï¿½ï¿½
     /// </summary>
     private void DestroyPlatform()
     {
