@@ -1,0 +1,2 @@
+服务器：
+cd /mnt/d/Study/Project/MagicHand/MagicHand/GameServer/GameServer
