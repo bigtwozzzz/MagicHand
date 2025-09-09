@@ -156,8 +156,8 @@ public class BootLoader : MonoBehaviour
         // ������������¼�����ģ����¼�ɹ����Ľ�Ϊ��
         EventCenter.GetInstance().EventTrigger(E_EventType.Event_Lock_Window);
         
-        // ֱ�Ӽ�����Ϸ����
-        SceneMgr.GetInstance().SafeLoadScene("GamingScene", OnDebugLoadOver);
+        // ʹ���µı�������ؼ��ع��ܣ�ͬʱ������Ϸ�����ͱ�������
+        SceneMgr.GetInstance().SafeLoadGameSceneWithBackground("GamingScene", OnDebugLoadOver);
     }
     
     /// <summary>

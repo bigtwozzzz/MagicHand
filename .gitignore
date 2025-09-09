@@ -67,6 +67,10 @@ crashlytics-build.properties
 /Unity/*/[Aa]ssets/[Ss]treamingAssets/aa.meta
 /Unity/*/[Aa]ssets/[Ss]treamingAssets/aa/*
 
+# Ignore Resources folder contents (too large for git)
+/Unity/MagicHand/Assets/Resources/
+/Unity/MagicHand/Assets/Resources/*
+
 # Python cache files
 __pycache__/
 *.py[cod]

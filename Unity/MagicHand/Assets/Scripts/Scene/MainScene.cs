@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 /// <summary>
@@ -14,6 +15,11 @@ public class MainScene : MonoBehaviour
     [Header("����ʱʵ��")]
     [SerializeField] private GameObject platformInstance;       // ƽ̨ʵ��
     // ע�⣺��λ��Ч�����ж�����������������ã���ͨ��������ʽ����
+    
+    [Header("���ɿ��ƿ���")]
+    [SerializeField] private bool enablePlatformGeneration = true;     // �Ƿ����ƽ̨
+    [SerializeField] private bool enablePositionEffects = true;        // �Ƿ����λ����Ч
+    [SerializeField] private bool enableDebugSpheres = false;          // �Ƿ������Ե���
 
     void Start()
     {
@@ -29,6 +35,12 @@ public class MainScene : MonoBehaviour
     /// </summary>
     public void LoadPlatform()
     {
+        if (!enablePlatformGeneration)
+        {
+            Debug.Log("[MainScene] ƽ̨����ѽ��ã�������ء�");
+            return;
+        }
+        
         Debug.Log("��ʼ����ƽ̨...");
 
         ResMgr.GetInstance().LoadAndInstantiateAsync(
@@ -45,7 +57,18 @@ public class MainScene : MonoBehaviour
                     Debug.Log("��MainScene��ƽ̨�Ѽ��أ�����֪ͨ DataMgr"); //  ������
 
                     EventCenter.GetInstance().EventTrigger(E_EventType.Event_Platform_Loaded, platformObj);
-                    LoadPositionEffectAndSpawn();
+                    
+                    // 设置PositionManager的调试球体开关
+                    SetPositionManagerDebugMode();
+                    
+                    if (enablePositionEffects)
+                    {
+                        LoadPositionEffectAndSpawn();
+                    }
+                    else
+                    {
+                        Debug.Log("[MainScene] 位置特效生成已禁用，跳过加载。");
+                    }
                 }
                 else
                 {
@@ -111,6 +134,23 @@ public class MainScene : MonoBehaviour
 
         Debug.Log($"[MainScene] ������ {count} ����λ��Ч��ȫ���ɼ��Ҳ�ռ�á�");
     }
+    
+    /// <summary>
+    /// ����PositionManager�ĵ���ģʽ
+    /// </summary>
+    private void SetPositionManagerDebugMode()
+    {
+        if (platformInstance != null)
+        {
+            PositionManager posManager = platformInstance.GetComponentInChildren<PositionManager>();
+            if (posManager != null)
+            {
+                posManager.enableDebugSpheres = enableDebugSpheres;
+                Debug.Log($"[MainScene] ����PositionManager���Ե���忪�أ� {enableDebugSpheres}");
+            }
+        }
+    }
+    
     /// <summary>
     /// ��ѡ������ĳ����Чʵ�����贫�����ã�
     /// </summary>

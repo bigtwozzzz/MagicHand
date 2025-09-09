@@ -3,10 +3,13 @@ using UnityEngine;
 
 public class PositionManager : MonoBehaviour
 {
-    public int positionCount = 5;           // µãÎ»×ÜÊı
-    public float radius = 300.0f;             // Ô²ĞÎ°ë¾¶
-    public Transform platformCenter;        // Æ½Ì¨ÖĞĞÄµã
-    public GameObject debugSpherePrefab;    // ¿ÉÑ¡£ºÓÃÓÚ¿ÉÊÓ»¯µãÎ»µÄÇòÌå
+    public int positionCount = 5;           // ä½ç½®æ•°é‡
+    public float radius = 300.0f;             // åœ†å½¢åŠå¾„
+    public Transform platformCenter;        // å¹³å°ä¸­å¿ƒç‚¹
+    public GameObject debugSpherePrefab;    // å¯é€‰ï¼šç”¨äºå¯è§†åŒ–çš„ä½ç½®çƒä½“
+    
+    [Header("è°ƒè¯•æ§åˆ¶")]
+    public bool enableDebugSpheres = false;  // æ˜¯å¦ç”Ÿæˆè°ƒè¯•çƒä½“
 
     private Dictionary<int, Vector3> positionMap = new();
 
@@ -31,30 +34,31 @@ public class PositionManager : MonoBehaviour
 
             positionMap[i] = position;
 
-            // ¿ÉÑ¡£ºÉú³É¿ÉÊÓ»¯ÇòÌå
-            if (debugSpherePrefab != null)
+            // å¯é€‰ï¼šç”Ÿæˆå¯è§†åŒ–çƒä½“
+            if (enableDebugSpheres && debugSpherePrefab != null)
             {
                 GameObject sphere = Instantiate(debugSpherePrefab, position, Quaternion.identity);
                 sphere.name = $"Slot_{i}";
-                sphere.transform.SetParent(transform); // ×÷Îª PositionManager µÄ×Ó¶ÔÏó
+                sphere.transform.SetParent(transform); // è®¾ä¸º PositionManager çš„å­å¯¹è±¡
+                Debug.Log($"[PositionManager] ç”Ÿæˆè°ƒè¯•çƒä½“: Slot_{i}");
             }
         }
 
-        Debug.Log($"[PositionManager] ÒÑÉú³É {positionCount} ¸öµãÎ»£¬°ë¾¶ {radius}¡£");
+        Debug.Log($"[PositionManager] ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ {positionCount} ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½ï¿½ë¾¶ {radius}ï¿½ï¿½");
     }
 
-    // ¸ù¾İ ID »ñÈ¡µãÎ»×ø±ê
+    // ï¿½ï¿½ï¿½ï¿½ ID ï¿½ï¿½È¡ï¿½ï¿½Î»ï¿½ï¿½ï¿½ï¿½
     public Vector3 GetPosition(int id)
     {
         if (positionMap.TryGetValue(id, out Vector3 pos))
         {
             return pos;
         }
-        Debug.LogWarning($"[PositionManager] Î´ÕÒµ½µãÎ» ID: {id}");
+        Debug.LogWarning($"[PositionManager] Î´ï¿½Òµï¿½ï¿½ï¿½Î» ID: {id}");
         return Vector3.zero;
     }
 
-    // »ñÈ¡ËùÓĞµãÎ» ID£¨ÓÃÓÚ·ÖÅä£©
+    // ï¿½ï¿½È¡ï¿½ï¿½ï¿½Ğµï¿½Î» IDï¿½ï¿½ï¿½ï¿½ï¿½Ú·ï¿½ï¿½ä£©
     public List<int> GetAllPositionIds()
     {
         List<int> ids = new();
@@ -65,7 +69,7 @@ public class PositionManager : MonoBehaviour
         return ids;
     }
 
-    // »ñÈ¡¿ÉÓÃµãÎ»£¨ºóĞøÓÃÓÚ·ÖÅä£©
+    // ï¿½ï¿½È¡ï¿½ï¿½ï¿½Ãµï¿½Î»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú·ï¿½ï¿½ä£©
     public int GetAvailablePositionId()
     {
         for (int i = 0; i < positionCount; i++)
@@ -75,10 +79,10 @@ public class PositionManager : MonoBehaviour
                 return i;
             }
         }
-        return -1; // ÎŞ¿ÉÓÃµãÎ»
+        return -1; // ï¿½Ş¿ï¿½ï¿½Ãµï¿½Î»
     }
 
-    // ¿ÉÀ©Õ¹£º¼ÇÂ¼µãÎ»Õ¼ÓÃ×´Ì¬
+    // ï¿½ï¿½ï¿½ï¿½Õ¹ï¿½ï¿½ï¿½ï¿½Â¼ï¿½ï¿½Î»Õ¼ï¿½ï¿½×´Ì¬
     private HashSet<int> occupiedPositions = new();
     public void OccupyPosition(int id) => occupiedPositions.Add(id);
     public void ReleasePosition(int id) => occupiedPositions.Remove(id);

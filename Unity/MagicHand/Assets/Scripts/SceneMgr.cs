@@ -1,47 +1,108 @@
 // SceneMgr.cs
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
 /// <summary>
-/// ³¡¾°ÇÐ»»¹ÜÀíÆ÷£¨·À¿¨¶Ù + ×ÊÔ´ÊÍ·Å£©
+/// ï¿½ï¿½ï¿½ï¿½ï¿½Ð»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ + ï¿½ï¿½Ô´ï¿½Í·ï¿½ + ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 /// </summary>
 public class SceneMgr : BaseManager<SceneMgr>
 {
+    [Header("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½")]
+    [SerializeField] private List<string> availableBackgroundScenes = new List<string>
+    {
+        "Background1",
+        "Background2", 
+        "Background3",
+        "Background4",
+        "Background5"
+    };
+    
+    [SerializeField] private string currentBackgroundScene = "Background1";
+    private string loadedBackgroundScene = null;
+    
     /// <summary>
-    /// °²È«¼ÓÔØ³¡¾°£¨Í¨¹ý GlobalMonoMgr Ð­³Ì£©
+    /// ï¿½ï¿½ï¿½ï¿½Ç°ÒªÊ¹ï¿½ÃµÄ±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    /// </summary>
+    public void SetBackgroundScene(string backgroundSceneName)
+    {
+        if (availableBackgroundScenes.Contains(backgroundSceneName))
+        {
+            currentBackgroundScene = backgroundSceneName;
+            Debug.Log($"[SceneMgr] ï¿½ï¿½ï¿½Ã±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îª: {backgroundSceneName}");
+        }
+        else
+        {
+            Debug.LogWarning($"[SceneMgr] ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ {backgroundSceneName} ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð£ï¿½");
+        }
+    }
+    
+    /// <summary>
+    /// ï¿½ï¿½È¡Ç°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    /// </summary>
+    public string GetCurrentBackgroundScene()
+    {
+        return currentBackgroundScene;
+    }
+    
+    /// <summary>
+    /// ï¿½ï¿½È¡ï¿½ï¿½ï¿½Ã±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    /// </summary>
+    public List<string> GetAvailableBackgroundScenes()
+    {
+        return new List<string>(availableBackgroundScenes);
+    }
+    /// <summary>
+    /// ï¿½ï¿½È«ï¿½ï¿½ï¿½Ø³ï¿½ï¿½ï¿½ï¿½ï¿½Í¨ï¿½ï¿½ GlobalMonoMgr Ð­ï¿½Ì£ï¿½
     /// </summary>
     public void SafeLoadScene(string name, UnityAction<bool> onLoaded = null)
     {
         GlobalMonoMgr.GetInstance().SafeStartCoroutine(LoadSceneAsync(name, onLoaded));
     }
+    
+    /// <summary>
+    /// ï¿½ï¿½È«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½Ø±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    /// </summary>
+    public void SafeLoadGameSceneWithBackground(string gameSceneName, UnityAction<bool> onLoaded = null)
+    {
+        GlobalMonoMgr.GetInstance().SafeStartCoroutine(LoadGameSceneWithBackgroundAsync(gameSceneName, onLoaded));
+    }
+    
+    /// <summary>
+    /// ï¿½ï¿½ï¿½Ó½ï¿½ï¿½Ø³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¶ï¿½ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½ï¿½
+    /// </summary>
+    public void SafeLoadSceneAdditive(string sceneName, UnityAction<bool> onLoaded = null)
+    {
+        GlobalMonoMgr.GetInstance().SafeStartCoroutine(LoadSceneAdditiveAsync(sceneName, onLoaded));
+    }
 
     /// <summary>
-    /// Òì²½¼ÓÔØ³¡¾° + ·À¿¨¶Ù×ÊÔ´ÇåÀí
+    /// ï¿½ì²½ï¿½ï¿½ï¿½Ø³ï¿½ï¿½ï¿½ + ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô´ï¿½ï¿½ï¿½ï¿½
     /// </summary>
     public IEnumerator LoadSceneAsync(string name, UnityAction<bool> onLoaded = null)
     {
-        Debug.Log($"¡¾SceneMgr¡¿¿ªÊ¼¼ÓÔØ³¡¾°: {name}");
+        Debug.Log($"ï¿½ï¿½SceneMgrï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½Ø³ï¿½ï¿½ï¿½: {name}");
 
-        // 1. ¼ì²é³¡¾°Ãû³Æ
+        // 1. ï¿½ï¿½é³¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         if (string.IsNullOrEmpty(name))
         {
-            Debug.LogError("¡¾SceneMgr¡¿³¡¾°Ãû³ÆÎª¿Õ£¡");
+            Debug.LogError("ï¿½ï¿½SceneMgrï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îªï¿½Õ£ï¿½");
             onLoaded?.Invoke(false);
             yield break;
         }
 
-        // 2. ÑéÖ¤ÊÇ·ñÔÚ Build Settings ÖÐ
+        // 2. ï¿½ï¿½Ö¤ï¿½Ç·ï¿½ï¿½ï¿½ Build Settings ï¿½ï¿½
         if (!IsSceneInBuildSettings(name))
         {
-            Debug.LogError($"¡¾SceneMgr¡¿³¡¾°Î´ÔÚ Build Settings ÖÐ£º{name}");
+            Debug.LogError($"ï¿½ï¿½SceneMgrï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î´ï¿½ï¿½ Build Settings ï¿½Ð£ï¿½{name}");
             onLoaded?.Invoke(false);
             yield break;
         }
 
-        // 3. ¿ªÊ¼¼ÓÔØ³¡¾°
+        // 3. ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½Ø³ï¿½ï¿½ï¿½
         AsyncOperation asyncOp = null;
         try
         {
@@ -49,25 +110,25 @@ public class SceneMgr : BaseManager<SceneMgr>
         }
         catch (Exception e)
         {
-            Debug.LogError($"¡¾SceneMgr¡¿¼ÓÔØ³¡¾°Òì³£: {e.Message}\n{e.StackTrace}");
+            Debug.LogError($"ï¿½ï¿½SceneMgrï¿½ï¿½ï¿½ï¿½ï¿½Ø³ï¿½ï¿½ï¿½ï¿½ì³£: {e.Message}\n{e.StackTrace}");
             onLoaded?.Invoke(false);
             yield break;
         }
 
         if (asyncOp == null)
         {
-            Debug.LogError($"¡¾SceneMgr¡¿LoadSceneAsync ·µ»Ø null£¡Çë¼ì²é³¡¾°ÃûºÍ Build Settings: {name}");
+            Debug.LogError($"ï¿½ï¿½SceneMgrï¿½ï¿½LoadSceneAsync ï¿½ï¿½ï¿½ï¿½ nullï¿½ï¿½ï¿½ï¿½ï¿½é³¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Build Settings: {name}");
             onLoaded?.Invoke(false);
             yield break;
         }
 
-        Debug.Log($"¡¾SceneMgr¡¿Òì²½²Ù×÷´´½¨³É¹¦£¬progress={asyncOp.progress:F2}");
+        Debug.Log($"ï¿½ï¿½SceneMgrï¿½ï¿½ï¿½ì²½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É¹ï¿½ï¿½ï¿½progress={asyncOp.progress:F2}");
 
-        // 4. ¿ØÖÆ¼¤»î£¨ÓÃÓÚ½ø¶È¿ØÖÆ£©
+        // 4. ï¿½ï¿½ï¿½Æ¼ï¿½ï¿½î£¨ï¿½ï¿½ï¿½Ú½ï¿½ï¿½È¿ï¿½ï¿½Æ£ï¿½
         asyncOp.allowSceneActivation = false;
 
         float timer = 0f;
-        const float MaxWaitTime = 15f; // ¸ü¿íÈÝµÄ³¬Ê±
+        const float MaxWaitTime = 15f; // ï¿½ï¿½ï¿½ï¿½ï¿½ÝµÄ³ï¿½Ê±
         float waitTime = 0f;
 
         while (!asyncOp.isDone)
@@ -75,86 +136,350 @@ public class SceneMgr : BaseManager<SceneMgr>
             waitTime += Time.deltaTime;
             if (waitTime > MaxWaitTime)
             {
-                Debug.LogWarning($"¡¾SceneMgr¡¿¼ÓÔØ³¬Ê±({MaxWaitTime}s)£¬Ç¿ÖÆ¼¤»î³¡¾°");
+                Debug.LogWarning($"ï¿½ï¿½SceneMgrï¿½ï¿½ï¿½ï¿½ï¿½Ø³ï¿½Ê±({MaxWaitTime}s)ï¿½ï¿½Ç¿ï¿½Æ¼ï¿½ï¿½î³¡ï¿½ï¿½");
                 asyncOp.allowSceneActivation = true;
                 break;
             }
 
-            timer += Time.unscaledDeltaTime; // Ê¹ÓÃ unscaled ·ÀÖ¹ Time.timeScale Ó°Ïì
+            timer += Time.unscaledDeltaTime; // Ê¹ï¿½ï¿½ unscaled ï¿½ï¿½Ö¹ Time.timeScale Ó°ï¿½ï¿½
 
-            // Æ½»¬¹ÀËã½ø¶È£¨0.9 À´×Ô asyncOp.progress£¬0.1 À´×ÔÊ±¼ä£©
+            // Æ½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È£ï¿½0.9 ï¿½ï¿½ï¿½ï¿½ asyncOp.progressï¿½ï¿½0.1 ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ä£©
             float progress = Mathf.Clamp01(asyncOp.progress * 0.9f + timer * 0.1f);
 
-            // ½µµÍÈÕÖ¾ÆµÂÊ£¨Ã¿ 0.2 ÃëÒ»´Î£©
-            if (Mathf.FloorToInt(timer * 5) % 1 == 0) // Ã¿ 0.2s ´òÒ»´Î
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¾Æµï¿½Ê£ï¿½Ã¿ 0.2 ï¿½ï¿½Ò»ï¿½Î£ï¿½
+            if (Mathf.FloorToInt(timer * 5) % 1 == 0) // Ã¿ 0.2s ï¿½ï¿½Ò»ï¿½ï¿½
             {
-                Debug.Log($"[SceneMgr] ¼ÓÔØÖÐ | Progress: {asyncOp.progress:F2} | Est: {progress:F2}");
+                Debug.Log($"[SceneMgr] ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ | Progress: {asyncOp.progress:F2} | Est: {progress:F2}");
             }
 
-            // ´¥·¢ UI ½ø¶È¸üÐÂ
+            // ï¿½ï¿½ï¿½ï¿½ UI ï¿½ï¿½ï¿½È¸ï¿½ï¿½ï¿½
             EventCenter.GetInstance().EventTrigger(E_EventType.Event_LoadScene_Progress, progress);
 
-            // µ±¼ÓÔØµ½ 90% Ê±£¬ÔÊÐí¼¤»î
+            // ï¿½ï¿½ï¿½ï¿½ï¿½Øµï¿½ 90% Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             if (asyncOp.progress >= 0.9f && !asyncOp.allowSceneActivation)
             {
                 asyncOp.allowSceneActivation = true;
-                Debug.Log("¡¾SceneMgr¡¿allowSceneActivation = true£¬³¡¾°¼´½«¼¤»î");
+                Debug.Log("ï¿½ï¿½SceneMgrï¿½ï¿½allowSceneActivation = trueï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
             }
 
-            yield return null; // ·ÖÖ¡
+            yield return null; // ï¿½ï¿½Ö¡
         }
 
-        // 5. ³¡¾°¼¤»îÍê³É
-        Debug.Log($"¡¾SceneMgr¡¿³¡¾° '{name}' ¼ÓÔØÍê³É£¡");
+        // 5. ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        Debug.Log($"ï¿½ï¿½SceneMgrï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ '{name}' ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É£ï¿½");
 
-        // ×îÖÕ½ø¶È 100%
+        // ï¿½ï¿½ï¿½Õ½ï¿½ï¿½ï¿½ 100%
         EventCenter.GetInstance().EventTrigger(E_EventType.Event_LoadScene_Progress, 1f);
 
-        // ¸ø UI Ò»µãÊ±¼äË¢ÐÂ£¨±ÜÃâ×îºó 0.1 ÃëÌø±ä£©
+        // ï¿½ï¿½ UI Ò»ï¿½ï¿½Ê±ï¿½ï¿½Ë¢ï¿½Â£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 0.1 ï¿½ï¿½ï¿½ï¿½ï¿½ä£©
         yield return new WaitForEndOfFrame();
 
-        // 6. ÑÓ³Ù×ÊÔ´ÇåÀí£¨·ÖÖ¡Ö´ÐÐ£¬·À¿¨£©
+        // 6. ï¿½Ó³ï¿½ï¿½ï¿½Ô´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¡Ö´ï¿½Ð£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         //yield return GlobalMonoMgr.GetInstance().StartCoroutine(FinalCleanupAsync());
 
-        // 7. »Øµ÷³É¹¦
-        Debug.Log($"¡¾SceneMgr¡¿³¡¾° '{name}' ¼ÓÔØ³É¹¦");
+        // 7. ï¿½Øµï¿½ï¿½É¹ï¿½
+        Debug.Log($"ï¿½ï¿½SceneMgrï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ '{name}' ï¿½ï¿½ï¿½Ø³É¹ï¿½");
         onLoaded?.Invoke(true);
+    }
+    
+    /// <summary>
+    /// ï¿½ì²½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½Ø±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    /// </summary>
+    public IEnumerator LoadGameSceneWithBackgroundAsync(string gameSceneName, UnityAction<bool> onLoaded = null)
+    {
+        Debug.Log($"[SceneMgr] ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½: {gameSceneName} + {currentBackgroundScene}");
+        
+        bool backgroundLoaded = false;
+        bool gameSceneLoaded = false;
+        bool hasError = false;
+        
+        // ï¿½È¼ï¿½ï¿½Ø±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        yield return StartCoroutine(LoadBackgroundSceneReplaceAsync((success) => 
+        {
+            backgroundLoaded = true;
+            if (!success)
+            {
+                Debug.LogWarning($"[SceneMgr] ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê§ï¿½Ü£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
+            }
+        }));
+        
+        // È»ï¿½ï¿½ï¿½ï¿½ï¿½Ó½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        yield return StartCoroutine(LoadSceneAdditiveAsync(gameSceneName, (success) => 
+        {
+            gameSceneLoaded = true;
+            if (!success)
+            {
+                hasError = true;
+                Debug.LogError($"[SceneMgr] ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê§ï¿½ï¿½: {gameSceneName}");
+            }
+        }));
+        
+        // ï¿½È´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        while (!backgroundLoaded || !gameSceneLoaded)
+        {
+            yield return null;
+        }
+        
+        Debug.Log($"[SceneMgr] ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
+        onLoaded?.Invoke(!hasError);
+    }
+    
+    /// <summary>
+    /// ï¿½ì²½ï¿½ï¿½ï¿½Ó½ï¿½ï¿½Ø³ï¿½ï¿½ï¿½
+    /// </summary>
+    public IEnumerator LoadSceneAdditiveAsync(string sceneName, UnityAction<bool> onLoaded = null)
+    {
+        Debug.Log($"[SceneMgr] ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½Ó½ï¿½ï¿½Ø³ï¿½ï¿½ï¿½: {sceneName}");
+        
+        // ï¿½ï¿½é³¡ï¿½ï¿½ï¿½Ç·ï¿½ï¿½Ñ¾ï¿½ï¿½ï¿½ï¿½
+        if (SceneManager.GetSceneByName(sceneName).isLoaded)
+        {
+            Debug.Log($"[SceneMgr] ï¿½ï¿½ï¿½ï¿½ {sceneName} ï¿½Ñ¾ï¿½ï¿½ï¿½ï¿½Ø£ï¿½ï¿½ï¿½ï¿½ï¿½");
+            onLoaded?.Invoke(true);
+            yield break;
+        }
+        
+        // ï¿½ï¿½é³¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        if (string.IsNullOrEmpty(sceneName))
+        {
+            Debug.LogError("[SceneMgr] ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½");
+            onLoaded?.Invoke(false);
+            yield break;
+        }
+        
+        // ï¿½ï¿½Ö¤ï¿½Ç·ï¿½ï¿½ï¿½ Build Settings ï¿½ï¿½
+        if (!IsSceneInBuildSettings(sceneName))
+        {
+            Debug.LogError($"[SceneMgr] ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î´ï¿½ï¿½ Build Settings ï¿½Ð£ï¿½{sceneName}");
+            onLoaded?.Invoke(false);
+            yield break;
+        }
+        
+        // ï¿½ï¿½ï¿½Ó½ï¿½ï¿½Ø³ï¿½ï¿½ï¿½
+        AsyncOperation asyncOp = null;
+        try
+        {
+            asyncOp = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"[SceneMgr] ï¿½ï¿½ï¿½Ó½ï¿½ï¿½Ø³ï¿½ï¿½ï¿½ï¿½ì³£: {e.Message}\n{e.StackTrace}");
+            onLoaded?.Invoke(false);
+            yield break;
+        }
+        
+        if (asyncOp == null)
+        {
+            Debug.LogError($"[SceneMgr] LoadSceneAsyncï¿½ï¿½ï¿½ï¿½null: {sceneName}");
+            onLoaded?.Invoke(false);
+            yield break;
+        }
+        
+        // ï¿½È´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        while (!asyncOp.isDone)
+        {
+            yield return null;
+        }
+        
+        Debug.Log($"[SceneMgr] ï¿½ï¿½ï¿½ï¿½ {sceneName} ï¿½ï¿½ï¿½Ó½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
+        onLoaded?.Invoke(true);
+    }
+    
+    /// <summary>
+    /// ï¿½ì²½ï¿½ï¿½ï¿½Ø±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Óµï¿½Ä£Ê½ï¿½ï¿½
+    /// </summary>
+    private IEnumerator LoadBackgroundSceneAsync(UnityAction<bool> onLoaded = null)
+    {
+        // ï¿½ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¾ï¿½ï¿½ï¿½ï¿½Ø£ï¿½ï¿½È¶ï¿½ï¿½ï¿½
+        if (!string.IsNullOrEmpty(loadedBackgroundScene) && loadedBackgroundScene != currentBackgroundScene)
+        {
+            yield return StartCoroutine(UnloadBackgroundSceneAsync());
+        }
+        
+        // ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½Øµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¾ï¿½ï¿½ï¿½Ç°ï¿½ï¿½ï¿½Øµï¿½Ö±ï¿½Ó·ï¿½ï¿½Ø³É¹ï¿½
+        if (loadedBackgroundScene == currentBackgroundScene && SceneManager.GetSceneByName(currentBackgroundScene).isLoaded)
+        {
+            Debug.Log($"[SceneMgr] ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ {currentBackgroundScene} ï¿½Ñ¾ï¿½ï¿½ï¿½ï¿½");
+            onLoaded?.Invoke(true);
+            yield break;
+        }
+        
+        Debug.Log($"[SceneMgr] ï¿½ï¿½Ê¼ï¿½ÓµÓ¼ï¿½ï¿½ï¿½Ø±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½: {currentBackgroundScene}");
+        
+        // ï¿½ï¿½Ö¤ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ Build Settings ï¿½ï¿½
+        if (!IsSceneInBuildSettings(currentBackgroundScene))
+        {
+            Debug.LogError($"[SceneMgr] ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î´ï¿½ï¿½ Build Settings ï¿½Ð£ï¿½{currentBackgroundScene}");
+            onLoaded?.Invoke(false);
+            yield break;
+        }
+        
+        // ï¿½ÓµÓ¼ï¿½ï¿½ï¿½Ø±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        AsyncOperation asyncOp = null;
+        try
+        {
+            asyncOp = SceneManager.LoadSceneAsync(currentBackgroundScene, LoadSceneMode.Additive);
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"[SceneMgr] ï¿½ï¿½ï¿½Ø±ï¿½ï¿½ï¿½ï¿½ì³£: {e.Message}\n{e.StackTrace}");
+            onLoaded?.Invoke(false);
+            yield break;
+        }
+        
+        if (asyncOp == null)
+        {
+            Debug.LogError($"[SceneMgr] ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½LoadSceneAsyncï¿½ï¿½ï¿½ï¿½null: {currentBackgroundScene}");
+            onLoaded?.Invoke(false);
+            yield break;
+        }
+        
+        // ï¿½È´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        while (!asyncOp.isDone)
+        {
+            yield return null;
+        }
+        
+        loadedBackgroundScene = currentBackgroundScene;
+        Debug.Log($"[SceneMgr] ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ {currentBackgroundScene} ï¿½ÓµÓ¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
+        onLoaded?.Invoke(true);
+    }
+    
+    /// <summary>
+    /// ï¿½ì²½ï¿½ï¿½ï¿½Ø±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½æ»»Ä£Ê½ï¿½ï¿½ï¿½ï¿½Ð¶ï¿½ï¿½Ç°ï¿½ï¿½ï¿½Ð³ï¿½ï¿½ï¿½ï¿½ï¿½
+    /// </summary>
+    private IEnumerator LoadBackgroundSceneReplaceAsync(UnityAction<bool> onLoaded = null)
+    {
+        Debug.Log($"[SceneMgr] ï¿½ï¿½Ê¼ï¿½æ»»ï¿½ï¿½ï¿½Ø±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½: {currentBackgroundScene}");
+        
+        // ï¿½ï¿½Ö¤ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ Build Settings ï¿½ï¿½
+        if (!IsSceneInBuildSettings(currentBackgroundScene))
+        {
+            Debug.LogError($"[SceneMgr] ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î´ï¿½ï¿½ Build Settings ï¿½Ð£ï¿½{currentBackgroundScene}");
+            onLoaded?.Invoke(false);
+            yield break;
+        }
+        
+        // ï¿½æ»»ï¿½ï¿½ï¿½Ø±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¶ï¿½ï¿½Ç°ï¿½ï¿½ï¿½Ð³ï¿½ï¿½ï¿½ï¿½ï¿½
+        AsyncOperation asyncOp = null;
+        try
+        {
+            asyncOp = SceneManager.LoadSceneAsync(currentBackgroundScene, LoadSceneMode.Single);
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"[SceneMgr] ï¿½æ»»ï¿½ï¿½ï¿½Ø±ï¿½ï¿½ï¿½ï¿½ì³£: {e.Message}\n{e.StackTrace}");
+            onLoaded?.Invoke(false);
+            yield break;
+        }
+        
+        if (asyncOp == null)
+        {
+            Debug.LogError($"[SceneMgr] ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½LoadSceneAsyncï¿½ï¿½ï¿½ï¿½null: {currentBackgroundScene}");
+            onLoaded?.Invoke(false);
+            yield break;
+        }
+        
+        // ï¿½È´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        while (!asyncOp.isDone)
+        {
+            yield return null;
+        }
+        
+        loadedBackgroundScene = currentBackgroundScene;
+        Debug.Log($"[SceneMgr] ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ {currentBackgroundScene} ï¿½æ»»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
+        onLoaded?.Invoke(true);
+    }
+    
+    /// <summary>
+    /// ï¿½ì²½Ð¶ï¿½Ø±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    /// </summary>
+    private IEnumerator UnloadBackgroundSceneAsync()
+    {
+        if (string.IsNullOrEmpty(loadedBackgroundScene))
+        {
+            yield break;
+        }
+        
+        Debug.Log($"[SceneMgr] ï¿½ï¿½Ê¼Ð¶ï¿½Ø±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½: {loadedBackgroundScene}");
+        
+        UnityEngine.SceneManagement.Scene backgroundScene = SceneManager.GetSceneByName(loadedBackgroundScene);
+        if (backgroundScene.isLoaded)
+        {
+            AsyncOperation unloadOp = SceneManager.UnloadSceneAsync(backgroundScene);
+            if (unloadOp != null)
+            {
+                while (!unloadOp.isDone)
+                {
+                    yield return null;
+                }
+                Debug.Log($"[SceneMgr] ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ {loadedBackgroundScene} Ð¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
+            }
+        }
+        
+        loadedBackgroundScene = null;
+    }
+    
+    /// <summary>
+    /// ï¿½Ð»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    /// </summary>
+    public void SwitchBackgroundScene(string newBackgroundScene, UnityAction<bool> onSwitched = null)
+    {
+        if (!availableBackgroundScenes.Contains(newBackgroundScene))
+        {
+            Debug.LogError($"[SceneMgr] ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ {newBackgroundScene} ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð£ï¿½");
+            onSwitched?.Invoke(false);
+            return;
+        }
+        
+        SetBackgroundScene(newBackgroundScene);
+        GlobalMonoMgr.GetInstance().SafeStartCoroutine(SwitchBackgroundSceneAsync(onSwitched));
+    }
+    
+    /// <summary>
+    /// ï¿½ì²½ï¿½Ð»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    /// </summary>
+    private IEnumerator SwitchBackgroundSceneAsync(UnityAction<bool> onSwitched = null)
+    {
+        bool success = false;
+        yield return StartCoroutine(LoadBackgroundSceneAsync((result) => success = result));
+        onSwitched?.Invoke(success);
     }
 
     /// <summary>
-    /// ·ÖÖ¡Ö´ÐÐ×ÊÔ´ÇåÀí£¨±ÜÃâ¿¨¶Ù£©
+    /// ï¿½ï¿½Ö¡Ö´ï¿½ï¿½ï¿½ï¿½Ô´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½â¿¨ï¿½Ù£ï¿½
     /// </summary>
     private IEnumerator FinalCleanupAsync()
     {
-        Debug.Log("¡¾SceneMgr¡¿¿ªÊ¼ÑÓ³Ù×ÊÔ´ÇåÀí...");
+        Debug.Log("ï¿½ï¿½SceneMgrï¿½ï¿½ï¿½ï¿½Ê¼ï¿½Ó³ï¿½ï¿½ï¿½Ô´ï¿½ï¿½ï¿½ï¿½...");
 
-        // ÑÓ³Ù 0.5 Ãë£¬È·±£ UI ÍêÈ«äÖÈ¾
+        // ï¿½Ó³ï¿½ 0.5 ï¿½ë£¬È·ï¿½ï¿½ UI ï¿½ï¿½È«ï¿½ï¿½È¾
         yield return new WaitForSecondsRealtime(0.5f);
 
-        //  µÚÒ»²½£ºÐ¶ÔØÎ´Ê¹ÓÃ×ÊÔ´£¨ºÄÊ±²Ù×÷£¬µ«Ö»ÄÜÍ¬²½£©
-        Debug.Log("¡¾SceneMgr¡¿¿ªÊ¼ Resources.UnloadUnusedAssets...");
-        yield return new WaitForEndOfFrame(); // ÈÃ UI ÏÈäÖÈ¾Ò»Ö¡
+        //  ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½Ð¶ï¿½ï¿½Î´Ê¹ï¿½ï¿½ï¿½ï¿½Ô´ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö»ï¿½ï¿½Í¬ï¿½ï¿½ï¿½ï¿½
+        Debug.Log("ï¿½ï¿½SceneMgrï¿½ï¿½ï¿½ï¿½Ê¼ Resources.UnloadUnusedAssets...");
+        yield return new WaitForEndOfFrame(); // ï¿½ï¿½ UI ï¿½ï¿½ï¿½ï¿½È¾Ò»Ö¡
 
        // var unloadOp = Resources.UnloadUnusedAssets();
         //while (!unloadOp.isDone)
         //{
-        //    yield return null; // ·ÖÖ¡µÈ´ýÐ¶ÔØÍê³É
+        //    yield return null; // ï¿½ï¿½Ö¡ï¿½È´ï¿½Ð¶ï¿½ï¿½ï¿½ï¿½ï¿½
         //}
 
-        Debug.Log("¡¾SceneMgr¡¿UnloadUnusedAssets Íê³É");
+        Debug.Log("ï¿½ï¿½SceneMgrï¿½ï¿½UnloadUnusedAssets ï¿½ï¿½ï¿½");
 
-        //  µÚ¶þ²½£ºGC »ØÊÕ£¨¿ÉÑ¡£¬·ÖÖ¡ÌáÊ¾£©
-        Debug.Log("¡¾SceneMgr¡¿×¼±¸Ö´ÐÐ GC.Collect...");
-        yield return new WaitForSecondsRealtime(0.2f); // Ð¡ÑÓ³Ù
+        //  ï¿½Ú¶ï¿½ï¿½ï¿½ï¿½ï¿½GC ï¿½ï¿½ï¿½Õ£ï¿½ï¿½ï¿½Ñ¡ï¿½ï¿½ï¿½ï¿½Ö¡ï¿½ï¿½Ê¾ï¿½ï¿½
+        Debug.Log("ï¿½ï¿½SceneMgrï¿½ï¿½×¼ï¿½ï¿½Ö´ï¿½ï¿½ GC.Collect...");
+        yield return new WaitForSecondsRealtime(0.2f); // Ð¡ï¿½Ó³ï¿½
 
-        // ÔÚµÍÓÅÏÈ¼¶Ê±Ö´ÐÐ GC£¨±ÜÃâ¿¨ UI£©
+        // ï¿½Úµï¿½ï¿½ï¿½ï¿½È¼ï¿½Ê±Ö´ï¿½ï¿½ GCï¿½ï¿½ï¿½ï¿½ï¿½â¿¨ UIï¿½ï¿½
        // System.GC.Collect();
 
-        Debug.Log("¡¾SceneMgr¡¿GC.Collect Íê³É£¬×ÊÔ´ÇåÀí½áÊø¡£");
+        Debug.Log("ï¿½ï¿½SceneMgrï¿½ï¿½GC.Collect ï¿½ï¿½É£ï¿½ï¿½ï¿½Ô´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
     }
 
     /// <summary>
-    /// ¼ì²é³¡¾°ÊÇ·ñÔÚ Build Settings ÖÐ
+    /// ï¿½ï¿½é³¡ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ Build Settings ï¿½ï¿½
     /// </summary>
     private bool IsSceneInBuildSettings(string sceneName)
     {
@@ -169,13 +494,13 @@ public class SceneMgr : BaseManager<SceneMgr>
     }
 
     /// <summary>
-    /// £¨¿ÉÑ¡£©¼ÓÔØÇ°ÊÍ·Å¾É×ÊÔ´£¨Èç¶ÔÏó³Ø¡¢UI »º´æµÈ£©
+    /// ï¿½ï¿½ï¿½ï¿½Ñ¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç°ï¿½Í·Å¾ï¿½ï¿½ï¿½Ô´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ø¡ï¿½UI ï¿½ï¿½ï¿½ï¿½È£ï¿½
     /// </summary>
     private IEnumerator UnloadOldResources()
     {
-        Debug.Log("¡¾SceneMgr¡¿ÊÍ·Å¾É×ÊÔ´£¨¿ÉÑ¡£©...");
+        Debug.Log("ï¿½ï¿½SceneMgrï¿½ï¿½ï¿½Í·Å¾ï¿½ï¿½ï¿½Ô´ï¿½ï¿½ï¿½ï¿½Ñ¡ï¿½ï¿½...");
 
-        // Ê¾Àý£ºÍ¨Öª UI ¹ÜÀíÆ÷ÊÍ·Å
+        // Ê¾ï¿½ï¿½ï¿½ï¿½Í¨Öª UI ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í·ï¿½
         // UIMgr.Instance.ReleaseAllUIResources();
 
         yield return null;

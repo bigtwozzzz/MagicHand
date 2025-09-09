@@ -675,6 +675,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc227e2a5029746408438e9320ad7929, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bgmSlider: {fileID: 0}
+  soundSlider: {fileID: 0}
+  bgmValueText: {fileID: 0}
+  soundValueText: {fileID: 0}
+  tipText: {fileID: 0}
+  playTestButton: {fileID: 0}
+  applyButton: {fileID: 0}
+  backButton: {fileID: 0}
 --- !u!1 &2974306144098960379
 GameObject:
   m_ObjectHideFlags: 0
