@@ -5,14 +5,14 @@ using UnityEngine;
 
 public class CharacterSpawner : MonoBehaviour
 {
-    [Header("ÅäÖÃ")]
-    public string characterAddress = "Character/Character001"; // ResMgr Ê¹ÓÃµÄ Addressables µØÖ·
-    public Transform platformRoot; // Æ½Ì¨¸ù½Úµã
+    [Header("ï¿½ï¿½ï¿½ï¿½")]
+    public string characterAddress = "Character/Character001"; // ResMgr Ê¹ï¿½Ãµï¿½ Addressables ï¿½ï¿½Ö·
+    public Transform platformRoot; // Æ½Ì¨ï¿½ï¿½ï¿½Úµï¿½
 
     private bool isPlatformReady = false;
-    private Queue<string> pendingSpawnRequests = new(); // »º´æ roleId
+    private Queue<string> pendingSpawnRequests = new(); // ï¿½ï¿½ï¿½ï¿½ roleId
 
-    // ÐÂÔö£º´æ´¢ÒÑÉú³ÉµÄ½ÇÉ«ÊµÀý£¬±ãÓÚÏú»Ù
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½æ´¢ï¿½ï¿½ï¿½ï¿½ï¿½ÉµÄ½ï¿½É«Êµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     private Dictionary<string, GameObject> spawnedCharacters = new();
     private Dictionary<string, int> characterToPositionId = new();
 
@@ -26,12 +26,12 @@ public class CharacterSpawner : MonoBehaviour
             E_EventType.Event_Platform_Loaded,
             OnPlatformLoaded);
 
-        // ¼àÌýÍæ¼ÒÏÂÏßÊÂ¼þ
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½
         EventCenter.GetInstance().AddEventListener<PlayerOfflineNotify>(
             E_EventType.Event_Player_Offline,
             OnPlayerOffline);
 
-        // ¼àÌý½ÇÉ«ÐÅÏ¢¸üÐÂÊÂ¼þ£¨°üÀ¨µÇÂ¼Ê±ÊÕµ½µÄ¾ÉÍæ¼ÒÐÅÏ¢£©
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É«ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â¼Ê±ï¿½Õµï¿½ï¿½Ä¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½
         EventCenter.GetInstance().AddEventListener<CharacterBase>(
             E_EventType.Event_Character_Info_Update,
             OnCharacterInfoUpdate);
@@ -51,7 +51,7 @@ public class CharacterSpawner : MonoBehaviour
             E_EventType.Event_Player_Offline,
             OnPlayerOffline);
 
-        // ÒÆ³ý½ÇÉ«ÐÅÏ¢¸üÐÂ¼àÌý
+        // ï¿½Æ³ï¿½ï¿½ï¿½É«ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½Â¼ï¿½ï¿½ï¿½
         EventCenter.GetInstance().RemoveEventListener<CharacterBase>(
             E_EventType.Event_Character_Info_Update,
             OnCharacterInfoUpdate);
@@ -62,87 +62,87 @@ public class CharacterSpawner : MonoBehaviour
     }
 
     /// <summary>
-    /// ´¦Àí½ÇÉ«ÐÅÏ¢¸üÐÂ£¨°üÀ¨ÐÂÍæ¼ÒÉÏÏß¹ã²¥¡¢µÇÂ¼Ê±ÊÕµ½µÄ¾ÉÍæ¼ÒÐÅÏ¢£©
+    /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É«ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½Â£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ß¹ã²¥ï¿½ï¿½ï¿½ï¿½Â¼Ê±ï¿½Õµï¿½ï¿½Ä¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½
     /// </summary>
     private void OnCharacterInfoUpdate(CharacterBase charInfo)
     {
         if (charInfo == null || string.IsNullOrEmpty(charInfo.RoleId))
         {
-            Debug.LogError("[CharacterSpawner] ÊÕµ½ÎÞÐ§µÄ½ÇÉ«ÐÅÏ¢¸üÐÂ£¡");
+            Debug.LogError("[CharacterSpawner] ï¿½Õµï¿½ï¿½ï¿½Ð§ï¿½Ä½ï¿½É«ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½Â£ï¿½");
             return;
         }
 
-        Debug.Log($"[CharacterSpawner] ÊÕµ½½ÇÉ«ÐÅÏ¢¸üÐÂ£º{charInfo.RoleName} (ID: {charInfo.RoleId})");
+        Debug.Log($"[CharacterSpawner] ï¿½Õµï¿½ï¿½ï¿½É«ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½Â£ï¿½{charInfo.RoleName} (ID: {charInfo.RoleId})");
 
-        // 1. ±£´æ½ÇÉ«ÐÅÏ¢µ½ DataMgr
+        // 1. ï¿½ï¿½ï¿½ï¿½ï¿½É«ï¿½ï¿½Ï¢ï¿½ï¿½ DataMgr
         DataMgr.GetInstance().UpdateCharacterInfo(charInfo);
 
-        // 2. Ìí¼ÓÉú³ÉÇëÇó£¨Ê¹ÓÃ roleId£©
-        // ×¢Òâ£ºÕâÀï²»ÊÇÖ±½ÓÉú³É£¬¶øÊÇ·ÅÈë¶ÓÁÐ£¬µÈ´ýÆ½Ì¨¼ÓÔØÍê³É
+        // 2. ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¹ï¿½ï¿½ roleIdï¿½ï¿½
+        // ×¢ï¿½â£ºï¿½ï¿½ï¿½ï²»ï¿½ï¿½Ö±ï¿½ï¿½ï¿½ï¿½ï¿½É£ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½Ð£ï¿½ï¿½È´ï¿½Æ½Ì¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         if (!DataMgr.GetInstance()._spawnedPlayers.Contains(charInfo.RoleId))
         {
             pendingSpawnRequests.Enqueue(charInfo.RoleId);
-            ProcessPendingSpawns(); // ³¢ÊÔÁ¢¼´´¦Àí
+            ProcessPendingSpawns(); // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         }
         else
         {
-            Debug.Log($"[CharacterSpawner] ½ÇÉ« {charInfo.RoleName} ÒÑÉú³É£¬Ìø¹ý¡£");
+            Debug.Log($"[CharacterSpawner] ï¿½ï¿½É« {charInfo.RoleName} ï¿½ï¿½ï¿½ï¿½ï¿½É£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
         }
     }
 
-    #region ÊÂ¼þ»Øµ÷
+    #region ï¿½Â¼ï¿½ï¿½Øµï¿½
 
     private void OnPlatformLoaded(GameObject platformObj)
     {
         if (platformObj == null)
         {
-            Debug.LogError("[CharacterSpawner] ½ÓÊÕµ½¿ÕÆ½Ì¨¶ÔÏó£¡");
+            Debug.LogError("[CharacterSpawner] ï¿½ï¿½ï¿½Õµï¿½ï¿½ï¿½Æ½Ì¨ï¿½ï¿½ï¿½ï¿½");
             return;
         }
 
         platformRoot = platformObj.transform;
         isPlatformReady = true;
-        Debug.Log($"[CharacterSpawner] Æ½Ì¨ÒÑ¼ÓÔØ£º{platformObj.name}");
+        Debug.Log($"[CharacterSpawner] Æ½Ì¨ï¿½Ñ¼ï¿½ï¿½Ø£ï¿½{platformObj.name}");
 
-        // ³¢ÊÔ´¦Àí»ýÑ¹µÄÉú³ÉÇëÇó
+        // ï¿½ï¿½ï¿½Ô´ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         ProcessPendingSpawns();
     }
 
     private void OnCharacterSpawnReady(string roleId)
     {
-        Debug.Log($"[CharacterSpawner] ÊÕµ½½ÇÉ«Éú³ÉÇëÇó£¬½ÇÉ«ID: {roleId}");
+        Debug.Log($"[CharacterSpawner] ï¿½Õµï¿½ï¿½ï¿½É«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ó£¬½ï¿½É«ID: {roleId}");
 
-        // »º´æÇëÇó£¬ÉÔºó´¦Àí
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ôºï¿½ï¿½ï¿½
         pendingSpawnRequests.Enqueue(roleId);
 
-        // ³¢ÊÔÁ¢¼´Éú³É
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         ProcessPendingSpawns();
     }
 
     /// <summary>
-    /// ´¦ÀíÍæ¼ÒÏÂÏßÊÂ¼þ
+    /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½
     /// </summary>
     private void OnPlayerOffline(PlayerOfflineNotify offlineNotify)
     {
         if (offlineNotify == null || string.IsNullOrEmpty(offlineNotify.PlayerId))
         {
-            Debug.LogError("[CharacterSpawner] ÊÕµ½ÎÞÐ§µÄÏÂÏßÍ¨Öª£¡");
+            Debug.LogError("[CharacterSpawner] ï¿½Õµï¿½ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¨Öªï¿½ï¿½");
             return;
         }
 
-        // Í¨¹ý player_id ²é role_id
+        // Í¨ï¿½ï¿½ player_id ï¿½ï¿½ role_id
         string roleId = DataMgr.GetInstance().GetRoleIdByPlayerId(offlineNotify.PlayerId);
-        Debug.Log($"[CharacterSpawner] ÊÕµ½Íæ¼ÒÏÂÏßÍ¨Öª£º{roleId}");
+        Debug.Log($"[CharacterSpawner] ï¿½Õµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¨Öªï¿½ï¿½{roleId}");
 
         RemoveCharacter(roleId);
     }
 
     #endregion
 
-    #region ºËÐÄÉú³ÉÁ÷³Ì
+    #region ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
     /// <summary>
-    /// ´¦ÀíËùÓÐµÈ´ýÖÐµÄ½ÇÉ«Éú³ÉÇëÇó
+    /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÐµÈ´ï¿½ï¿½ÐµÄ½ï¿½É«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     /// </summary>
     private void ProcessPendingSpawns()
     {
@@ -151,7 +151,7 @@ public class CharacterSpawner : MonoBehaviour
 
         List<string> pendingRoleIds = new();
 
-        // ÌáÈ¡Î¨Ò» roleId£¬±ÜÃâÖØ¸´
+        // ï¿½ï¿½È¡Î¨Ò» roleIdï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ø¸ï¿½
         HashSet<string> processed = new();
         while (pendingSpawnRequests.Count > 0)
         {
@@ -167,15 +167,15 @@ public class CharacterSpawner : MonoBehaviour
             }
         }
 
-        // »Ö¸´Î´´¦ÀíµÄÇëÇó£¨ÒÑÉú³É»òÎÞÐ§µÄ£©
+        // ï¿½Ö¸ï¿½Î´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É»ï¿½ï¿½ï¿½Ð§ï¿½Ä£ï¿½
         foreach (string id in processed)
         {
             if (!pendingRoleIds.Contains(id))
             {
-                // Èç¹ûÃ»±»´¦Àí£¬ËµÃ÷±»¹ýÂËÁË£¬²»ÐèÒª·Å»Ø
+                // ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ëµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë£ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½Å»ï¿½
             }
         }
-        // ×¢Òâ£ºÕâÀïÎÒÃÇ²»ÔÙ·Å»Ø£¬ÒòÎªÒÑ¾­´¦ÀíÁËÈ¥ÖØ
+        // ×¢ï¿½â£ºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç²ï¿½ï¿½Ù·Å»Ø£ï¿½ï¿½ï¿½Îªï¿½Ñ¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¥ï¿½ï¿½
 
         if (pendingRoleIds.Count == 0) return;
 
@@ -193,19 +193,19 @@ public class CharacterSpawner : MonoBehaviour
             string roleId = pendingRoleIds[i];
             CharacterBase charInfo = DataMgr.GetInstance().GetCharacterInfo(roleId);
 
-            //  ¹Ø¼ü£ºÏÈ±ê¼ÇÎªÒÑÉú³É£¬·ÀÖ¹ÆäËûÊÂ¼þÔÙ´Î´¥·¢
+            //  ï¿½Ø¼ï¿½ï¿½ï¿½ï¿½È±ï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½ï¿½É£ï¿½ï¿½ï¿½Ö¹ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½ï¿½Ù´Î´ï¿½ï¿½ï¿½
             DataMgr.GetInstance().MarkPlayerAsSpawned(roleId);
 
             if (!TrySpawnSingleCharacterWithConsistentPosition(charInfo, posManager))
             {
-                // ·ÖÅäÊ§°Ü£¬ÒÆ³ý±ê¼Ç£¬ÔÊÐíÖØÊÔ
+                // ï¿½ï¿½ï¿½ï¿½Ê§ï¿½Ü£ï¿½ï¿½Æ³ï¿½ï¿½ï¿½Ç£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
                 DataMgr.GetInstance().RemoveFromSpawnedPlayers(roleId);
             }
         }
     }
     private bool TrySpawnSingleCharacterWithConsistentPosition(CharacterBase charInfo, PositionManager posManager)
     {
-        // 1. »ñÈ¡ËùÓÐÎ´±»Õ¼ÓÃµÄµãÎ» ID£¨´ÓÐ¡µ½´óÅÅÐò£©
+        // 1. ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½Î´ï¿½ï¿½Õ¼ï¿½ÃµÄµï¿½Î» IDï¿½ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         List<int> availablePositions = new();
         for (int i = 0; i < posManager.positionCount; i++)
         {
@@ -217,31 +217,31 @@ public class CharacterSpawner : MonoBehaviour
 
         if (availablePositions.Count == 0)
         {
-            Debug.LogError("[CharacterSpawner] ÎÞ¿ÉÓÃ³öÉúµã£¡");
+            Debug.LogError("[CharacterSpawner] ï¿½Þ¿ï¿½ï¿½Ã³ï¿½ï¿½ï¿½ï¿½ã£¡");
             return false;
         }
 
-        // 2.  Ê¹ÓÃ½ÇÉ« ID + È«¾ÖÖÖ×Ó Éú³É¡°È·¶¨ÐÔËæ»ú¡±Ë÷Òý
-        // ÕâÑùÃ¿¸ö½ÇÉ«ÔÚËùÓÐ¿Í»§¶ËÉÏ¶¼»áÑ¡ÖÐÍ¬Ò»¸öµãÎ»
+        // 2.  Ê¹ï¿½Ã½ï¿½É« ID + È«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½É¡ï¿½È·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        // ï¿½ï¿½ï¿½ï¿½Ã¿ï¿½ï¿½ï¿½ï¿½É«ï¿½ï¿½ï¿½ï¿½ï¿½Ð¿Í»ï¿½ï¿½ï¿½ï¿½Ï¶ï¿½ï¿½ï¿½Ñ¡ï¿½ï¿½Í¬Ò»ï¿½ï¿½ï¿½ï¿½Î»
         int deterministicIndex = GetDeterministicIndex(charInfo.RoleId, availablePositions.Count);
 
         int selectedPosId = availablePositions[deterministicIndex];
         Vector3 spawnPos = posManager.GetPosition(selectedPosId);
-        spawnPos.y += 30.0f; // ÄãÔ­ÓÐµÄÆ«ÒÆ
+        spawnPos.y += 30.0f; // ï¿½ï¿½Ô­ï¿½Ðµï¿½Æ«ï¿½ï¿½
 
-        // 3. Á¢¼´Õ¼ÓÃµãÎ»
+        // 3. ï¿½ï¿½ï¿½ï¿½Õ¼ï¿½Ãµï¿½Î»
         posManager.OccupyPosition(selectedPosId);
-        Debug.Log($"[CharacterSpawner] Îª½ÇÉ« {charInfo.RoleName} ·ÖÅäÈ·¶¨ÐÔµãÎ» {selectedPosId}");
+        Debug.Log($"[CharacterSpawner] Îªï¿½ï¿½É« {charInfo.RoleName} ï¿½ï¿½ï¿½ï¿½È·ï¿½ï¿½ï¿½Ôµï¿½Î» {selectedPosId}");
 
-        // 4. Òì²½¼ÓÔØ²¢Éú³É
+        // 4. ï¿½ì²½ï¿½ï¿½ï¿½Ø²ï¿½ï¿½ï¿½ï¿½ï¿½
         ResMgr.GetInstance().LoadAsync<GameObject>(
             address: characterAddress,
             callback: (prefab) =>
             {
                 if (prefab == null)
                 {
-                    Debug.LogError($"[CharacterSpawner] Ô¤ÖÆÌå¼ÓÔØÊ§°Ü: {characterAddress}");
-                    posManager.ReleasePosition(selectedPosId); // Ê§°ÜÔòÊÍ·Å
+                    Debug.LogError($"[CharacterSpawner] Ô¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê§ï¿½ï¿½: {characterAddress}");
+                    posManager.ReleasePosition(selectedPosId); // Ê§ï¿½ï¿½ï¿½ï¿½ï¿½Í·ï¿½
                     return;
                 }
 
@@ -256,7 +256,7 @@ public class CharacterSpawner : MonoBehaviour
                 spawnedCharacters[charInfo.RoleId] = roleInstance;
                 characterToPositionId[charInfo.RoleId] = selectedPosId;
 
-                Debug.Log($"[CharacterSpawner] ½ÇÉ« {charInfo.RoleName} ³É¹¦Éú³ÉÓÚµãÎ» {selectedPosId}");
+                Debug.Log($"[CharacterSpawner] ï¿½ï¿½É« {charInfo.RoleName} ï¿½É¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Úµï¿½Î» {selectedPosId}");
             },
             autoRelease: true
         );
@@ -264,61 +264,61 @@ public class CharacterSpawner : MonoBehaviour
         return true;
     }
     /// <summary>
-    /// »ùÓÚ roleId ºÍ È«¾ÖÖÖ×Ó£¬Éú³É [0, range) ·¶Î§ÄÚµÄÈ·¶¨ÐÔË÷Òý
+    /// ï¿½ï¿½ï¿½ï¿½ roleId ï¿½ï¿½ È«ï¿½ï¿½ï¿½ï¿½ï¿½Ó£ï¿½ï¿½ï¿½ï¿½ï¿½ [0, range) ï¿½ï¿½Î§ï¿½Úµï¿½È·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     /// </summary>
     private int GetDeterministicIndex(string roleId, int range)
     {
         if (range <= 1) return 0;
 
-        // ½áºÏÈ«¾ÖÖÖ×ÓºÍ½ÇÉ« ID Éú³É¹þÏ£
+        // ï¿½ï¿½ï¿½È«ï¿½ï¿½ï¿½ï¿½ï¿½ÓºÍ½ï¿½É« ID ï¿½ï¿½ï¿½É¹ï¿½Ï£
         int hash = DataMgr.GetInstance().GlobalRandomSeed;
         foreach (char c in roleId)
         {
             hash ^= c;
-            hash = hash * 31 + c; // ¼òµ¥¹þÏ£
+            hash = hash * 31 + c; // ï¿½òµ¥¹ï¿½Ï£
         }
 
-        // È·±£ÕýÊý
+        // È·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         hash = Mathf.Abs(hash);
         return hash % range;
     }
     /// <summary>
-    /// ³¢ÊÔÉú³Éµ¥¸ö½ÇÉ«£¨Ê¹ÓÃ ResMgr Òì²½¼ÓÔØ£©
+    /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Éµï¿½ï¿½ï¿½ï¿½ï¿½É«ï¿½ï¿½Ê¹ï¿½ï¿½ ResMgr ï¿½ì²½ï¿½ï¿½ï¿½Ø£ï¿½
     /// </summary>
     //private bool TrySpawnSingleCharacter(CharacterBase charInfo)
     //{
     //    PositionManager posManager = platformRoot.GetComponentInChildren<PositionManager>();
     //    if (posManager == null)
     //    {
-    //        Debug.LogError("[CharacterSpawner] Î´ÕÒµ½ PositionManager£¡");
+    //        Debug.LogError("[CharacterSpawner] Î´ï¿½Òµï¿½ PositionManagerï¿½ï¿½");
     //        return false;
     //    }
 
-    //    //  1. »ñÈ¡¿ÕÏÐµãÎ»
+    //    //  1. ï¿½ï¿½È¡ï¿½ï¿½ï¿½Ðµï¿½Î»
     //    int posId = GetRandomAvailablePosition(posManager);
     //    if (posId == -1)
     //    {
-    //        Debug.LogError("[CharacterSpawner] ÎÞ¿ÉÓÃ³öÉúµã£¡");
+    //        Debug.LogError("[CharacterSpawner] ï¿½Þ¿ï¿½ï¿½Ã³ï¿½ï¿½ï¿½ï¿½ã£¡");
     //        return false;
     //    }
 
     //    Vector3 spawnPos = posManager.GetPosition(posId);
     //    spawnPos.y += 30.0f;
 
-    //    //  2.  Á¢¼´Õ¼ÓÃµãÎ»£¡²»ÒªµÈµ½¼ÓÔØÍê³É
+    //    //  2.  ï¿½ï¿½ï¿½ï¿½Õ¼ï¿½Ãµï¿½Î»ï¿½ï¿½ï¿½ï¿½Òªï¿½Èµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     //    posManager.OccupyPosition(posId);
-    //    Debug.Log($"[CharacterSpawner] ÒÑÔ¤Õ¼ÓÃµãÎ» {posId}£¬×¼±¸Éú³É½ÇÉ« {charInfo.RoleName}");
+    //    Debug.Log($"[CharacterSpawner] ï¿½ï¿½Ô¤Õ¼ï¿½Ãµï¿½Î» {posId}ï¿½ï¿½×¼ï¿½ï¿½ï¿½ï¿½ï¿½É½ï¿½É« {charInfo.RoleName}");
 
-    //    //  3. Òì²½¼ÓÔØ²¢ÊµÀý»¯
+    //    //  3. ï¿½ì²½ï¿½ï¿½ï¿½Ø²ï¿½Êµï¿½ï¿½ï¿½ï¿½
     //    ResMgr.GetInstance().LoadAsync<GameObject>(
     //        address: characterAddress,
     //        callback: (prefab) =>
     //        {
     //            if (prefab == null)
     //            {
-    //                Debug.LogError($"[CharacterSpawner] Ô¤ÖÆÌå¼ÓÔØÊ§°Ü£¬µØÖ·: {characterAddress}");
+    //                Debug.LogError($"[CharacterSpawner] Ô¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê§ï¿½Ü£ï¿½ï¿½ï¿½Ö·: {characterAddress}");
 
-    //                //  ¼ÓÔØÊ§°Ü£¬ÒªÊÍ·ÅµãÎ»£¡
+    //                //  ï¿½ï¿½ï¿½ï¿½Ê§ï¿½Ü£ï¿½Òªï¿½Í·Åµï¿½Î»ï¿½ï¿½
     //                posManager.ReleasePosition(posId);
     //                return;
     //            }
@@ -333,14 +333,14 @@ public class CharacterSpawner : MonoBehaviour
     //            }
     //            else
     //            {
-    //                Debug.LogWarning($"[CharacterSpawner] ½ÇÉ«È±ÉÙ CharacterInit ×é¼þ: {roleInstance.name}");
+    //                Debug.LogWarning($"[CharacterSpawner] ï¿½ï¿½É«È±ï¿½ï¿½ CharacterInit ï¿½ï¿½ï¿½: {roleInstance.name}");
     //            }
 
-    //            // ¼ÇÂ¼Éú³ÉµÄ½ÇÉ«ºÍµãÎ»
+    //            // ï¿½ï¿½Â¼ï¿½ï¿½ï¿½ÉµÄ½ï¿½É«ï¿½Íµï¿½Î»
     //            spawnedCharacters[charInfo.RoleId] = roleInstance;
     //            characterToPositionId[charInfo.RoleId] = posId;
 
-    //            Debug.Log($"[CharacterSpawner] ½ÇÉ« {charInfo.RoleName} ³É¹¦Éú³ÉÓÚµãÎ» {posId}");
+    //            Debug.Log($"[CharacterSpawner] ï¿½ï¿½É« {charInfo.RoleName} ï¿½É¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Úµï¿½Î» {posId}");
     //        },
     //        autoRelease: true
     //    );
@@ -350,52 +350,52 @@ public class CharacterSpawner : MonoBehaviour
 
     #endregion
 
-    #region ½ÇÉ«ÒÆ³ýÂß¼­£¨Íæ¼ÒÏÂÏß£©
+    #region ï¿½ï¿½É«ï¿½Æ³ï¿½ï¿½ß¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ß£ï¿½
 
     /// <summary>
-    /// ÒÆ³ýÖ¸¶¨½ÇÉ«£¨Íæ¼ÒÏÂÏß£©
+    /// ï¿½Æ³ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½É«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ß£ï¿½
     /// </summary>
     private void RemoveCharacter(string roleId)
     {
         if (string.IsNullOrEmpty(roleId))
             return;
 
-        // 1. ¼ì²éÊÇ·ñÒÑÉú³É
+        // 1. ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         if (!spawnedCharacters.TryGetValue(roleId, out GameObject roleInstance))
         {
-            Debug.Log($"[CharacterSpawner] ½ÇÉ« {roleId} Î´ÕÒµ½»òÎ´Éú³É£¬ÎÞÐèÒÆ³ý¡£");
+            Debug.Log($"[CharacterSpawner] ï¿½ï¿½É« {roleId} Î´ï¿½Òµï¿½ï¿½ï¿½Î´ï¿½ï¿½ï¿½É£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ³ï¿½ï¿½ï¿½");
             return;
         }
 
-        // 2. ÊÍ·Å³öÉúµã
+        // 2. ï¿½Í·Å³ï¿½ï¿½ï¿½ï¿½ï¿½
         if (characterToPositionId.TryGetValue(roleId, out int posId))
         {
             ReleaseCharacterPosition(posId);
             characterToPositionId.Remove(roleId);
         }
 
-        // 3. Ïú»Ù GameObject
+        // 3. ï¿½ï¿½ï¿½ï¿½ GameObject
         Destroy(roleInstance);
         spawnedCharacters.Remove(roleId);
 
-        // 4. ´Ó DataMgr ÖÐÒÆ³ýÉú³É±ê¼Ç
+        // 4. ï¿½ï¿½ DataMgr ï¿½ï¿½ï¿½Æ³ï¿½ï¿½ï¿½ï¿½É±ï¿½ï¿½
         DataMgr.GetInstance()._spawnedPlayers.Remove(roleId);
 
-        Debug.Log($"[CharacterSpawner] ½ÇÉ« {roleId} ÒÑÒÆ³ý²¢ÇåÀí×ÊÔ´¡£");
+        Debug.Log($"[CharacterSpawner] ï¿½ï¿½É« {roleId} ï¿½ï¿½ï¿½Æ³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô´ï¿½ï¿½");
     }
 
     #endregion
 
-    #region ³öÉúµã¹ÜÀí
+    #region ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
     /// <summary>
-    /// »ñÈ¡Ëæ»ú¿ÕÏÐ³öÉúµã ID£¨Ê¹ÓÃÈ«¾ÖÖÖ×Ó£©
+    /// ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð³ï¿½ï¿½ï¿½ï¿½ï¿½ IDï¿½ï¿½Ê¹ï¿½ï¿½È«ï¿½ï¿½ï¿½ï¿½ï¿½Ó£ï¿½
     /// </summary>
     private int GetRandomAvailablePosition(PositionManager posManager)
     {
         if (posManager == null)
         {
-            Debug.LogError("[CharacterSpawner] PositionManager Îª null£¡");
+            Debug.LogError("[CharacterSpawner] PositionManager Îª nullï¿½ï¿½");
             return -1;
         }
 
@@ -410,18 +410,18 @@ public class CharacterSpawner : MonoBehaviour
 
         if (available.Count == 0)
         {
-            Debug.LogError("[CharacterSpawner] ËùÓÐµãÎ»ÒÑ±»Õ¼ÓÃ£¡");
+            Debug.LogError("[CharacterSpawner] ï¿½ï¿½ï¿½Ðµï¿½Î»ï¿½Ñ±ï¿½Õ¼ï¿½Ã£ï¿½");
             return -1;
         }
 
-        // Ê¹ÓÃÈ«¾ÖÖÖ×Ó£¬È·±£¶à¶ËÒ»ÖÂ
+        // Ê¹ï¿½ï¿½È«ï¿½ï¿½ï¿½ï¿½ï¿½Ó£ï¿½È·ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½
         Random.InitState(DataMgr.GetInstance().GlobalRandomSeed);
         int index = Random.Range(0, available.Count);
         return available[index];
     }
 
     /// <summary>
-    /// ÊÍ·ÅÖ¸¶¨³öÉúµã£¨½ÇÉ«Ïú»ÙÊ±µ÷ÓÃ£©
+    /// ï¿½Í·ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ã£¨ï¿½ï¿½É«ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½Ã£ï¿½
     /// </summary>
     public void ReleaseCharacterPosition(int positionId)
     {
@@ -431,7 +431,7 @@ public class CharacterSpawner : MonoBehaviour
         if (posManager != null && posManager.IsPositionOccupied(positionId))
         {
             posManager.ReleasePosition(positionId);
-            Debug.Log($"[CharacterSpawner] ³öÉúµã {positionId} ÒÑÊÍ·Å");
+            Debug.Log($"[CharacterSpawner] ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ {positionId} ï¿½ï¿½ï¿½Í·ï¿½");
         }
     }
 

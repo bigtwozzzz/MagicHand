@@ -17,7 +17,7 @@ public class CharacterInit : MonoBehaviour, IComponent
 
     private void Awake()
     {
-        // »ñÈ¡ËùÓÐ×é¼þ
+        // ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         health = GetComponent<HealthComponent>();
         level = GetComponent<LevelComponent>();
         position = GetComponent<PositionComponent>();
@@ -32,39 +32,39 @@ public class CharacterInit : MonoBehaviour, IComponent
     {
         if (data == null)
         {
-            Debug.LogError("[DataSync] ÎÞ·¨Ó¦ÓÃ¿ÕÊý¾Ý£¡");
+            Debug.LogError("[DataSync] ï¿½Þ·ï¿½Ó¦ï¿½Ã¿ï¿½ï¿½ï¿½ï¿½Ý£ï¿½");
             return;
         }
 
-        // ³õÊ¼»¯»ù´¡Êý¾Ý
+        // ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         health.SetHealth(data.CurrentHp, data.MaxHp);
         level.SetLevel(data.Level, (int)data.Exp);
         direction.SetDirection(data.Direction);
         status.SetStatus(data.Status);
         
-        // --- ÉèÖÃÍ·¶¥Ãû³Æ ---
+        // --- ï¿½ï¿½ï¿½ï¿½Í·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ---
         if (TryGetComponent<HeadPlateComponent>(out var headPlate))
         {
-            headPlate.Initialize(); // È·±£ HeadPlate ³õÊ¼»¯
-            headPlate.SetNames(data.PlayerName, data.RoleName); // ÉèÖÃÎÄ±¾
+            headPlate.Initialize(); // È·ï¿½ï¿½ HeadPlate ï¿½ï¿½Ê¼ï¿½ï¿½
+            headPlate.SetNames(data.PlayerName, data.RoleName); // ï¿½ï¿½ï¿½ï¿½ï¿½Ä±ï¿½
 
-            // --- ¹Ø¼ü£ºÐ­µ÷ AutoHeadPosition ºÍ HeadPlate ---
+            // --- ï¿½Ø¼ï¿½ï¿½ï¿½Ð­ï¿½ï¿½ AutoHeadPosition ï¿½ï¿½ HeadPlate ---
             if (TryGetComponent<AutoHeadPosition>(out var autoHead))
             {
-                // »ñÈ¡ HeadPlate ÐèÒªµÄ´¹Ö±¿Õ¼ä
+                // ï¿½ï¿½È¡ HeadPlate ï¿½ï¿½Òªï¿½Ä´ï¿½Ö±ï¿½Õ¼ï¿½
                 float requiredHeight = headPlate.GetRequiredHeight();
-                // ½«ËùÐè¸ß¶È×ª»»ÎªÊÀ½çµ¥Î»£¨ÕâÊÇÒ»¸ö¹ÀËã£¬ÐèÒª¸ù¾ÝÄãµÄ Canvas µÄ Reference Pixels Per Unit µ÷Õû£©
-                // ¼ÙÉè 100 UI ÏñËØ ¡Ö 0.1 Ã× (Õâ¸ö±ÈÀýÐèÒªÄã¸ù¾ÝÊµ¼ÊÏîÄ¿µ÷Õû)
-                float heightInMeters = requiredHeight * 0.001f; // Ê¾Àý×ª»»Òò×Ó
+                // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ß¶ï¿½×ªï¿½ï¿½Îªï¿½ï¿½ï¿½çµ¥Î»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ã£¬ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Canvas ï¿½ï¿½ Reference Pixels Per Unit ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+                // ï¿½ï¿½ï¿½ï¿½ 100 UI ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ 0.1 ï¿½ï¿½ (ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½ï¿½ï¿½Ä¿ï¿½ï¿½ï¿½ï¿½)
+                float heightInMeters = requiredHeight * 0.001f; // Ê¾ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
                 Vector3 currentOffset = autoHead.GetAdditionalOffset();
-                // Ö»µ÷Õû Y Öá£¬±£Áô X/Z µÄÊÖ¶¯Î¢µ÷
+                // Ö»ï¿½ï¿½ï¿½ï¿½ Y ï¿½á£¬ï¿½ï¿½ï¿½ï¿½ X/Z ï¿½ï¿½ï¿½Ö¶ï¿½Î¢ï¿½ï¿½
                 Vector3 newOffset = new(currentOffset.x, heightInMeters, currentOffset.z);
                 autoHead.SetAdditionalOffset(newOffset);
             }
         }
 
 
-        //Debug.Log($"[DataSync] ÒÑÓ¦ÓÃ½ÇÉ«Êý¾Ý: {userName} ({playerId}) ¡ú {data.RoleName}");
+        //Debug.Log($"[DataSync] ï¿½ï¿½Ó¦ï¿½Ã½ï¿½É«ï¿½ï¿½ï¿½ï¿½: {userName} ({playerId}) ï¿½ï¿½ {data.RoleName}");
     }
 }

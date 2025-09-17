@@ -11,6 +11,19 @@ import socket
 import json
 from PIL import Image
 from models import classifiers_list
+import warnings
+import os
+import logging
+
+# 过滤MediaPipe的NORM_RECT警告
+warnings.filterwarnings("ignore", message=".*Using NORM_RECT without IMAGE_DIMENSIONS.*")
+
+# 设置环境变量来抑制MediaPipe的C++日志
+os.environ['GLOG_minloglevel'] = '2'  # 只显示ERROR级别的日志
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'  # 抑制TensorFlow日志
+
+# 设置Python日志级别
+logging.getLogger('mediapipe').setLevel(logging.ERROR)
 
 # UDP配置
 UDP_IP = "127.0.0.1"  # Unity运行的IP地址
@@ -44,6 +57,7 @@ class RealTimeGestureDetector:
         self.transform = self.get_transform()
         self.enable_signal = enable_signal
         self.enable_window = enable_window
+        self.confidence_threshold = 0.3  # 默认置信度阈值
         
         self.gesture_names = [
             'grabbing', 'grip', 'holy', 'point', 'call', 'three3', 'timeout', 'xsign',
@@ -127,7 +141,10 @@ class RealTimeGestureDetector:
     def detect_hands(self, frame):
         """检测手部关键点"""
         rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        # 设置图像尺寸以避免MediaPipe警告
+        rgb_frame.flags.writeable = False
         results = self.hands.process(rgb_frame)
+        rgb_frame.flags.writeable = True
         
         hands_info = []
         if results.multi_hand_landmarks and results.multi_handedness:
@@ -380,6 +397,11 @@ class RealTimeGestureDetector:
         """通过UDP发送手势数据到Unity"""
         if not self.enable_signal:
             return
+        
+        # 置信度过滤：只有置信度高于阈值的手势才发送到Unity
+        if confidence < self.confidence_threshold:
+            print(f"🚫 手势 '{gesture_name}' 置信度 {confidence:.3f} 低于阈值 {self.confidence_threshold}，不发送")
+            return
             
         try:
             # 获取手势编号
@@ -431,7 +453,7 @@ class RealTimeGestureDetector:
             hands_data = []
             
             # 处理左手数据
-            if left_gesture and left_gesture != "no_gesture":
+            if left_gesture and left_gesture != "no_gesture" and left_confidence >= self.confidence_threshold:
                 left_gesture_id = GESTURE_MAPPING.get(left_gesture, 0)
                 left_landmarks_list = []
                 if left_landmarks and hasattr(left_landmarks, 'landmark'):
@@ -445,14 +467,17 @@ class RealTimeGestureDetector:
                     "landmarks": left_landmarks_list
                 }
                 hands_data.append(left_hand_data)
+            elif left_gesture and left_gesture != "no_gesture":
+                print(f"🚫 左手手势 '{left_gesture}' 置信度 {left_confidence:.3f} 低于阈值 {self.confidence_threshold}，不发送")
             
             # 处理右手数据
-            if right_gesture and right_gesture != "no_gesture":
+            if right_gesture and right_gesture != "no_gesture" and right_confidence >= self.confidence_threshold:
                 right_gesture_id = GESTURE_MAPPING.get(right_gesture, 0)
                 right_landmarks_list = []
                 if right_landmarks and hasattr(right_landmarks, 'landmark'):
                     for landmark in right_landmarks.landmark:
                         right_landmarks_list.append([landmark.x, landmark.y, landmark.z])
+
                 
                 right_hand_data = {
                     "hand_side": "Right",
@@ -461,6 +486,8 @@ class RealTimeGestureDetector:
                     "landmarks": right_landmarks_list
                 }
                 hands_data.append(right_hand_data)
+            elif right_gesture and right_gesture != "no_gesture":
+                print(f"🚫 右手手势 '{right_gesture}' 置信度 {right_confidence:.3f} 低于阈值 {self.confidence_threshold}，不发送")
             
             # 构建发送数据（与Unity期望的格式匹配）
             if hands_data:  # 只有当有手势数据时才发送
@@ -503,6 +530,9 @@ class RealTimeGestureDetector:
             confidence_threshold: 置信度阈值
             auto_interval: 自动模式间隔(毫秒)，0表示手动模式
         """
+        # 设置置信度阈值
+        self.confidence_threshold = confidence_threshold
+        
         print("🚀 启动手势分类器...")
         print(f"📱 使用设备: {self.device}")
         print(f"🎯 置信度阈值: {confidence_threshold}")

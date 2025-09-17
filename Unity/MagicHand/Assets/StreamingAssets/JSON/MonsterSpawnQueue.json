@@ -1,0 +1,57 @@
+{
+  "spawnQueue": {
+    "description": "怪物生成队列配置表",
+    "version": "2.0",
+    "waves": {
+      "wave1": {
+        "description": "第一波怪物",
+        "spawnEvents": [
+          {
+            "eventId": 1,
+            "triggerTime": 5.0,
+            "id": 1,
+            "spawnCount": 1,
+            "spawnPosition": {
+              "x": 0,
+              "y": 0,
+              "z": 10
+            },
+            "description": "游戏开始5秒后生成1只哥布林",
+            "enabled": true
+          },
+          {
+            "eventId": 2,
+            "triggerTime": 15.0,
+            "id": 1,
+            "spawnCount": 3,
+            "spawnPosition": {
+              "x": -3,
+              "y": 0,
+              "z": 10
+            },
+            "description": "游戏开始15秒后生成1只哥布林",
+            "enabled": true
+          }
+        ]
+      },
+      "wave2": {
+        "description": "第二波怪物",
+        "spawnEvents": [
+          {
+            "eventId": 3,
+            "triggerTime": 3.0,
+            "id": 2,
+            "spawnCount": 1,
+            "spawnPosition": {
+              "x": 2,
+              "y": 0,
+              "z": 12
+            },
+            "description": "第二波开始10秒后生成1只骷髅战士",
+            "enabled": true
+          }
+        ]
+      }
+    }
+  }
+}

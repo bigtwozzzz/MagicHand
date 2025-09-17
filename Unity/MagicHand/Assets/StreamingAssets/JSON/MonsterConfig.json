@@ -1,0 +1,120 @@
+{
+  "monsters": [
+    {
+      "id": 1,
+      "name": "哥布林",
+      "description": "基础近战怪物，血量较低但攻击速度快",
+      "maxHealth": 200,
+      "attackDamage": 25,
+      "moveSpeed": 1,
+      "attackRange": 3,
+      "attackInterval": 0.83,
+      "detectionRange": 5.0,
+      "scaleMultiplier": 1.0,
+      "dropItems": [
+        {
+          "itemId": 1,
+          "dropRate": 0.3
+        }
+      ],
+      "aiType": "Aggressive",
+      "enableDebugLog": false
+    },
+    {
+      "id": 2,
+      "name": "骷髅战士",
+      "description": "亡灵系怪物，拥有中等血量和攻击力",
+      "maxHealth": 120,
+      "attackDamage": 35,
+      "moveSpeed": 1.5,
+      "attackRange": 1.5,
+      "attackInterval": 1.0,
+      "detectionRange": 6.0,
+      "scaleMultiplier": 10.0,
+      "dropItems": [
+        {
+          "itemId": 2,
+          "dropRate": 0.25
+        },
+        {
+          "itemId": 3,
+          "dropRate": 0.15
+        }
+      ],
+      "aiType": "Defensive",
+      "enableDebugLog": false
+    },
+    {
+      "id": 3,
+      "name": "火焰法师",
+      "description": "远程魔法攻击怪物，血量较低但伤害很高",
+      "maxHealth": 80,
+      "attackDamage": 60,
+      "moveSpeed": 2.0,
+      "attackRange": 8.0,
+      "attackInterval": 1.43,
+      "detectionRange": 10.0,
+      "scaleMultiplier": 1.0,
+      "dropItems": [
+        {
+          "itemId": 4,
+          "dropRate": 0.4
+        },
+        {
+          "itemId": 5,
+          "dropRate": 0.2
+        }
+      ],
+      "aiType": "Ranged",
+      "enableDebugLog": false
+    },
+    {
+      "id": 4,
+      "name": "巨石巨人",
+      "description": "Boss级怪物，拥有极高血量和防御力",
+      "maxHealth": 500,
+      "attackDamage": 80,
+      "moveSpeed": 1.5,
+      "attackRange": 3.0,
+      "attackInterval": 2.0,
+      "detectionRange": 8.0,
+      "scaleMultiplier": 1.0,
+      "dropItems": [
+        {
+          "itemId": 6,
+          "dropRate": 0.8
+        },
+        {
+          "itemId": 7,
+          "dropRate": 0.5
+        },
+        {
+          "itemId": 8,
+          "dropRate": 0.3
+        }
+      ],
+      "aiType": "Boss",
+      "enableDebugLog": false
+    },
+    {
+      "id": 5,
+      "name": "暗影刺客",
+      "description": "高速移动的刺客型怪物，攻击力高但血量极低",
+      "maxHealth": 60,
+      "attackDamage": 45,
+      "moveSpeed": 5.0,
+      "attackRange": 1.2,
+      "attackInterval": 0.5,
+      "detectionRange": 4.0,
+      "scaleMultiplier": 1.0,
+      "dropItems": [
+        {
+          "itemId": 9,
+          "dropRate": 0.35
+        }
+      ],
+      "aiType": "Stealth",
+      "enableDebugLog": false
+    }
+  ]
+}

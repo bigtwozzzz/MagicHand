@@ -382,7 +382,9 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1917408383}
+  - {fileID: 1203540219}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &963194225
@@ -472,7 +474,7 @@ Transform:
   m_GameObject: {fileID: 963194225}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 2, z: 0}
+  m_LocalPosition: {x: 0, y: 1.5, z: -2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -610,44 +612,87 @@ MonoBehaviour:
   m_GameObject: {fileID: 1094445631}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c1dc61a9eae9339418623431b87d1956, type: 3}
+  m_Script: {fileID: 11500000, guid: 2fa765fda4d474348abdfb0a1355d258, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  effectConfigs:
+  magicEffects:
   - magicId: 3
     effectPrefab: {fileID: 3378743505738119105, guid: 1828ae7d3481cdd4890df79463a3f2a9, type: 3}
-    positionOffset: {x: 0, y: 0, z: 0}
-    rotationOffset: {x: 0, y: 0, z: 0}
-    scaleMultiplier: {x: 1.2, y: 1.2, z: 1.2}
-    preSpawnCount: 1
-    maxPoolSize: 1
-    autoRecycleTime: 3
-    isEnabled: 1
-    autoRecycle: 1
+    poolSize: 1
+    expandPool: 0
   - magicId: 4
     effectPrefab: {fileID: 3085166871639097753, guid: f6dc9c912fbf3454e987a927fe308a59, type: 3}
-    positionOffset: {x: 0, y: 0, z: 0}
-    rotationOffset: {x: -90, y: -90, z: 0}
-    scaleMultiplier: {x: 1.5, y: 1.5, z: 2}
-    preSpawnCount: 1
-    maxPoolSize: 3
-    autoRecycleTime: 1.5
-    isEnabled: 1
-    autoRecycle: 1
+    poolSize: 1
+    expandPool: 0
   - magicId: 22
     effectPrefab: {fileID: 1839445213900760, guid: e4f0684498764e345bd20f7fc367e618, type: 3}
-    positionOffset: {x: 0, y: 0, z: 7.5}
-    rotationOffset: {x: 0, y: 0, z: 0}
-    scaleMultiplier: {x: 1, y: 1, z: 1}
-    preSpawnCount: 1
-    maxPoolSize: 1
-    autoRecycleTime: 1.5
-    isEnabled: 1
-    autoRecycle: 1
-  preInstantiateCount: 3
-  poolParent: {fileID: 0}
+    poolSize: 1
+    expandPool: 0
+  defaultPoolSize: 10
+  effectParent: {fileID: 2121945816}
+  playerTransform: {fileID: 1568656441}
+  usePlayerAsReference: 1
+--- !u!1 &1129980539
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1129980542}
+  - component: {fileID: 1129980541}
+  - component: {fileID: 1129980540}
+  m_Layer: 0
+  m_Name: GameController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1129980540
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1129980539}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2555e2a8f530eff47b4cd0d0b0de812d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isPaused: 1
+  startPaused: 1
+  previousTimeScale: 1
+--- !u!114 &1129980541
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1129980539}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42fbea797dc41c14987d85d1750b5c98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   enableDebugLog: 1
-  showEffectGizmos: 0
+--- !u!4 &1129980542
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1129980539}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1177756944
 GameObject:
   m_ObjectHideFlags: 0
@@ -767,7 +812,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1190207624
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -818,6 +863,64 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1203540218
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1203540219}
+  - component: {fileID: 1203540220}
+  m_Layer: 0
+  m_Name: MonsterPool
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1203540219
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1203540218}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 960878032}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1203540220
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1203540218}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cee5c877c28acef42a541f5e4e728656, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefabConfigs:
+  - monsterId: 1
+    prefab: {fileID: 5213014239458159033, guid: 4d75010ad04ddce4f8f88434f2d50394, type: 3}
+    rotation: {x: 0, y: 1, z: 0, w: -0.00000004371139}
+    scale: {x: 1, y: 1, z: 1}
+    poolSize: 3
+  - monsterId: 2
+    prefab: {fileID: 100078, guid: 5a35c5f0a89b9654d897ccd7c8f81bd0, type: 3}
+    rotation: {x: 0, y: 1, z: 0, w: -0.00000004371139}
+    scale: {x: 1, y: 1, z: 1}
+    poolSize: 3
+  defaultPoolSize: 15
+  poolParent: {fileID: 1203540219}
+  enableDebugLog: 1
 --- !u!1 &1271205834
 GameObject:
   m_ObjectHideFlags: 0
@@ -862,10 +965,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71e00c83a70152441afeb1b0a3900026, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoMode: 500
+  autoMode: 250
   modelPath: work_dir/ResNet18/ResNet18_epoch_4_F1Score_0.94_loss_0.12.pth
   cameraId: 0
-  confidenceThreshold: 0.6
+  confidenceThreshold: 0.8
   enableSignal: 1
   enableWindow: 1
   useRelativePath: 1
@@ -882,8 +985,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1324357768}
+  - component: {fileID: 1324357769}
   m_Layer: 0
-  m_Name: MagicTrigger
+  m_Name: MagicHit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -904,6 +1008,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 485650344}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1324357769
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1324357767}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe148d3dc0cb73a42b9670351bc33cf7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enableDebugLog: 1
+  enableDebugDraw: 0
 --- !u!1 &1382394414
 GameObject:
   m_ObjectHideFlags: 0
@@ -962,6 +1080,7 @@ GameObject:
   - component: {fileID: 1476436613}
   - component: {fileID: 1476436615}
   - component: {fileID: 1476436614}
+  - component: {fileID: 1476436616}
   m_Layer: 0
   m_Name: GestureHandle
   m_TagString: Untagged
@@ -1002,9 +1121,9 @@ MonoBehaviour:
   processRightHandOnly: 0
   ignoredGestureIds: 00000000
   enableDebounce: 1
-  debounceInterval: 0.6
-  enableHoldToTrigger: 1
-  holdDuration: 0.5
+  debounceInterval: 1
+  enableHoldToTrigger: 0
+  holdDuration: 0.4
 --- !u!114 &1476436615
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1019,6 +1138,35 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enableDebugLog: 1
   OnGesture:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &1476436616
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1476436612}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a38e384d20c6d04687825da8109c88c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enableDebugLog: 1
+  okGestureId: 13
+  okGestureHoldTime: 1.2
+  okGestureName: ok
+  timeoutGestureId: 17
+  timeoutGestureHoldTime: 1.2
+  timeoutGestureName: timeout
+  gestureStableTime: 2
+  enableAutoTrigger: 1
+  gestureTimeoutThreshold: 2.5
+  statusLogInterval: 0.5
+  OnNextWave:
+    m_PersistentCalls:
+      m_Calls: []
+  OnPause:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &1568656440
@@ -1062,6 +1210,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1607355228}
   - component: {fileID: 1607355229}
+  - component: {fileID: 1607355231}
+  - component: {fileID: 1607355230}
+  - component: {fileID: 1607355232}
   m_Layer: 0
   m_Name: MagicManager
   m_TagString: Untagged
@@ -1096,14 +1247,49 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37bc0a143a84be04689a5b460ada7674, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  magicDataList: []
-  cooldownText: {fileID: 2106483597}
-  cooldownMessageDuration: 1
-  magicInfoText: {fileID: 0}
-  enableDebugLog: 1
-  showMagicRangeGizmos: 1
-  comboGestureTimeWindow: 1.2
-  enableComboGestures: 1
+  maxGestureHistory: 5
+  gestureTimeWindow: 2
+--- !u!114 &1607355230
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1607355227}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e9fea579a831584e82ff10a87a848e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  configFileName: MagicConfig.json
+--- !u!114 &1607355231
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1607355227}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0548bd9405307ca4ba069e5e2de1b191, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pauseCooldownWhenGamePaused: 1
+--- !u!114 &1607355232
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1607355227}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2b070aa903b0ef4cb4a64408088e7ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cooldownTipPanel: {fileID: 0}
+  cooldownTipText: {fileID: 2106483597}
+  tipDisplayDuration: 1.5
 --- !u!1 &1619872854
 GameObject:
   m_ObjectHideFlags: 0
@@ -1146,6 +1332,10 @@ PrefabInstance:
     - target: {fileID: 196076, guid: 81019282b8820644ea34f67559dc3d41, type: 3}
       propertyPath: m_Name
       value: Grey
+      objectReference: {fileID: 0}
+    - target: {fileID: 196076, guid: 81019282b8820644ea34f67559dc3d41, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 409426, guid: 81019282b8820644ea34f67559dc3d41, type: 3}
       propertyPath: m_LocalScale.x
@@ -1274,6 +1464,100 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1917408382
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1917408383}
+  - component: {fileID: 1917408387}
+  - component: {fileID: 1917408386}
+  - component: {fileID: 1917408385}
+  - component: {fileID: 1917408384}
+  m_Layer: 0
+  m_Name: MonsterManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1917408383
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1917408382}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 960878032}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1917408384
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1917408382}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8029e666c41ff5f4fb287ae11fe240b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  configFilePath: JSON/MonsterConfig
+  enableDebugLog: 1
+--- !u!114 &1917408385
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1917408382}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac1b3c665b438304fa6a198c52483947, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enableDebugLog: 1
+  OnMonsterSpawn:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &1917408386
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1917408382}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7eb7fda3d87b82479ba81d6c6dfe2b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  configFilePath: JSON/MonsterSpawnQueue
+  enableDebugLog: 1
+--- !u!114 &1917408387
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1917408382}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f19b32382dfbc58469710eb5f9777bab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  autoStart: 1
+  autoSwitchTime: 120
+  enableDebugLog: 1
 --- !u!1 &1973430061
 GameObject:
   m_ObjectHideFlags: 0
@@ -1478,6 +1762,7 @@ SceneRoots:
   - {fileID: 1973430062}
   - {fileID: 705507995}
   - {fileID: 1568656441}
+  - {fileID: 1129980542}
   - {fileID: 485650344}
   - {fileID: 960878032}
   - {fileID: 1806288768}
