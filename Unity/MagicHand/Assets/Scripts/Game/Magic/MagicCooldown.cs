@@ -71,7 +71,7 @@ public class MagicCooldown : MonoBehaviour
     /// <summary>
     /// 魔法触发时的处理
     /// </summary>
-    private void OnMagicTriggered(int magicId, MagicData magicData)
+    private void OnMagicTriggered(int magicId, MagicData magicData, int playerId)
     {
         // 魔法触发后自动开始冷却
         StartCooldown(magicId, magicData.cooldownTime);

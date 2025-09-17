@@ -182,6 +182,13 @@ public class MagicManager : MonoBehaviour
             return;
         }
         
+        // 检查本地玩家是否死亡
+        if (IsLocalPlayerDead())
+        {
+            Debug.Log($"[MagicManager] 玩家已死亡，无法触发魔法 {magicId}");
+            return;
+        }
+        
         // 检查魔法配置是否存在
         if (MagicConfigLoader.Instance == null || !MagicConfigLoader.Instance.IsConfigLoaded)
         {
@@ -232,8 +239,11 @@ public class MagicManager : MonoBehaviour
     {
         Debug.Log($"[MagicManager] 触发魔法: {magicData.magicName} (ID: {magicId})");
         
+        // 获取本地玩家ID（默认为1号玩家）
+        int localPlayerId = GetLocalPlayerId();
+        
         // 触发魔法事件
-        MagicEventSystem.TriggerMagic(magicId, magicData);
+        MagicEventSystem.TriggerMagic(magicId, magicData, localPlayerId);
         
         // 触发魔法施放事件
         OnMagicCast?.Invoke(magicId, magicData);
@@ -251,6 +261,58 @@ public class MagicManager : MonoBehaviour
     public void ManualTriggerMagic(int magicId)
     {
         TryTriggerMagic(magicId);
+    }
+    
+    /// <summary>
+    /// 获取本地玩家ID
+    /// </summary>
+    /// <returns>本地玩家ID，默认为1</returns>
+    private int GetLocalPlayerId()
+    {
+        // 查找主玩家
+        if (PlayerManager.Instance != null)
+        {
+            var players = PlayerManager.Instance.GetActivePlayers();
+            foreach (var player in players)
+            {
+                PlayerIdentity identity = player.playerObject.GetComponent<PlayerIdentity>();
+                if (identity != null && identity.IsMainPlayer)
+                {
+                    return identity.PlayerId;
+                }
+            }
+        }
+        
+        // 默认返回1号玩家
+        return 1;
+    }
+    
+    /// <summary>
+    /// 检查本地玩家是否死亡
+    /// </summary>
+    /// <returns>如果本地玩家死亡返回true，否则返回false</returns>
+    private bool IsLocalPlayerDead()
+    {
+        if (PlayerManager.Instance != null)
+        {
+            var players = PlayerManager.Instance.GetActivePlayers();
+            foreach (var player in players)
+            {
+                PlayerIdentity identity = player.playerObject.GetComponent<PlayerIdentity>();
+                if (identity != null && identity.IsMainPlayer)
+                {
+                    // 获取玩家的生命值管理器
+                    PlayerHealthManager healthManager = player.playerObject.GetComponent<PlayerHealthManager>();
+                    if (healthManager != null)
+                    {
+                        return healthManager.IsDead();
+                    }
+                }
+            }
+        }
+        
+        // 如果找不到玩家或生命值管理器，默认认为玩家未死亡
+        return false;
     }
     
     /// <summary>

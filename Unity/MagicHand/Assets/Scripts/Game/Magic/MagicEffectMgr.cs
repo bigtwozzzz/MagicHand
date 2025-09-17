@@ -156,20 +156,30 @@ public class MagicEffectMgr : MonoBehaviour
     /// <summary>
     /// 魔法触发时的处理
     /// </summary>
-    private void OnMagicTriggered(int magicId, MagicData magicData)
+    private void OnMagicTriggered(int magicId, MagicData magicData, int playerId)
     {
         // 计算特效位置和旋转
         Vector3 position;
         
-        if (usePlayerAsReference && playerTransform != null)
+        // 根据玩家ID获取对应玩家的位置
+        PlayerManager.PlayerData playerData = PlayerManager.Instance?.GetPlayerData(playerId);
+        if (playerData != null && playerData.playerObject != null)
         {
-            // 以玩家为基准计算位置
+            // 以指定玩家为基准计算位置
+            position = playerData.playerObject.transform.position;
+            Debug.Log($"[MagicEffectMgr] 使用玩家{playerId}位置作为特效基准: {position}");
+        }
+        else if (usePlayerAsReference && playerTransform != null)
+        {
+            // 回退到默认玩家位置
             position = playerTransform.position;
+            Debug.LogWarning($"[MagicEffectMgr] 未找到玩家{playerId}，使用默认玩家位置");
         }
         else
         {
-            // 回退到摄像机位置
+            // 最后回退到摄像机位置
             position = Camera.main.transform.position;
+            Debug.LogWarning($"[MagicEffectMgr] 未找到玩家{playerId}，使用摄像机位置");
         }
         
         Quaternion rotation = Quaternion.identity;

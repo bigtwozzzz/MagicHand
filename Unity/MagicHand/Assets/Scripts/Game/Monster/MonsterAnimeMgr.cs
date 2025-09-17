@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -58,6 +59,12 @@ public class MonsterAnimeMgr : MonoBehaviour
     private bool isMoving = false;
     private MonsterConfig monsterConfig;
     
+    // 攻击相关
+    private bool isAttacking = false;
+    private float lastAttackTime = 0f;
+    private PlayerHealthManager[] playerHealthManagers;
+    private Coroutine attackCoroutine;
+    
     void Awake()
     {
         // 获取Animator组件
@@ -92,6 +99,9 @@ public class MonsterAnimeMgr : MonoBehaviour
         {
             MonsterEventManager.OnMonsterDeathDetected += OnMonsterDeath;
         }
+        
+        // 查找角色生命值管理器
+        FindPlayerHealthManagers();
     }
     
     void Update()
@@ -194,8 +204,17 @@ public class MonsterAnimeMgr : MonoBehaviour
     /// <param name="newState">新状态</param>
     private void OnAnimationStateChanged(AnimationState previousState, AnimationState newState)
     {
-        // 可在此处添加状态变化的特殊处理逻辑
-        // 例如：播放音效、触发特效等
+        // 处理攻击状态变化
+        if (newState == AnimationState.Attack && previousState != AnimationState.Attack)
+        {
+            // 进入攻击状态
+            StartAttacking();
+        }
+        else if (previousState == AnimationState.Attack && newState != AnimationState.Attack)
+        {
+            // 离开攻击状态
+            StopAttacking();
+        }
     }
     
     #region 动画参数控制接口
@@ -473,7 +492,137 @@ public class MonsterAnimeMgr : MonoBehaviour
                $"alive: {isAlive}\n" +
                $"inRange: {isInRange}\n" +
                $"dizzy: {isDizzy}\n" +
-               $"hit: {isHit}";
+               $"hit: {isHit}\n" +
+               $"isAttacking: {isAttacking}";
+    }
+    
+    #endregion
+    
+    #region 攻击逻辑
+    
+    /// <summary>
+    /// 查找场景中的角色生命值管理器
+    /// </summary>
+    private void FindPlayerHealthManagers()
+    {
+        // 查找MainUI对象
+        GameObject mainUIObj = GameObject.Find("MainUI");
+        if (mainUIObj == null)
+        {
+            Debug.LogWarning("[MonsterAnimeMgr] 未找到MainUI对象，无法获取角色生命值管理器");
+            return;
+        }
+        
+        PlayerUIController playerUIController = mainUIObj.GetComponent<PlayerUIController>();
+        if (playerUIController != null)
+        {
+            // 获取两个角色的生命值管理器
+            playerHealthManagers = new PlayerHealthManager[2];
+            playerHealthManagers[0] = playerUIController.GetPlayerHealthManager(0);
+            playerHealthManagers[1] = playerUIController.GetPlayerHealthManager(1);
+            
+            if (enableDebugLog)
+            {
+                int validCount = 0;
+                for (int i = 0; i < playerHealthManagers.Length; i++)
+                {
+                    if (playerHealthManagers[i] != null) validCount++;
+                }
+                Debug.Log($"[MonsterAnimeMgr] 找到 {validCount} 个有效的角色生命值管理器");
+            }
+        }
+        else
+        {
+            Debug.LogWarning("[MonsterAnimeMgr] MainUI上未找到PlayerUIController组件");
+        }
+    }
+    
+    /// <summary>
+    /// 开始攻击
+    /// </summary>
+    private void StartAttacking()
+    {
+        if (isAttacking || monsterConfig == null || !runtimeData.isAlive)
+            return;
+            
+        isAttacking = true;
+        runtimeData.isAttacking = true;
+        
+        // 启动攻击协程
+        attackCoroutine = StartCoroutine(AttackCoroutine());
+        
+        if (enableDebugLog)
+        {
+            Debug.Log($"[MonsterAnimeMgr] 怪物 {runtimeData.uniqueNumber} 开始攻击，攻击间隔: {monsterConfig.attackInterval}s，伤害: {monsterConfig.attackDamage}");
+        }
+    }
+    
+    /// <summary>
+    /// 停止攻击
+    /// </summary>
+    private void StopAttacking()
+    {
+        if (!isAttacking)
+            return;
+            
+        isAttacking = false;
+        if (runtimeData != null)
+        {
+            runtimeData.isAttacking = false;
+        }
+        
+        // 停止攻击协程
+        if (attackCoroutine != null)
+        {
+            StopCoroutine(attackCoroutine);
+            attackCoroutine = null;
+        }
+        
+        if (enableDebugLog)
+        {
+            Debug.Log($"[MonsterAnimeMgr] 怪物 {runtimeData?.uniqueNumber} 停止攻击");
+        }
+    }
+    
+    /// <summary>
+    /// 攻击协程
+    /// </summary>
+    private System.Collections.IEnumerator AttackCoroutine()
+    {
+        while (isAttacking && runtimeData != null && runtimeData.isAlive && currentState == AnimationState.Attack)
+        {
+            // 执行一次攻击
+            PerformAttack();
+            
+            // 等待攻击间隔
+            yield return new WaitForSeconds(monsterConfig.attackInterval);
+        }
+    }
+    
+    /// <summary>
+    /// 执行攻击
+    /// </summary>
+    private void PerformAttack()
+    {
+        if (monsterConfig == null || PlayerManager.Instance == null)
+            return;
+            
+        // 使用PlayerManager的攻击系统，基于aiType执行不同攻击逻辑
+        string aiType = monsterConfig.aiType.ToString();
+        int damage = monsterConfig.attackDamage;
+        Vector3 attackPosition = transform.position;
+        string monsterName = monsterConfig.name;
+        
+        // 调用玩家管理器的攻击方法
+        PlayerManager.Instance.MonsterAttackPlayers(attackPosition, damage, aiType, monsterName);
+        
+        // 记录攻击时间
+        lastAttackTime = Time.time;
+        
+        if (enableDebugLog)
+        {
+            Debug.Log($"[MonsterAnimeMgr] 怪物 {runtimeData.uniqueNumber}({monsterName}) 执行{aiType}类型攻击，伤害: {damage}");
+        }
     }
     
     #endregion

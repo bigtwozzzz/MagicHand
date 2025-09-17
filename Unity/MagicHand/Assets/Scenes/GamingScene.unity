@@ -399,6 +399,7 @@ GameObject:
   - component: {fileID: 963194227}
   - component: {fileID: 963194226}
   - component: {fileID: 963194230}
+  - component: {fileID: 963194231}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -524,6 +525,22 @@ MonoBehaviour:
     m_MipBias: 0
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
+--- !u!114 &963194231
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963194225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15dac0aa6dd9a5944b7d072cbf9faca1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  offset: {x: 0, y: 0, z: 0}
+  followSpeed: 5
+  smoothFollow: 1
+  showDebugInfo: 1
 --- !u!1 &1015067123
 GameObject:
   m_ObjectHideFlags: 0
@@ -554,7 +571,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterAddress: Character/Character001
-  platformRoot: {fileID: 0}
+  platformRoot: {fileID: 1568656441}
 --- !u!4 &1015067125
 Transform:
   m_ObjectHideFlags: 0
@@ -1178,6 +1195,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1568656441}
+  - component: {fileID: 1568656442}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -1200,6 +1218,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1568656442
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1568656440}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e278486d11257dd4bb8bedfd8bf8b57f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerPrefab: {fileID: 0}
+  playerBaseTransform: {fileID: 1568656441}
+  playerSpacing: 4
+  spawnedPlayers: []
 --- !u!1 &1607355227
 GameObject:
   m_ObjectHideFlags: 0

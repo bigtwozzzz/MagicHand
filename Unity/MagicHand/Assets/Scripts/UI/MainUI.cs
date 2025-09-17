@@ -11,10 +11,10 @@ public class MainUI : BasePanel
 {
     [SerializeField] private Transform contentPanel;
     [SerializeField] private GameObject messagePrefab;
-    [SerializeField] private TextMeshProUGUI textStageRequest; // ¿ÉÑ¡Õ¹Ê¾Ãæ°å
-    [SerializeField] private Transform monsterListContainer; // ¹ÖÎïÁĞ±íÈİÆ÷
-    [SerializeField] private GameObject monsterEntryPrefab; // ¹ÖÎïÌõÄ¿Ô¤ÖÆÌå
-    [SerializeField] private TextMeshProUGUI textSceneId; // ĞÂÔöÒıÓÃ
+    [SerializeField] private TextMeshProUGUI textStageRequest; // ï¿½ï¿½Ñ¡Õ¹Ê¾ï¿½ï¿½ï¿½
+    [SerializeField] private Transform monsterListContainer; // ï¿½ï¿½ï¿½ï¿½ï¿½Ğ±ï¿½ï¿½ï¿½ï¿½ï¿½
+    [SerializeField] private GameObject monsterEntryPrefab; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿Ô¤ï¿½ï¿½ï¿½ï¿½
+    [SerializeField] private TextMeshProUGUI textSceneId; // åœºæ™¯ç¼–å·
     private Queue<(GameObject messageObj, float expireTime)> messageQueue = new();
     private const float MessageDuration = 30f;
     private ScrollRect scrollRect;
@@ -22,44 +22,58 @@ public class MainUI : BasePanel
     protected override void Awake()
     {
         base.Awake();
+        
+        // è‡ªåŠ¨æŒ‚è½½é­”æ³•UIæ§åˆ¶å™¨
+        if (GetComponent<MagicUIController>() == null)
+        {
+            gameObject.AddComponent<MagicUIController>();
+            Debug.Log("[MainUI] è‡ªåŠ¨æŒ‚è½½MagicUIControllerç»„ä»¶");
+        }
+        
+        // è‡ªåŠ¨æŒ‚è½½è§’è‰²UIæ§åˆ¶å™¨
+        if (GetComponent<PlayerUIController>() == null)
+        {
+            gameObject.AddComponent<PlayerUIController>();
+            Debug.Log("[MainUI] è‡ªåŠ¨æŒ‚è½½PlayerUIControllerç»„ä»¶");
+        }
+        
         Button btnSettings = GetControl<Button>("ButtonGroup/ButtonSettings");
         if (btnSettings == null)
         {
-            Debug.LogError("ButtonSettings Î´ÕıÈ·×¢²á£¡");
+            Debug.LogError("ButtonSettings Î´ï¿½ï¿½È·×¢ï¿½á£¡");
         }
 
-        // ²éÕÒ ScrollRect
+        // ï¿½ï¿½ï¿½ï¿½ ScrollRect
         scrollRect = GetComponentInChildren<ScrollRect>(true);
         if (scrollRect == null)
         {
-            Debug.LogError($"{nameof(MainUI)}: Î´ÕÒµ½ ScrollRect ×é¼ş£¡");
+            Debug.LogError($"{nameof(MainUI)}: Î´ï¿½Òµï¿½ ScrollRect ï¿½ï¿½ï¿½ï¿½ï¿½");
         }
 
-        // ÑéÖ¤±ØÒªÒıÓÃ
+        // ï¿½ï¿½Ö¤ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½
         if (contentPanel == null)
         {
-            Debug.LogError($"{nameof(MainUI)}: contentPanel Î´¸³Öµ£¡");
+            Debug.LogError($"{nameof(MainUI)}: contentPanel Î´ï¿½ï¿½Öµï¿½ï¿½");
             enabled = false;
         }
 
         if (messagePrefab == null)
         {
-            Debug.LogError($"{nameof(MainUI)}: messagePrefab Î´¸³Öµ£¡");
+            Debug.LogError($"{nameof(MainUI)}: messagePrefab Î´ï¿½ï¿½Öµï¿½ï¿½");
             enabled = false;
         }
         Button btnVote = GetControl<Button>("StageVote");
-        // ³õÊ¼»¯°´Å¥µã»÷ÊÂ¼ş
+        // åˆå§‹åŒ–æŒ‰é’®ç‚¹å‡»äº‹ä»¶
         if (btnVote == null)
         {
-            Debug.LogError("Btn_Stage_Vote Î´×¢²á");
+            Debug.LogError("Btn_Stage_Vote æœªæ³¨å†Œ");
         }
-        
     }
 
 
     private void RequestStageChange()
     {
-        string playerId = DataMgr.GetInstance().UserId; // ¼ÙÉè´æÔÚ PlayerMgr
+        string playerId = DataMgr.GetInstance().UserId; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ PlayerMgr
         string stageId = DataMgr.GetInstance().SceneData.SceneId;
 
         var selectStageCmd = new Gain.PlayerCommandData(E_EventType.Event_Player_Command_Select_Stage)
@@ -76,12 +90,12 @@ public class MainUI : BasePanel
         switch (btnName)
         {
             case "ButtonGroup/ButtonSettings":
-                Debug.Log("´ò¿ªÉèÖÃÃæ°å");
+                Debug.Log("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
                 EventCenter.GetInstance().EventTrigger(E_EventType.Event_Button_Setting_Click, "Button Setting");
                 UIMgr.GetInstance().HidePanel("MainUI");
                 UIMgr.GetInstance().ShowPanel<SettingsPanel>("SettingsPanel", E_UI_Layer.Mid, (panel) =>
                 {
-                    Debug.Log("SettingsUI Ãæ°åÒÑ´´½¨²¢ÏÔÊ¾");
+                    Debug.Log("SettingsUI ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾");
                     panel.SetReturnTarget("MainUI");
                 });
                 break;
@@ -95,7 +109,7 @@ public class MainUI : BasePanel
     }
     public override void ShowMe()
     {
-        // Ãæ°åÏÔÊ¾Ê±×¢²áÊÂ¼ş
+        // ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾Ê±×¢ï¿½ï¿½ï¿½Â¼ï¿½
         EventCenter.GetInstance().AddEventListener<PlayerOnlineNotify>(
             E_EventType.Event_Player_Online, OnPlayerOnline);
 
@@ -104,7 +118,7 @@ public class MainUI : BasePanel
         EventCenter.GetInstance().AddEventListener<SceneData>(
             E_EventType.Event_Scene_Data_Update_UI, OnSceneDataUpdated);
         DataMgr.GetInstance().SetMainUIReady();
-        // ×¢²áÊÂ¼ş£ºÊÕµ½Í¶Æ±ÇëÇó
+        // æ³¨å†Œäº‹ä»¶ç›‘å¬æŠ•ç¥¨è¯·æ±‚
         EventCenter.GetInstance().AddEventListener<StageSelectRequestNotify>(
             E_EventType.Event_Stage_Select_Request_Notify,
             OnStageSelectRequestReceived);
@@ -112,7 +126,7 @@ public class MainUI : BasePanel
 
     public override void HideMe()
     {
-        // Ãæ°åÒş²ØÊ±·´×¢²áÊÂ¼ş
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½×¢ï¿½ï¿½ï¿½Â¼ï¿½
         EventCenter.GetInstance().RemoveEventListener<PlayerOnlineNotify>(
             E_EventType.Event_Player_Online, OnPlayerOnline);
 
@@ -123,10 +137,12 @@ public class MainUI : BasePanel
         EventCenter.GetInstance().RemoveEventListener<StageSelectRequestNotify>(
             E_EventType.Event_Stage_Select_Request_Notify,
             OnStageSelectRequestReceived);
-
+            
+        // åœæ­¢æ‰€æœ‰åç¨‹
+        StopAllCoroutines();
     }
     /// <summary>
-    /// ÊÕµ½¡°¹Ø¿¨Ñ¡ÔñÇëÇó¡±Í¨Öª
+    /// ï¿½Õµï¿½ï¿½ï¿½ï¿½Ø¿ï¿½Ñ¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¨Öª
     /// </summary>
    private void OnStageSelectRequestReceived(StageSelectRequestNotify notify)
 {
@@ -134,7 +150,7 @@ public class MainUI : BasePanel
     string stageId = notify.StageId;
 
     string playerName = null;
-        // ÏÈ»ñÈ¡ playerName£¬¼ì²éÊÇ·ñ null
+        // ï¿½È»ï¿½È¡ playerNameï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ null
     var characterInfo = DataMgr.GetInstance().GetCharacterInfo(playerId);
     if (characterInfo == null)
     {
@@ -151,7 +167,7 @@ public class MainUI : BasePanel
     {
         if (panel == null)
         {
-            Debug.LogError("[OnStageSelectRequestReceived] StageVotePanel ´´½¨Ê§°Ü£¬panel Îª null");
+            Debug.LogError("[OnStageSelectRequestReceived] StageVotePanel ï¿½ï¿½ï¿½ï¿½Ê§ï¿½Ü£ï¿½panel Îª null");
             return;
         }
 
@@ -166,20 +182,20 @@ public class MainUI : BasePanel
     {
         if (sceneData == null)
         {
-            Debug.LogWarning("[MainUI] ½ÓÊÕµ½¿ÕµÄ³¡¾°Êı¾İ£¡");
+            Debug.LogWarning("[MainUI] ï¿½ï¿½ï¿½Õµï¿½ï¿½ÕµÄ³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½İ£ï¿½");
             return;
         }
 
-        Debug.Log($"[MainUI] ½ÓÊÕµ½³¡¾°Êı¾İ: {sceneData.SceneId}");
+        Debug.Log($"[MainUI] ï¿½ï¿½ï¿½Õµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½: {sceneData.SceneId}");
 
-        // ¸üĞÂ³¡¾°IDÏÔÊ¾
+        // ï¿½ï¿½ï¿½Â³ï¿½ï¿½ï¿½IDï¿½ï¿½Ê¾
         if (textSceneId != null)
         {
-            textSceneId.text = $"³¡¾°ID: {sceneData.SceneId}";
+            textSceneId.text = $"ï¿½ï¿½ï¿½ï¿½ID: {sceneData.SceneId}";
         }
 
-        ClearMonsterList(); // Çå¿Õ¾ÉÁĞ±í
-        DisplayMonsterList(sceneData); // ÏÔÊ¾ĞÂÁĞ±í
+        ClearMonsterList(); // ï¿½ï¿½Õ¾ï¿½ï¿½Ğ±ï¿½
+        DisplayMonsterList(sceneData); // ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½Ğ±ï¿½
     }
 
     private void ClearMonsterList()
@@ -200,33 +216,33 @@ public class MainUI : BasePanel
 
         foreach (var monster in sceneData.Monsters)
         {
-            if (monster == null) continue; // ·À¿ÕÅĞ¶Ï
+            if (monster == null) continue; // ï¿½ï¿½ï¿½ï¿½ï¿½Ğ¶ï¿½
 
             GameObject entry = Instantiate(monsterEntryPrefab, monsterListContainer);
             if (entry.TryGetComponent<TextMeshProUGUI>(out var text))
             {
                 string info = FormatMonsterInfo(monster);
-                Debug.Log("Éú³ÉµÄ¹ÖÎïĞÅÏ¢£º\n" + info); //  Ìí¼ÓÕâĞĞµ÷ÊÔ
+                Debug.Log("ï¿½ï¿½ï¿½ÉµÄ¹ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½\n" + info); //  ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ğµï¿½ï¿½ï¿½
                 text.text = info;
             }
             else
             {
-                Debug.LogError("¹ÖÎïÌõÄ¿Ô¤ÖÆÌåÈ±ÉÙ TextMeshProUGUI ×é¼ş£¡");
+                Debug.LogError("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿Ô¤ï¿½ï¿½ï¿½ï¿½È±ï¿½ï¿½ TextMeshProUGUI ï¿½ï¿½ï¿½ï¿½ï¿½");
             }
         }
     }
     private string FormatMonsterInfo(MonsterBase monster)
     {
         return $"\n- Monster: {monster.MonsterId}\n" +
-               $"  - ÀàĞÍ: {GetMonsterTypeName(monster.Type)}\n" +
+               $"  - ï¿½ï¿½ï¿½ï¿½: {GetMonsterTypeName(monster.Type)}\n" +
                $"  - HP: {monster.CurrentHp}/{monster.MaxHp}\n" +
-               $"  - ¹¥»÷Á¦: {monster.AttackPower} (ËÙ¶È: {monster.AttackSpeed:F2})\n" +
-               $"  - ÒÆ¶¯ËÙ¶È: {monster.MoveSpeed:F2}\n" +
-               $"  - Î»ÖÃ: ({monster.PosX:F2}, {monster.PosY:F2}, {monster.PosZ:F2})\n" +
-               $"  - ·½Ïò: {monster.Direction:F2}\n" +
-               $"  - ¹¥»÷·¶Î§: {monster.AttackRange:F2}\n" +
+               $"  - ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½: {monster.AttackPower} (ï¿½Ù¶ï¿½: {monster.AttackSpeed:F2})\n" +
+               $"  - ï¿½Æ¶ï¿½ï¿½Ù¶ï¿½: {monster.MoveSpeed:F2}\n" +
+               $"  - Î»ï¿½ï¿½: ({monster.PosX:F2}, {monster.PosY:F2}, {monster.PosZ:F2})\n" +
+               $"  - ï¿½ï¿½ï¿½ï¿½: {monster.Direction:F2}\n" +
+               $"  - ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î§: {monster.AttackRange:F2}\n" +
                $"  - ×´Ì¬: {GetMonsterStateName(monster.State)}\n" +
-               $"  - µôÂä¾­Ñé: {monster.ExpReward}";
+               $"  - ï¿½ï¿½ï¿½ä¾­ï¿½ï¿½: {monster.ExpReward}";
     }
 
     private string GetMonsterTypeName(Common.MonsterType type)
@@ -235,7 +251,7 @@ public class MainUI : BasePanel
         {
             Common.MonsterType.ZombieBasic => "ZOMBIE_BASIC",
             Common.MonsterType.ZombieFast => "ZOMBIE_FAST",
-            _ => "Î´ÖªÀàĞÍ",
+            _ => "Î´Öªï¿½ï¿½ï¿½ï¿½",
         };
     }
 
@@ -251,8 +267,8 @@ public class MainUI : BasePanel
     {
         if (data is PlayerOnlineNotify notify)
         {
-            Debug.Log($"[ÏµÍ³ÏûÏ¢] Íæ¼Ò <color=green>{notify.PlayerName}</color> ÉÏÏßÁË");
-            string msg = $"[ÏµÍ³] Íæ¼Ò <color=green>{notify.PlayerName}</color> ÉÏÏßÁË";
+            Debug.Log($"[ÏµÍ³ï¿½ï¿½Ï¢] ï¿½ï¿½ï¿½ <color=green>{notify.PlayerName}</color> ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
+            string msg = $"[ÏµÍ³] ï¿½ï¿½ï¿½ <color=green>{notify.PlayerName}</color> ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½";
             AddMessage(msg);
         }
     }
@@ -261,25 +277,25 @@ public class MainUI : BasePanel
     {
         if (data is PlayerOfflineNotify notify)
         {
-            Debug.Log($"[ÏµÍ³ÏûÏ¢] Íæ¼Ò <color=red>{notify.PlayerName}</color> ÏÂÏßÁË");
-            string msg = $"[ÏµÍ³] Íæ¼Ò <color=red>{notify.PlayerName}</color> ÏÂÏßÁË";
+            Debug.Log($"[ÏµÍ³ï¿½ï¿½Ï¢] ï¿½ï¿½ï¿½ <color=red>{notify.PlayerName}</color> ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
+            string msg = $"[ÏµÍ³] ï¿½ï¿½ï¿½ <color=red>{notify.PlayerName}</color> ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½";
             AddMessage(msg);
         }
     }
 
     /// <summary>
-    /// Ìí¼ÓÏûÏ¢µ½ UI
+    /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ UI
     /// </summary>
-    /// <param name="message">ÏûÏ¢ÄÚÈİ£¨Ö§³Ö¸»ÎÄ±¾£©</param>
+    /// <param name="message">ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½İ£ï¿½Ö§ï¿½Ö¸ï¿½ï¿½Ä±ï¿½ï¿½ï¿½</param>
     private void AddMessage(string message)
     {
         if (messagePrefab == null || contentPanel == null)
         {
-            Debug.LogError("[AddMessage] ±ØÒªµÄÔ¤ÖÆÌå»òÈİÆ÷Îª¿Õ£¡");
+            Debug.LogError("[AddMessage] ï¿½ï¿½Òªï¿½ï¿½Ô¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îªï¿½Õ£ï¿½");
             return;
         }
 
-        // ÊµÀı»¯ÏûÏ¢¶ÔÏó
+        // Êµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½
         GameObject msgObj = Instantiate(messagePrefab, contentPanel);
         if (msgObj.TryGetComponent<TextMeshProUGUI>(out var textComponent))
         {
@@ -287,19 +303,19 @@ public class MainUI : BasePanel
         }
         else
         {
-            Debug.LogError("[AddMessage] messagePrefab ÖĞÎ´ÕÒµ½ TextMeshProUGUI ×é¼ş£¡");
+            Debug.LogError("[AddMessage] messagePrefab ï¿½ï¿½Î´ï¿½Òµï¿½ TextMeshProUGUI ï¿½ï¿½ï¿½ï¿½ï¿½");
         }
 
-        // ¼ÇÂ¼ÏûÏ¢ºÍ¹ıÆÚÊ±¼ä£¨ÓÃÓÚ×Ô¶¯ÇåÀí£©
+        // ï¿½ï¿½Â¼ï¿½ï¿½Ï¢ï¿½Í¹ï¿½ï¿½ï¿½Ê±ï¿½ä£¨ï¿½ï¿½ï¿½ï¿½ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         float expireTime = Time.time + MessageDuration;
         messageQueue.Enqueue((msgObj, expireTime));
 
-        // ×Ô¶¯¹ö¶¯µ½µ×²¿
+        // ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×²ï¿½
         ScrollToBottom();
     }
 
     /// <summary>
-    /// ÑÓ³ÙÒ»Ö¡¹ö¶¯µ½µ×²¿£¬È·±£²¼¾ÖÒÑ¸üĞÂ
+    /// ï¿½Ó³ï¿½Ò»Ö¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×²ï¿½ï¿½ï¿½È·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¸ï¿½ï¿½ï¿½
     /// </summary>
     private void ScrollToBottom()
     {
@@ -311,18 +327,18 @@ public class MainUI : BasePanel
 
     private IEnumerator DelayedScroll()
     {
-        yield return null; // µÈ´ıÒ»Ö¡£¬È·±£²¼¾ÖÖØ½¨Íê³É
+        yield return null; // ï¿½È´ï¿½Ò»Ö¡ï¿½ï¿½È·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ø½ï¿½ï¿½ï¿½ï¿½
         scrollRect.verticalNormalizedPosition = 0f;
     }
 
     /// <summary>
-    /// £¨¿ÉÑ¡£©¶¨ÆÚÇåÀí¹ıÆÚÏûÏ¢
+    /// ï¿½ï¿½ï¿½ï¿½Ñ¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢
     /// </summary>
     private IEnumerator CleanupExpiredMessages()
     {
         while (true)
         {
-            yield return new WaitForSeconds(5f); // Ã¿5Ãë¼ì²éÒ»´Î
+            yield return new WaitForSeconds(5f); // Ã¿5ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½
 
             float currentTime = Time.time;
             while (messageQueue.Count > 0)
@@ -333,12 +349,12 @@ public class MainUI : BasePanel
                     messageQueue.Dequeue();
                     if (msgObj != null)
                     {
-                        Destroy(msgObj); // Ïú»Ù¹ıÆÚÏûÏ¢
+                        Destroy(msgObj); // ï¿½ï¿½ï¿½Ù¹ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢
                     }
                 }
                 else
                 {
-                    break; // Î´¹ıÆÚµÄÏûÏ¢ÎŞĞè´¦Àí
+                    break; // Î´ï¿½ï¿½ï¿½Úµï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½è´¦ï¿½ï¿½
                 }
             }
         }

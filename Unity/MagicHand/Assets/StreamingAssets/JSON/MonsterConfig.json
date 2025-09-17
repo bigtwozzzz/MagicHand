@@ -3,10 +3,10 @@
     {
       "id": 1,
       "name": "哥布林",
-      "description": "基础近战怪物，血量较低但攻击速度快",
+      "description": "基础近战怪物，血量中等，伤害较低",
       "maxHealth": 200,
-      "attackDamage": 25,
-      "moveSpeed": 1,
+      "attackDamage": 5,
+      "moveSpeed": 1.5,
       "attackRange": 3,
       "attackInterval": 0.83,
       "detectionRange": 5.0,
@@ -17,16 +17,16 @@
           "dropRate": 0.3
         }
       ],
-      "aiType": "Aggressive",
+      "aiType": "Single",
       "enableDebugLog": false
     },
     {
       "id": 2,
       "name": "骷髅战士",
-      "description": "亡灵系怪物，拥有中等血量和攻击力",
+      "description": "亡灵系怪物，血量较少，中等攻击力",
       "maxHealth": 120,
-      "attackDamage": 35,
-      "moveSpeed": 1.5,
+      "attackDamage": 10,
+      "moveSpeed": 1,
       "attackRange": 1.5,
       "attackInterval": 1.0,
       "detectionRange": 6.0,
@@ -41,7 +41,7 @@
           "dropRate": 0.15
         }
       ],
-      "aiType": "Defensive",
+      "aiType": "Single",
       "enableDebugLog": false
     },
     {

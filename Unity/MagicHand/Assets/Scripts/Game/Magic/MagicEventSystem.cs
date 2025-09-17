@@ -8,7 +8,7 @@ using UnityEngine;
 public static class MagicEventSystem
 {
     // 魔法触发事件
-    public static event Action<int, MagicData> OnMagicTriggered;
+    public static event Action<int, MagicData, int> OnMagicTriggered;
     
     // 魔法冷却开始事件
     public static event Action<int, float> OnMagicCooldownStart;
@@ -30,10 +30,11 @@ public static class MagicEventSystem
     /// </summary>
     /// <param name="magicId">魔法ID</param>
     /// <param name="magicData">魔法数据</param>
-    public static void TriggerMagic(int magicId, MagicData magicData)
+    /// <param name="playerId">触发魔法的玩家ID</param>
+    public static void TriggerMagic(int magicId, MagicData magicData, int playerId = 1)
     {
-        OnMagicTriggered?.Invoke(magicId, magicData);
-        Debug.Log($"[MagicEventSystem] 触发魔法事件: {magicData.magicName} (ID: {magicId})");
+        OnMagicTriggered?.Invoke(magicId, magicData, playerId);
+        Debug.Log($"[MagicEventSystem] 玩家{playerId}触发魔法事件: {magicData.magicName} (ID: {magicId})");
     }
     
     /// <summary>
