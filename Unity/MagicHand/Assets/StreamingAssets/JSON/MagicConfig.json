@@ -4,7 +4,7 @@
       "magicId": 23,
       "magicName": "治疗魔法",
       "description": "恢复自身一定生命值",
-      "damage": 80.0,
+      "damage": 40.0,
       "damageType": "Magic",
       "range": {
         "left": -1.0,
@@ -108,6 +108,80 @@
           "z": 2.0
         },
         "duration": 1.5,
+        "autoRecycle": true
+      }
+    },
+    {
+      "magicId": 35,
+      "magicName": "雷刺",
+      "description": "手指并拢，掌心向前；在前方锥形范围内释放地刺",
+      "damage": 100.0,
+      "damageType": "Magic",
+      "range": {
+        "left": -3.0,
+        "right": 3.0,
+        "forward": 7.0,
+        "backward": 0.0
+      },
+      "cooldownTime": 8.0,
+      "castTime": 0.1,
+      "isEnabled": true,
+      "level": 1,
+      "amplificationFactor": 1,
+      "effectConfig": {
+        "positionOffset": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "rotationOffset": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "scale": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        },
+        "duration": 1.5,
+        "autoRecycle": true
+      }
+    },
+    {
+      "magicId": 37,
+      "magicName": "顺劈",
+      "description": "伸出食指和中指并拢，掌心向前；对近距离敌人造成伤害",
+      "damage": 120.0,
+      "damageType": "Magic",
+      "range": {
+        "left": -4.0,
+        "right": 4.0,
+        "forward": 4.0,
+        "backward": 0.0
+      },
+      "cooldownTime": 5.0,
+      "castTime": 0.1,
+      "isEnabled": true,
+      "level": 1,
+      "amplificationFactor": 1,
+      "effectConfig": {
+        "positionOffset": {
+          "x": 0.0,
+          "y": 0.1,
+          "z": 0.0
+        },
+        "rotationOffset": {
+          "x": 0.0,
+          "y": -45.0,
+          "z": 0.0
+        },
+        "scale": {
+          "x": 2.0,
+          "y": 2.0,
+          "z": 2.0
+        },
+        "duration": 0.8,
         "autoRecycle": true
       }
     }

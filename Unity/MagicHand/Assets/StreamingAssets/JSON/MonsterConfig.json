@@ -11,6 +11,11 @@
       "attackInterval": 2,
       "detectionRange": 5.0,
       "scaleMultiplier": 1.0,
+      "worldOffset": {
+        "x": 0,
+        "y": 2,
+        "z": 0
+      },
       "dropItems": [
         {
           "itemId": 1,
@@ -31,6 +36,11 @@
       "attackInterval": 1.0,
       "detectionRange": 6.0,
       "scaleMultiplier": 10.0,
+      "worldOffset": {
+        "x": 0,
+        "y": 2,
+        "z": 0
+      },
       "dropItems": [
         {
           "itemId": 2,
@@ -54,7 +64,12 @@
       "attackRange": 2,
       "attackInterval": 2,
       "detectionRange": 10.0,
-      "scaleMultiplier": 1.0,
+      "scaleMultiplier": 0.2,
+      "worldOffset": {
+        "x": 0,
+        "y": 3,
+        "z": 5
+      },
       "dropItems": [
         {
           "itemId": 4,
@@ -79,6 +94,11 @@
       "attackInterval": 1.5,
       "detectionRange": 8.0,
       "scaleMultiplier": 1.0,
+      "worldOffset": {
+        "x": 0,
+        "y": 2,
+        "z": 0
+      },
       "dropItems": [
         {
           "itemId": 6,
@@ -107,6 +127,11 @@
       "attackInterval": 1.5,
       "detectionRange": 4.0,
       "scaleMultiplier": 0.8,
+      "worldOffset": {
+        "x": 0,
+        "y": 4,
+        "z": 5
+      },
       "dropItems": [
         {
           "itemId": 9,

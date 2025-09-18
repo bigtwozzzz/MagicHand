@@ -335,6 +335,9 @@ public class MonsterPoolMgr : MonoBehaviour
             }
         }
         
+        // 设置血条的世界坐标偏移
+        healthBar.worldOffset = monsterConfig.worldOffset;
+        
         // 血条组件现在会自动处理缩放调整，无需额外处理
         
         // 设置动画管理器
@@ -524,6 +527,45 @@ public class MonsterPoolMgr : MonoBehaviour
     }
     
     /// <summary>
+    /// 检查是否所有怪物都已被击败
+    /// </summary>
+    private void CheckAllMonstersDefeated()
+    {
+        // 延迟检查，确保怪物已从活跃列表中移除
+        StartCoroutine(DelayedCheckAllMonstersDefeated());
+    }
+    
+    /// <summary>
+    /// 延迟检查所有怪物是否被击败
+    /// </summary>
+    /// <returns>协程</returns>
+    private System.Collections.IEnumerator DelayedCheckAllMonstersDefeated()
+    {
+        // 等待一帧，确保怪物状态更新完成
+        yield return null;
+        
+        // 检查活跃怪物数量
+        int activeCount = GetActiveMonsterCount();
+        
+        if (enableDebugLog)
+        {
+            Debug.Log($"[MonsterPoolMgr] 当前活跃怪物数量: {activeCount}");
+        }
+        
+        // 如果没有活跃怪物，通知波次管理器
+        if (activeCount == 0)
+        {
+            if (enableDebugLog)
+            {
+                Debug.Log("[MonsterPoolMgr] 所有怪物已被击败，通知波次管理器完成当前波次");
+            }
+            
+            // 通知波次管理器所有怪物已被击败
+            MonsterWaveMgr.Instance?.OnAllMonstersDefeated();
+        }
+    }
+    
+    /// <summary>
     /// 延迟隐藏怪物
     /// </summary>
     /// <param name="uniqueNumber">怪物编号</param>
@@ -535,6 +577,9 @@ public class MonsterPoolMgr : MonoBehaviour
         
         // 回收怪物到对象池
         HideMonster(uniqueNumber);
+        
+        // 在怪物真正从活跃列表移除后，检查是否所有怪物都已死亡
+        CheckAllMonstersDefeated();
     }
     
 

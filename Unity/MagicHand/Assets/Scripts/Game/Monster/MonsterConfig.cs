@@ -25,6 +25,7 @@ public class MonsterConfig
     [Header("视觉配置")]
     public float scaleMultiplier = 1.0f; // 缩放倍数
     public Color tintColor = Color.white; // 着色
+    public Vector3 worldOffset = new Vector3(0, 2.0f, 0); // 血条世界偏移
     
     [Header("掉落配置")]
     public DropItem[] dropItems;        // 掉落物品列表

@@ -184,54 +184,16 @@ public class MonsterWaveMgr : MonoBehaviour
             // 检查生成事件
             CheckSpawnEvents(elapsedTime);
             
-            // 检查是否需要自动切换波次
-            if (elapsedTime >= autoSwitchTime)
-            {
-                if (enableDebugLog)
-                {
-                    Debug.Log($"[MonsterWaveMgr] 波次 {currentWave} 超时，自动切换到下一波次");
-                }
-                NextWave();
-                yield break;
-            }
-            
-            // 检查波次是否完成
+            // 检查波次生成事件是否完成（不再自动切换波次，等待所有怪物死亡）
             if (IsWaveComplete())
             {
                 if (enableDebugLog)
                 {
-                    Debug.Log($"[MonsterWaveMgr] 波次 {currentWave} 所有事件已完成，等待剩余时间后切换到下一波次");
+                    Debug.Log($"[MonsterWaveMgr] 波次 {currentWave} 所有生成事件已完成，等待所有怪物被击败");
                 }
                 
-                // 等待剩余时间再切换到下一波次
-                float remainingTime = autoSwitchTime - elapsedTime;
-                if (remainingTime > 0)
-                {
-                    if (enableDebugLog)
-                    {
-                        Debug.Log($"[MonsterWaveMgr] 等待 {remainingTime:F1} 秒后切换到下一波次（可通过OnNextWave事件跳过等待）");
-                    }
-                    
-                    // 进入等待状态，可被OnNextWave事件中断
-                    isWaitingForNextWave = true;
-                    shouldSkipWaiting = false;
-                    
-                    float waitStartTime = Time.time;
-                    while (Time.time - waitStartTime < remainingTime && !shouldSkipWaiting)
-                    {
-                        yield return null;
-                    }
-                    
-                    isWaitingForNextWave = false;
-                    
-                    if (shouldSkipWaiting && enableDebugLog)
-                    {
-                        Debug.Log($"[MonsterWaveMgr] 收到OnNextWave事件，跳过等待直接进入下一波次");
-                    }
-                }
-                
-                NextWave();
-                yield break;
+                // 波次生成完成，但不立即切换，等待所有怪物死亡
+                // 通过MonsterPoolMgr的OnAllMonstersDefeated回调来完成波次
             }
             
             yield return null;
@@ -318,14 +280,11 @@ public class MonsterWaveMgr : MonoBehaviour
     /// </summary>
     public void NextWave()
     {
-        if (!isWaveActive)
+        // 如果当前有活跃波次，先完成它
+        if (isWaveActive)
         {
-            Debug.LogWarning("[MonsterWaveMgr] 当前没有活跃的波次");
-            return;
+            CompleteCurrentWave();
         }
-        
-        // 完成当前波次
-        CompleteCurrentWave();
         
         // 查找下一波次
         int nextWaveIndex = waveOrder.IndexOf(currentWave) + 1;
@@ -335,6 +294,11 @@ public class MonsterWaveMgr : MonoBehaviour
             // 开始下一波次
             int nextWave = waveOrder[nextWaveIndex];
             StartWave(nextWave);
+            
+            if (enableDebugLog)
+            {
+                Debug.Log($"[MonsterWaveMgr] 开始下一波次: {nextWave}");
+            }
         }
         else
         {
@@ -369,6 +333,29 @@ public class MonsterWaveMgr : MonoBehaviour
             StopCoroutine(waveCoroutine);
             waveCoroutine = null;
         }
+    }
+    
+    /// <summary>
+    /// 处理所有怪物被击败的情况
+    /// </summary>
+    public void OnAllMonstersDefeated()
+    {
+        if (!isWaveActive)
+        {
+            if (enableDebugLog)
+            {
+                Debug.Log("[MonsterWaveMgr] 当前没有活跃波次，忽略怪物击败事件");
+            }
+            return;
+        }
+        
+        if (enableDebugLog)
+        {
+            Debug.Log("[MonsterWaveMgr] 所有怪物已被击败，立即完成当前波次");
+        }
+        
+        // 立即完成当前波次
+        CompleteCurrentWave();
     }
     
     /// <summary>

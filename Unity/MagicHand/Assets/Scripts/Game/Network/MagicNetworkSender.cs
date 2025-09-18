@@ -38,10 +38,7 @@ public class MagicNetworkSender : MonoBehaviour
     void OnDestroy()
     {
         // 取消订阅事件
-        if (MagicEventSystem.OnMagicTriggered != null)
-        {
-            MagicEventSystem.OnMagicTriggered -= OnLocalMagicTriggered;
-        }
+        MagicEventSystem.OnMagicTriggered -= OnLocalMagicTriggered;
     }
     
     /// <summary>

@@ -41,6 +41,9 @@ public class PlayerUIController : MonoBehaviour
         
         // 初始化血条显示
         UpdateAllHealthBars();
+        
+        // 根据当前玩家数量更新UI显示
+        UpdatePlayerUIVisibility();
     }
     
     private void OnDestroy()
@@ -223,6 +226,9 @@ public class PlayerUIController : MonoBehaviour
         {
             Debug.LogWarning($"[PlayerUIController] 玩家ID{playerId}超出UI支持范围(1-{playerHealthFills.Length})");
         }
+        
+        // 更新UI显示状态
+        UpdatePlayerUIVisibility();
     }
     
     /// <summary>
@@ -321,6 +327,9 @@ public class PlayerUIController : MonoBehaviour
             // 隐藏玩家UI
             HidePlayerUI(playerId);
         }
+        
+        // 更新UI显示状态
+        UpdatePlayerUIVisibility();
     }
     
     /// <summary>
@@ -439,6 +448,48 @@ public class PlayerUIController : MonoBehaviour
         if (playerHealthManagers[1] != null)
         {
             playerHealthManagers[1].Heal(30);
+        }
+    }
+    
+    /// <summary>
+    /// 根据当前场上玩家数量更新UI显示状态
+    /// </summary>
+    [ContextMenu("更新玩家UI显示状态")]
+    public void UpdatePlayerUIVisibility()
+    {
+        // 从PlayerManager获取当前玩家数量
+        int currentPlayerCount = 0;
+        if (PlayerManager.Instance != null)
+        {
+            currentPlayerCount = PlayerManager.Instance.GetPlayerCount();
+        }
+        
+        Debug.Log($"[PlayerUIController] 当前场上玩家数量: {currentPlayerCount}");
+        
+        // 根据玩家数量显示或隐藏UI
+        for (int i = 0; i < 2; i++) // 支持最多2个玩家UI
+        {
+            string playerName = $"Player{i + 1}";
+            Transform playerUITransform = playerUIRoot.Find(playerName);
+            
+            if (playerUITransform != null)
+            {
+                bool shouldShow = i < currentPlayerCount;
+                playerUITransform.gameObject.SetActive(shouldShow);
+                
+                if (shouldShow)
+                {
+                    Debug.Log($"[PlayerUIController] {playerName} UI已显示");
+                }
+                else
+                {
+                    Debug.Log($"[PlayerUIController] {playerName} UI已隐藏");
+                }
+            }
+            else
+            {
+                Debug.LogWarning($"[PlayerUIController] 未找到{playerName}的UI Transform");
+            }
         }
     }
 }

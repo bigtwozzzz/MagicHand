@@ -192,6 +192,14 @@ public class MagicManager : MonoBehaviour
             return;
         }
         
+        // 检查魔法是否已解锁
+        MagicUIController magicUIController = FindObjectOfType<MagicUIController>();
+        if (magicUIController != null && !magicUIController.IsMagicUnlocked(magicId))
+        {
+            Debug.Log($"[MagicManager] 魔法 {magicId} 未解锁，无法触发");
+            return;
+        }
+        
         // 检查魔法配置是否存在
         if (MagicConfigLoader.Instance == null || !MagicConfigLoader.Instance.IsConfigLoaded)
         {

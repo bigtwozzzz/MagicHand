@@ -165,21 +165,24 @@ public class MagicEffectMgr : MonoBehaviour
         PlayerManager.PlayerData playerData = PlayerManager.Instance?.GetPlayerData(playerId);
         if (playerData != null && playerData.playerObject != null)
         {
-            // 以指定玩家为基准计算位置
-            position = playerData.playerObject.transform.position;
-            Debug.Log($"[MagicEffectMgr] 使用玩家{playerId}位置作为特效基准: {position}");
+            // 以指定玩家为基准计算位置，但Y轴固定为0（地面基准）
+            Vector3 playerPos = playerData.playerObject.transform.position;
+            position = new Vector3(playerPos.x, 0f, playerPos.z);
+            Debug.Log($"[MagicEffectMgr] 使用玩家{playerId}位置作为特效基准（Y轴固定为0）: {position}");
         }
         else if (usePlayerAsReference && playerTransform != null)
         {
-            // 回退到默认玩家位置
-            position = playerTransform.position;
-            Debug.LogWarning($"[MagicEffectMgr] 未找到玩家{playerId}，使用默认玩家位置");
+            // 回退到默认玩家位置，Y轴固定为0
+            Vector3 playerPos = playerTransform.position;
+            position = new Vector3(playerPos.x, 0f, playerPos.z);
+            Debug.LogWarning($"[MagicEffectMgr] 未找到玩家{playerId}，使用默认玩家位置（Y轴固定为0）");
         }
         else
         {
-            // 最后回退到摄像机位置
-            position = Camera.main.transform.position;
-            Debug.LogWarning($"[MagicEffectMgr] 未找到玩家{playerId}，使用摄像机位置");
+            // 最后回退到摄像机位置，Y轴固定为0
+            Vector3 cameraPos = Camera.main.transform.position;
+            position = new Vector3(cameraPos.x, 0f, cameraPos.z);
+            Debug.LogWarning($"[MagicEffectMgr] 未找到玩家{playerId}，使用摄像机位置（Y轴固定为0）");
         }
         
         Quaternion rotation = Quaternion.identity;

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 
 /// <summary>
 /// 怪物生成队列加载器
@@ -121,28 +122,24 @@ public class MonsterQueue : MonoBehaviour
             int waveCount = 0;
             if (queueData.spawnQueue.waves != null)
             {
-                // 解析波次数据
-                var waveFields = typeof(WavesData).GetFields();
-                foreach (var field in waveFields)
+                // 初始化波次字典
+                queueData.spawnQueue.waves.InitializeWavesDictionary();
+                
+                // 从字典中加载所有波次
+                foreach (var kvp in queueData.spawnQueue.waves.waves)
                 {
-                    if (field.FieldType == typeof(WaveData))
+                    int waveNumber = kvp.Key;
+                    WaveData waveData = kvp.Value;
+                    
+                    if (waveData != null && waveData.spawnEvents != null && waveData.spawnEvents.Length > 0)
                     {
-                        WaveData waveData = (WaveData)field.GetValue(queueData.spawnQueue.waves);
-                        if (waveData != null && waveData.spawnEvents != null && waveData.spawnEvents.Length > 0)
+                        waves[waveNumber] = waveData;
+                        waveOrder.Add(waveNumber);
+                        waveCount++;
+                        
+                        if (enableDebugLog)
                         {
-                            // 提取波次编号
-                            string waveName = field.Name; // wave1, wave2, etc.
-                            if (waveName.StartsWith("wave") && int.TryParse(waveName.Substring(4), out int waveNumber))
-                            {
-                                waves[waveNumber] = waveData;
-                                waveOrder.Add(waveNumber);
-                                waveCount++;
-                                
-                                if (enableDebugLog)
-                                {
-                                    Debug.Log($"[MonsterQueue] 加载波次 {waveNumber}: {waveData.description}, 事件数量: {waveData.spawnEvents.Length}");
-                                }
-                            }
+                            Debug.Log($"[MonsterQueue] 加载波次 {waveNumber}: {waveData.description}, 事件数量: {waveData.spawnEvents.Length}");
                         }
                     }
                 }
@@ -230,9 +227,54 @@ public class SpawnQueueInfo
 [Serializable]
 public class WavesData
 {
+    // 使用Dictionary来支持任意数量的波次
+    // 键为波次编号，值为波次数据
+    public Dictionary<int, WaveData> waves = new Dictionary<int, WaveData>();
+    
+    // 为了支持JSON序列化，保留原有字段但标记为过时
+    [System.Obsolete("Use waves dictionary instead")]
     public WaveData wave1;
+    [System.Obsolete("Use waves dictionary instead")]
     public WaveData wave2;
-    // 可以根据需要添加更多波次
+    [System.Obsolete("Use waves dictionary instead")]
+    public WaveData wave3;
+    [System.Obsolete("Use waves dictionary instead")]
+    public WaveData wave4;
+    [System.Obsolete("Use waves dictionary instead")]
+    public WaveData wave5;
+    [System.Obsolete("Use waves dictionary instead")]
+    public WaveData wave6;
+    [System.Obsolete("Use waves dictionary instead")]
+    public WaveData wave7;
+    [System.Obsolete("Use waves dictionary instead")]
+    public WaveData wave8;
+    [System.Obsolete("Use waves dictionary instead")]
+    public WaveData wave9;
+    [System.Obsolete("Use waves dictionary instead")]
+    public WaveData wave10;
+    
+    // JSON反序列化后的初始化方法
+    public void InitializeWavesDictionary()
+    {
+        waves.Clear();
+        
+        // 通过反射获取所有wave字段并添加到dictionary中
+        var fields = this.GetType().GetFields();
+        foreach (var field in fields)
+        {
+            if (field.FieldType == typeof(WaveData) && field.Name.StartsWith("wave"))
+            {
+                WaveData waveData = (WaveData)field.GetValue(this);
+                if (waveData != null && waveData.spawnEvents != null && waveData.spawnEvents.Length > 0)
+                {
+                    if (int.TryParse(field.Name.Substring(4), out int waveNumber))
+                    {
+                        waves[waveNumber] = waveData;
+                    }
+                }
+            }
+        }
+    }
 }
 
 [Serializable]

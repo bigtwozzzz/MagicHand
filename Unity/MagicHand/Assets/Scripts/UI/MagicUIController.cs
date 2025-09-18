@@ -1,26 +1,43 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary>
-/// 魔法UI控制器 - 负责管理魔法图标显示和冷却效果
-/// 自动挂载到MainUI物体上
+/// 魔法UI控制器
+/// 管理魔法栏位的图标显示和冷却效果，以及魔法技能池系统
 /// </summary>
-[RequireComponent(typeof(MainUI))]
 public class MagicUIController : MonoBehaviour
 {
-    [Header("魔法图标管理")]
-    [SerializeField] private Transform magicRoot; // Magic根物体
-    [SerializeField] private Image[] magicIconImages = new Image[4]; // MagicImg1~4的Image组件
-    [SerializeField] private Image[] magicMaskImages = new Image[4]; // 对应的Mask组件
+    #region 字段定义
     
-    private int[] magicSlots = new int[4] { 0, 0, 0, 0 }; // 每个栏位对应的魔法编号，0表示空
+    [Header("魔法图标管理")]
+    [SerializeField] private Image[] magicIconImages = new Image[5]; // 魔法图标Image组件数组
+    [SerializeField] private Image[] magicMaskImages = new Image[5];  // 魔法冷却遮罩Image组件数组
+    
+    [Header("魔法栏位配置")]
+    [SerializeField] private int[] magicSlots = new int[5]; // 魔法栏位数组，存储每个栏位对应的魔法ID
+    
+    [Header("魔法技能池系统")]
+    [SerializeField] private List<int> unlockedMagics = new List<int>(); // 已解锁的魔法列表
+    [SerializeField] private List<int> magicPool = new List<int>(); // 未解锁的魔法池
+    
+    [Header("协程引用")]
+    private Coroutine cooldownUpdateCoroutine; // 冷却更新协程引用
+    
+    [Header("内部引用")]
+    [SerializeField] private Transform magicRoot; // Magic根物体
     private Coroutine updateCoroutine; // 冷却更新协程引用
+    
+    #endregion
     
     private void Awake()
     {
         // 初始化魔法图标系统
         InitializeMagicIcons();
+        
+        // 初始化魔法技能池系统
+        InitializeMagicPool();
         
         // 订阅魔法冷却事件
         MagicEventSystem.OnMagicCooldownStart += OnMagicCooldownStart;
@@ -71,12 +88,12 @@ public class MagicUIController : MonoBehaviour
         magicRoot = magicTransform;
         
         // 初始化数组
-        magicIconImages = new Image[4];
-        magicMaskImages = new Image[4];
-        magicSlots = new int[4];
+        magicIconImages = new Image[5];
+        magicMaskImages = new Image[5];
+        magicSlots = new int[5] { 24, 0, 0, 0, 23 }; // 栏位1固定24号，栏位5固定23号
         
         // 自动查找魔法图标组件
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < 5; i++)
         {
             string magicImgName = $"MagicImg{i + 1}";
             Transform magicImgTransform = magicTransform.Find(magicImgName);
@@ -106,9 +123,11 @@ public class MagicUIController : MonoBehaviour
                 Debug.LogError($"[MagicUIController] 未找到{magicImgName}子物体");
             }
             
-            // 初始化魔法栏位为空
-            magicSlots[i] = 0;
         }
+        
+        // 为固定栏位设置魔法图标（使用强制设置，因为这些是默认解锁的魔法）
+        SetMagicToSlotWithUnlockCheck(0, 24, true); // 栏位1固定为24号魔法
+        SetMagicToSlotWithUnlockCheck(4, 23, true); // 栏位5固定为23号魔法
         
         Debug.Log("[MagicUIController] 魔法图标系统自动初始化完成");
     }
@@ -116,7 +135,7 @@ public class MagicUIController : MonoBehaviour
     /// <summary>
     /// 将魔法放置到指定栏位
     /// </summary>
-    /// <param name="slotIndex">栏位索引（0-3）</param>
+    /// <param name="slotIndex">栏位索引（0-4）</param>
     /// <param name="magicId">魔法编号</param>
     public void SetMagicToSlot(int slotIndex, int magicId)
     {
@@ -231,13 +250,170 @@ public class MagicUIController : MonoBehaviour
     [ContextMenu("测试魔法栏位")]
     public void TestMagicSlots()
     {
-        // 把3号魔法放在栏位1
-        SetMagicToSlot(0, 3);
+        // 栏位1固定为24号魔法（光束魔法）
+        SetMagicToSlotWithUnlockCheck(0, 24, true);
         
-        // 把22号魔法放在栏位2
-        SetMagicToSlot(1, 32);
+        // 先解锁其他魔法，然后设置到栏位
+        UnlockMagic(32); // 解锁流星魔法
+        SetMagicToSlotWithUnlockCheck(1, 32);
         
-        Debug.Log("[MagicUIController] 测试魔法栏位设置完成：栏位1=魔法3，栏位2=魔法32");
+        // 尝试设置未解锁的魔法（应该失败）
+        SetMagicToSlotWithUnlockCheck(2, 35);
+        
+        // 解锁后再设置
+        UnlockMagic(35);
+        SetMagicToSlotWithUnlockCheck(2, 35);
+        
+        // 栏位5固定为23号魔法（治疗魔法）
+        SetMagicToSlotWithUnlockCheck(4, 23, true);
+        
+        Debug.Log("[MagicUIController] 测试魔法栏位设置完成");
+    }
+    
+    /// <summary>
+    /// 获取魔法池（未解锁的魔法列表）
+    /// </summary>
+    /// <returns>魔法池列表</returns>
+    public List<int> GetMagicPool()
+    {
+        return new List<int>(magicPool);
+    }
+    
+    /// <summary>
+    /// 测试解锁魔法功能
+    /// </summary>
+    [ContextMenu("测试解锁魔法")]
+    public void TestUnlockMagic()
+    {
+        // 解锁魔法ID为4的魔法
+        int testMagicId = 4;
+        bool success = UnlockMagic(testMagicId);
+        Debug.Log($"[MagicUIController] 测试解锁魔法 {testMagicId}: {(success ? "成功" : "失败")}");
+        
+        // 尝试设置到栏位
+        if (success)
+        {
+            SetMagicToSlotWithUnlockCheck(2, testMagicId); // 设置到第3个栏位
+        }
+    }
+    
+    #endregion
+    
+    #region 魔法技能池系统
+    
+    /// <summary>
+    /// 初始化魔法技能池系统
+    /// </summary>
+    private void InitializeMagicPool()
+    {
+        // 获取所有可用的魔法
+        if (MagicConfigLoader.Instance != null && MagicConfigLoader.Instance.IsConfigLoaded)
+        {
+            List<MagicData> allMagics = MagicConfigLoader.Instance.GetAllMagicData();
+            
+            // 清空现有数据
+            magicPool.Clear();
+            
+            // 将所有魔法添加到池中
+            foreach (var magic in allMagics)
+            {
+                if (magic.isEnabled)
+                {
+                    magicPool.Add(magic.magicId);
+                }
+            }
+            
+            // 初始化时解锁默认魔法（栏位1和栏位5的固定魔法）
+            UnlockMagic(24); // 光束魔法
+            UnlockMagic(23); // 治疗魔法
+            
+            Debug.Log($"[MagicUIController] 魔法技能池初始化完成，池中魔法数量: {magicPool.Count}, 已解锁魔法数量: {unlockedMagics.Count}");
+        }
+        else
+        {
+            Debug.LogWarning("[MagicUIController] 魔法配置未加载，无法初始化技能池");
+        }
+    }
+    
+    /// <summary>
+    /// 解锁魔法
+    /// </summary>
+    /// <param name="magicId">魔法ID</param>
+    /// <returns>是否成功解锁</returns>
+    public bool UnlockMagic(int magicId)
+    {
+        // 检查魔法是否在池中
+        if (!magicPool.Contains(magicId))
+        {
+            Debug.LogWarning($"[MagicUIController] 魔法 {magicId} 不在技能池中，无法解锁");
+            return false;
+        }
+        
+        // 检查是否已经解锁
+        if (unlockedMagics.Contains(magicId))
+        {
+            Debug.Log($"[MagicUIController] 魔法 {magicId} 已经解锁");
+            return true;
+        }
+        
+        // 从池中移除并添加到已解锁列表
+        magicPool.Remove(magicId);
+        unlockedMagics.Add(magicId);
+        
+        Debug.Log($"[MagicUIController] 成功解锁魔法 {magicId}");
+        return true;
+    }
+    
+    /// <summary>
+    /// 检查魔法是否已解锁
+    /// </summary>
+    /// <param name="magicId">魔法ID</param>
+    /// <returns>是否已解锁</returns>
+    public bool IsMagicUnlocked(int magicId)
+    {
+        return unlockedMagics.Contains(magicId);
+    }
+    
+    /// <summary>
+    /// 获取已解锁的魔法列表
+    /// </summary>
+    /// <returns>已解锁魔法ID列表</returns>
+    public List<int> GetUnlockedMagics()
+    {
+        return new List<int>(unlockedMagics);
+    }
+    
+    /// <summary>
+    /// 将解锁的魔法设置到栏位（重写原方法以添加解锁检查）
+    /// </summary>
+    /// <param name="slotIndex">栏位索引（0-4）</param>
+    /// <param name="magicId">魔法编号</param>
+    /// <param name="forceSet">是否强制设置（忽略解锁检查）</param>
+    public bool SetMagicToSlotWithUnlockCheck(int slotIndex, int magicId, bool forceSet = false)
+    {
+        if (slotIndex < 0 || slotIndex >= magicSlots.Length)
+        {
+            Debug.LogError($"[MagicUIController] 无效的栏位索引: {slotIndex}");
+            return false;
+        }
+        
+        // 如果魔法ID为0，表示清空栏位
+        if (magicId == 0)
+        {
+            SetMagicToSlot(slotIndex, 0);
+            return true;
+        }
+        
+        // 检查魔法是否已解锁（除非强制设置）
+        if (!forceSet && !IsMagicUnlocked(magicId))
+        {
+            Debug.LogWarning($"[MagicUIController] 魔法 {magicId} 未解锁，无法设置到栏位 {slotIndex}");
+            return false;
+        }
+        
+        // 设置魔法到栏位
+        SetMagicToSlot(slotIndex, magicId);
+        return true;
     }
     
     #endregion

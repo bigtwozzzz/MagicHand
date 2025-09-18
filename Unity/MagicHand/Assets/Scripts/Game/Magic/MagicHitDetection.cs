@@ -36,6 +36,13 @@ public class MagicHitDetection : MonoBehaviour
             Debug.Log($"[MagicHitDetection] 收到魔法触发事件，魔法: {magicData.magicName}，施法者: 玩家{playerId}");
         }
         
+        // 检查是否为治疗魔法（魔法ID 23）
+        if (magicId == 23)
+        {
+            ExecuteHealingMagic(magicData, playerId);
+            return;
+        }
+        
         // 根据施法者ID获取对应玩家位置
         Vector3 castPosition = GetCasterPosition(playerId);
         Vector3 castDirection = GetCasterDirection(playerId);
@@ -172,6 +179,59 @@ public class MagicHitDetection : MonoBehaviour
         }
         
         return hitCount;
+    }
+    
+    /// <summary>
+    /// 执行治疗魔法逻辑
+    /// </summary>
+    /// <param name="magicData">魔法数据</param>
+    /// <param name="playerId">施法者玩家ID</param>
+    private void ExecuteHealingMagic(MagicData magicData, int playerId)
+    {
+        if (magicData == null)
+        {
+            Debug.LogError("[MagicHitDetection] 治疗魔法数据为空");
+            return;
+        }
+        
+        // 获取施法者玩家数据
+        PlayerManager.PlayerData playerData = PlayerManager.Instance?.GetPlayerData(playerId);
+        if (playerData == null || playerData.playerObject == null)
+        {
+            Debug.LogWarning($"[MagicHitDetection] 未找到玩家{playerId}，无法执行治疗");
+            return;
+        }
+        
+        // 获取玩家的生命值管理器
+        PlayerHealthManager healthManager = playerData.playerObject.GetComponent<PlayerHealthManager>();
+        if (healthManager == null)
+        {
+            Debug.LogWarning($"[MagicHitDetection] 玩家{playerId}没有PlayerHealthManager组件，无法执行治疗");
+            return;
+        }
+        
+        // 计算治疗量（等于魔法的伤害值）
+        int healAmount = Mathf.RoundToInt(magicData.damage);
+        
+        if (enableDebugLog)
+        {
+            Debug.Log($"[MagicHitDetection] 执行治疗魔法，玩家{playerId}恢复{healAmount}点生命值");
+        }
+        
+        // 执行治疗
+        bool healSuccess = healthManager.Heal(healAmount);
+        
+        if (enableDebugLog)
+        {
+            if (healSuccess)
+            {
+                Debug.Log($"[MagicHitDetection] 治疗成功，玩家{playerId}当前生命值: {healthManager.CurrentHealth}/{healthManager.MaxHealth}");
+            }
+            else
+            {
+                Debug.Log($"[MagicHitDetection] 治疗失败或无需治疗，玩家{playerId}当前生命值: {healthManager.CurrentHealth}/{healthManager.MaxHealth}");
+            }
+        }
     }
     
     /// <summary>
