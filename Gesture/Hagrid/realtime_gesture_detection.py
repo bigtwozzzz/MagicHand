@@ -30,14 +30,50 @@ UDP_IP = "127.0.0.1"  # Unity运行的IP地址
 UDP_PORT = 12345      # Unity监听的端口
 
 # 手势编号映射 - 将34种手势映射到Unity可识别的编号
+# 编号分配规则：
+# 0: no_gesture - 不发送手势信号
+# 1-20: 功能性手势（Unity会跳过这些手势的魔法触发）
+# 21-50: 魔法手势（可以触发魔法的手势）
 GESTURE_MAPPING = {
-    'grabbing': 1, 'grip': 2, 'holy': 3, 'point': 4, 'call': 12, 'three3': 15,
-    'timeout': 17, 'xsign': 18, 'hand_heart': 4, 'hand_heart2': 4, 'little_finger': 19,
-    'middle_finger': 8, 'take_picture': 20, 'dislike': 6, 'fist': 10, 'four': 14,
-    'like': 5, 'mute': 21, 'ok': 13, 'one': 9, 'palm': 22, 'peace': 11,
-    'peace_inverted': 23, 'rock': 24, 'stop': 2, 'stop_inverted': 25, 'three': 15,
-    'three2': 16, 'two_up': 26, 'two_up_inverted': 27, 'three_gun': 28,
-    'thumb_index': 29, 'thumb_index2': 30, 'no_gesture': 0
+    # 不发送信号
+    'no_gesture': 0,
+    
+    # 功能性手势 (1-20) - 不触发魔法
+    'like': 1,          # 功能性手势
+    'dislike': 2,       # 功能性手势
+    'one': 3,           # 功能性手势
+    'four': 4,          # 功能性手势
+    'three': 5,         # 功能性手势
+    'peace': 6,         # 功能性手势
+    'ok': 7,            # 功能性手势：确认
+    'timeout': 8,       # 功能性手势：超时
+    'three3': 9,        # 功能性手势（three的变体）
+    'three2': 10,       # 功能性手势（three的变体）
+    
+    # 魔法手势 (21-50) - 可触发魔法
+    'grabbing': 21,
+    'grip': 22,
+    'holy': 23,
+    'point': 24,
+    'middle_finger': 25,
+    'fist': 26,
+    'call': 27,
+    'xsign': 28,
+    'little_finger': 29,
+    'take_picture': 30,
+    'mute': 31,
+    'palm': 32,
+    'peace_inverted': 33,
+    'rock': 34,
+    'stop': 35,
+    'stop_inverted': 36,
+    'two_up': 37,
+    'two_up_inverted': 38,
+    'three_gun': 39,
+    'thumb_index': 40,
+    'thumb_index2': 41,
+    'hand_heart': 42,
+    'hand_heart2': 43
 }
 
 def create_gesture_classifier(model_name="ResNet18", num_classes=34):

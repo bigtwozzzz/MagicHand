@@ -127,15 +127,15 @@ public class MagicConfigLoader : MonoBehaviour
         // 创建默认魔法数据
         var defaultMagics = new List<MagicData>
         {
-            new MagicData(3, "治疗魔法", "恢复自身一定生命值", 80f, "Magic", 
+            new MagicData(23, "治疗魔法", "恢复自身一定生命值", 80f, "Magic", 
                          new MagicRange(-1f, 1f, 1f, -1f), 10f, 0.5f),
-            new MagicData(4, "光束魔法", "释放一道向前的光束，对中路敌人造成伤害", 120f, "Magic", 
+            new MagicData(24, "光束魔法", "释放一道向前的光束，对中路敌人造成伤害", 120f, "Magic", 
                          new MagicRange(-1f, 1f, 12f, 0f), 6f, 0.1f),
-            new MagicData(22, "流星", "先握拳后张掌的复合手势魔法，释放从天而降的火球，对大范围敌人造成伤害", 100f, "Magic", 
+            new MagicData(32, "流星", "先握拳后张掌的复合手势魔法，释放从天而降的火球，对大范围敌人造成伤害", 100f, "Magic", 
                          new MagicRange(-5f, 5f, 10f, 0f), 15f, 0.1f)
         };
         
-        // 设置魔法22的放大系数
+        // 设置魔法32（流星）的放大系数
         defaultMagics[2].amplificationFactor = 3f;
         
         foreach (var magic in defaultMagics)

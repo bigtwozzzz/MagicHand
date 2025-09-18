@@ -8,28 +8,28 @@
         "spawnEvents": [
           {
             "eventId": 1,
-            "triggerTime": 5.0,
+            "triggerTime": 2.0,
             "id": 1,
             "spawnCount": 1,
             "spawnPosition": {
               "x": 0,
               "y": 0,
-              "z": 10
+              "z": 15
             },
-            "description": "游戏开始5秒后生成1只哥布林",
+            "description": "游戏开始2秒后生成1只哥布林",
             "enabled": true
           },
           {
             "eventId": 2,
-            "triggerTime": 15.0,
+            "triggerTime": 8.0,
             "id": 1,
             "spawnCount": 3,
             "spawnPosition": {
-              "x": -3,
+              "x": 0,
               "y": 0,
-              "z": 10
+              "z": 15
             },
-            "description": "游戏开始15秒后生成1只哥布林",
+            "description": "游戏开始8秒后生成3只哥布林",
             "enabled": true
           }
         ]
@@ -40,14 +40,110 @@
           {
             "eventId": 3,
             "triggerTime": 3.0,
-            "id": 2,
+            "id": 3,
+            "spawnCount": 1,
+            "spawnPosition": {
+              "x": 0,
+              "y": 0,
+              "z": 15
+            },
+            "description": "第二波开始3秒后生成1只重锤兵",
+            "enabled": true
+          },
+          {
+            "eventId": 4,
+            "triggerTime": 10.0,
+            "id": 4,
+            "spawnCount": 1,
+            "spawnPosition": {
+              "x": -2,
+              "y": 0,
+              "z": 15
+            },
+            "description": "第二波开始10秒后生成1只螳螂",
+            "enabled": true
+          },
+          {
+            "eventId": 5,
+            "triggerTime": 10.0,
+            "id": 4,
             "spawnCount": 1,
             "spawnPosition": {
               "x": 2,
               "y": 0,
-              "z": 12
+              "z": 15
             },
-            "description": "第二波开始10秒后生成1只骷髅战士",
+            "description": "第二波开始10秒后生成1只螳螂",
+            "enabled": true
+          }
+        ]
+      },
+      "wave3": {
+        "description": "第三波怪物",
+        "spawnEvents": [
+          {
+            "eventId": 6,
+            "triggerTime": 3.0,
+            "id": 2,
+            "spawnCount": 2,
+            "spawnPosition": {
+              "x": -2,
+              "y": 0,
+              "z": 15
+            },
+            "description": "第三波开始3秒后生成2只骷髅",
+            "enabled": true
+          },
+          {
+            "eventId": 7,
+            "triggerTime": 5.0,
+            "id": 3,
+            "spawnCount": 1,
+            "spawnPosition": {
+              "x": -1,
+              "y": 0,
+              "z": 15
+            },
+            "description": "第三波开始5秒后生成一只重锤",
+            "enabled": true
+          },
+          {
+            "eventId": 8,
+            "triggerTime": 5.0,
+            "id": 3,
+            "spawnCount": 1,
+            "spawnPosition": {
+              "x": 1,
+              "y": 0,
+              "z": 15
+            },
+            "description": "第三波开始5秒后生成一只重锤",
+            "enabled": true
+          },
+          {
+            "eventId": 9,
+            "triggerTime": 8.0,
+            "id": 4,
+            "spawnCount": 3,
+            "spawnPosition": {
+              "x": 2,
+              "y": 0,
+              "z": 10
+            },
+            "description": "第三波开始8秒后生成3只螳螂",
+            "enabled": true
+          },
+          {
+            "eventId": 10,
+            "triggerTime": 15.0,
+            "id": 5,
+            "spawnCount": 1,
+            "spawnPosition": {
+              "x": 0,
+              "y": 0,
+              "z": 15
+            },
+            "description": "第三波最终boss，龙",
             "enabled": true
           }
         ]

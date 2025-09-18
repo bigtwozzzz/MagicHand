@@ -235,9 +235,9 @@ public class MagicUIController : MonoBehaviour
         SetMagicToSlot(0, 3);
         
         // 把22号魔法放在栏位2
-        SetMagicToSlot(1, 22);
+        SetMagicToSlot(1, 32);
         
-        Debug.Log("[MagicUIController] 测试魔法栏位设置完成：栏位1=魔法3，栏位2=魔法22");
+        Debug.Log("[MagicUIController] 测试魔法栏位设置完成：栏位1=魔法3，栏位2=魔法32");
     }
     
     #endregion

@@ -20,8 +20,9 @@ public class MagicManager : MonoBehaviour
     // 复合手势映射
     private Dictionary<string, int> comboGestureMap = new Dictionary<string, int>();
     
-    // 功能性手势ID列表（需要跳过的手势）
-    private HashSet<int> functionalGestures = new HashSet<int> { 0, 1, 2, 5, 6, 7, 8, 9, 10 };
+    // 功能性手势ID集合 - 这些手势不会触发魔法
+    // 包含: no_gesture(0), like(1), dislike(2), one(3), four(4), three(5), peace(6), ok(7), timeout(8), three3(9), three2(10)
+    private HashSet<int> functionalGestures = new HashSet<int> { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
     
     void Awake()
     {
@@ -72,8 +73,10 @@ public class MagicManager : MonoBehaviour
     /// </summary>
     private void InitializeComboGestures()
     {
-        // 魔法22：握拳(3) -> 张掌(4)
-        comboGestureMap["3,4"] = 22;
+        // 魔法32（流星）：握拳(26) -> 张掌(32)
+        // 注意：握拳(fist)现在是编号26，张掌(palm)现在是编号32
+        // 流星魔法编号与palm手势编号保持一致
+        comboGestureMap["26,32"] = 32;
         
         Debug.Log("[MagicManager] 复合手势映射初始化完成");
     }

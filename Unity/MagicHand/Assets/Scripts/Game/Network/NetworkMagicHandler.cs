@@ -154,7 +154,7 @@ public class NetworkMagicHandler : MonoBehaviour
         var skillToMagicMap = new Dictionary<string, int>
         {
             { "heal_magic", 3 },        // 治疗魔法
-            { "meteor_magic", 22 },     // 流星魔法
+            { "meteor_magic", 32 },     // 流星魔法
             // 可以根据需要添加更多映射
         };
         

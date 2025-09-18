@@ -3727,17 +3727,6 @@ MonoBehaviour:
   monsterListContainer: {fileID: 1093645307166208924}
   monsterEntryPrefab: {fileID: 1161612875565684086}
   textSceneId: {fileID: 9086616521281460896}
-  magicRoot: {fileID: 0}
-  magicIconImages:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  magicMaskImages:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
 --- !u!1 &7608246720214715998
 GameObject:
   m_ObjectHideFlags: 0

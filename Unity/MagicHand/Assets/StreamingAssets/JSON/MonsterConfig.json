@@ -5,9 +5,9 @@
       "name": "哥布林",
       "description": "基础近战怪物，血量中等，伤害较低",
       "maxHealth": 200,
-      "attackDamage": 1,
+      "attackDamage": 3,
       "moveSpeed": 1,
-      "attackRange": 3,
+      "attackRange": 2,
       "attackInterval": 2,
       "detectionRange": 5.0,
       "scaleMultiplier": 1.0,
@@ -25,7 +25,7 @@
       "name": "骷髅战士",
       "description": "亡灵系怪物，血量较少，中等攻击力",
       "maxHealth": 120,
-      "attackDamage": 10,
+      "attackDamage": 5,
       "moveSpeed": 1.5,
       "attackRange": 1.5,
       "attackInterval": 1.0,
@@ -46,13 +46,13 @@
     },
     {
       "id": 3,
-      "name": "火焰法师",
-      "description": "远程魔法攻击怪物，血量较低但伤害很高",
-      "maxHealth": 80,
-      "attackDamage": 60,
-      "moveSpeed": 2.0,
-      "attackRange": 8.0,
-      "attackInterval": 1.43,
+      "name": "重锤兵",
+      "description": "血量高，移动缓慢，伤害中等",
+      "maxHealth": 350,
+      "attackDamage": 5,
+      "moveSpeed": 0.5,
+      "attackRange": 2,
+      "attackInterval": 2,
       "detectionRange": 10.0,
       "scaleMultiplier": 1.0,
       "dropItems": [
@@ -65,18 +65,18 @@
           "dropRate": 0.2
         }
       ],
-      "aiType": "Ranged",
+      "aiType": "Single",
       "enableDebugLog": false
     },
     {
       "id": 4,
-      "name": "巨石巨人",
-      "description": "Boss级怪物，拥有极高血量和防御力",
-      "maxHealth": 500,
-      "attackDamage": 80,
+      "name": "螳螂",
+      "description": "攻击力极强",
+      "maxHealth": 150,
+      "attackDamage": 10,
       "moveSpeed": 1.5,
-      "attackRange": 3.0,
-      "attackInterval": 2.0,
+      "attackRange": 3,
+      "attackInterval": 1.5,
       "detectionRange": 8.0,
       "scaleMultiplier": 1.0,
       "dropItems": [
@@ -93,27 +93,27 @@
           "dropRate": 0.3
         }
       ],
-      "aiType": "Boss",
+      "aiType": "Single",
       "enableDebugLog": false
     },
     {
       "id": 5,
-      "name": "暗影刺客",
-      "description": "高速移动的刺客型怪物，攻击力高但血量极低",
-      "maxHealth": 60,
-      "attackDamage": 45,
-      "moveSpeed": 5.0,
-      "attackRange": 1.2,
-      "attackInterval": 0.5,
+      "name": "龙",
+      "description": "Boss，可以群体攻击",
+      "maxHealth": 600,
+      "attackDamage": 8,
+      "moveSpeed": 1,
+      "attackRange": 5,
+      "attackInterval": 1.5,
       "detectionRange": 4.0,
-      "scaleMultiplier": 1.0,
+      "scaleMultiplier": 0.8,
       "dropItems": [
         {
           "itemId": 9,
           "dropRate": 0.35
         }
       ],
-      "aiType": "Stealth",
+      "aiType": "Multiple",
       "enableDebugLog": false
     }
   ]

@@ -120,9 +120,10 @@ public class GestureEventManager : MonoBehaviour
         TriggerGestureEvent(2);
     }
     
-    [ContextMenu("测试触发手势3")]
+    [ContextMenu("测试触发手势3(one)")]
     void TestTriggerGesture3()
     {
+        // 手势3现在对应one手势
         TriggerGestureEvent(3);
     }
 }

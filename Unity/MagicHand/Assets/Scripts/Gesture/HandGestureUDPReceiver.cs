@@ -44,16 +44,25 @@ public class HandGestureUDPReceiver : MonoBehaviour
         public double timestamp;
     }
     
-    // 手势编号到名称的映射 - 支持Hagrid模型的34种手势
+    // 手势编号到名称的映射 - 与Python端realtime_gesture_detection.py的GESTURE_MAPPING完全一致
+    // 0: 无手势（不发送信号）
+    // 1-20: 功能性手势（like, dislike, one, four, three, peace, ok, timeout等）
+    // 21-50: 魔法手势（可触发魔法的手势）
     private readonly Dictionary<int, string> gestureNames = new Dictionary<int, string>()
     {
-        {0, "no_gesture"}, {1, "grabbing"}, {2, "grip"}, {3, "holy"}, {4, "point"},
-        {5, "like"}, {6, "dislike"}, {7, "ILY"}, {8, "middle_finger"}, {9, "one"},
-        {10, "fist"}, {11, "peace"}, {12, "call"}, {13, "ok"}, {14, "four"},
-        {15, "three"}, {16, "three2"}, {17, "timeout"}, {18, "xsign"}, {19, "little_finger"},
-        {20, "take_picture"}, {21, "mute"}, {22, "palm"}, {23, "peace_inverted"}, {24, "rock"},
-        {25, "stop_inverted"}, {26, "two_up"}, {27, "two_up_inverted"}, {28, "three_gun"},
-        {29, "thumb_index"}, {30, "thumb_index2"}
+        // 0: 无手势
+        {0, "no_gesture"},
+        
+        // 1-20: 功能性手势
+        {1, "like"}, {2, "dislike"}, {3, "one"}, {4, "four"}, {5, "three"}, 
+        {6, "peace"}, {7, "ok"}, {8, "timeout"}, {9, "three3"}, {10, "three2"},
+        
+        // 21-50: 魔法手势
+        {21, "grabbing"}, {22, "grip"}, {23, "holy"}, {24, "point"}, {25, "middle_finger"},
+        {26, "fist"}, {27, "call"}, {28, "xsign"}, {29, "little_finger"}, {30, "take_picture"},
+        {31, "mute"}, {32, "palm"}, {33, "peace_inverted"}, {34, "rock"}, {35, "stop"},
+        {36, "stop_inverted"}, {37, "two_up"}, {38, "two_up_inverted"}, {39, "three_gun"}, 
+        {40, "thumb_index"}, {41, "thumb_index2"}, {42, "hand_heart"}, {43, "hand_heart2"}
     };
     
     // 事件：当接收到新的手势数据时触发

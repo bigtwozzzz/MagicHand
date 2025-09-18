@@ -14,12 +14,12 @@ public class GeneralGestureHandler : MonoBehaviour
     [SerializeField] private bool enableDebugLog = true;
     
     [Header("OK手势配置")]
-    [SerializeField] private int okGestureId = 13;
+    [SerializeField] private int okGestureId = 7;  // 更新为新的编号
     [SerializeField] private float okGestureHoldTime = 1.2f;
     [SerializeField] private string okGestureName = "ok";
     
     [Header("Timeout手势配置")]
-    [SerializeField] private int timeoutGestureId = 17;
+    [SerializeField] private int timeoutGestureId = 8;  // 更新为新的编号
     [SerializeField] private float timeoutGestureHoldTime = 1.2f;
     [SerializeField] private string timeoutGestureName = "timeout";
     
