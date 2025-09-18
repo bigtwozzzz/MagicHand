@@ -95,6 +95,13 @@ public class Assign : BaseManager<Assign>
                         EventCenter.GetInstance().EventTrigger(E_EventType.Event_Global_Random_Seed, randomSeed);
                     });
                     break;
+                case 213:
+                    var combatInfo = EntityAttackNotify.Parser.ParseFrom(msgBody);
+                    MainThreadDispatcher.Enqueue(() =>
+                    {
+                        EventCenter.GetInstance().EventTrigger(E_EventType.Event_Combat_Info, combatInfo);
+                    });
+                    break;
                 default:
                     Debug.LogWarning($"[Decoder] Unknown message ID: {msgId}");
                     break;

@@ -1,10 +1,8 @@
-from __future__ import annotations
-
 import itertools
-from typing import TYPE_CHECKING
-from typing_extensions import assert_never
+from typing import List, Sequence, Union
 
 from torchgen.api import cpp
+
 from torchgen.api.types import ArgName, Binding, CType, NamedCType
 from torchgen.model import (
     Argument,
@@ -14,12 +12,7 @@ from torchgen.model import (
     TensorOptionsArguments,
     Type,
 )
-from torchgen.utils import concatMap
-
-
-if TYPE_CHECKING:
-    from collections.abc import Sequence
-
+from torchgen.utils import assert_never, concatMap
 
 # This file describes the translation of JIT schema to the dispatcher
 # API, the *unboxed* calling convention by which invocations through
@@ -83,10 +76,10 @@ def returns_type(rs: Sequence[Return], *, symint: bool = True) -> CType:
     return cpp.returns_type(rs, symint=symint)
 
 
-def jit_arguments(func: FunctionSchema) -> list[Argument]:
+def jit_arguments(func: FunctionSchema) -> List[Argument]:
     def to_argument(
-        a: Argument | TensorOptionsArguments | SelfArgument,
-    ) -> list[Argument]:
+        a: Union[Argument, TensorOptionsArguments, SelfArgument]
+    ) -> List[Argument]:
         if isinstance(a, Argument):
             return [a]
         elif isinstance(a, SelfArgument):
@@ -121,5 +114,5 @@ def argument(
     )
 
 
-def arguments(func: FunctionSchema, *, symint: bool = True) -> list[Binding]:
+def arguments(func: FunctionSchema, *, symint: bool = True) -> List[Binding]:
     return [argument(a, symint=symint) for a in jit_arguments(func)]

@@ -11,19 +11,6 @@ import socket
 import json
 from PIL import Image
 from models import classifiers_list
-import warnings
-import os
-import logging
-
-# 过滤MediaPipe的NORM_RECT警告
-warnings.filterwarnings("ignore", message=".*Using NORM_RECT without IMAGE_DIMENSIONS.*")
-
-# 设置环境变量来抑制MediaPipe的C++日志
-os.environ['GLOG_minloglevel'] = '2'  # 只显示ERROR级别的日志
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'  # 抑制TensorFlow日志
-
-# 设置Python日志级别
-logging.getLogger('mediapipe').setLevel(logging.ERROR)
 
 # UDP配置
 UDP_IP = "127.0.0.1"  # Unity运行的IP地址
@@ -120,9 +107,9 @@ class RealTimeGestureDetector:
         if self.enable_signal:
             try:
                 self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-                print(f"✅ UDP通信已启用: {UDP_IP}:{UDP_PORT}")
+                print(f" UDP通信已启用: {UDP_IP}:{UDP_PORT}")
             except Exception as e:
-                print(f"❌ UDP初始化失败: {e}")
+                print(f" UDP初始化失败: {e}")
                 self.enable_signal = False
         
         # 性能统计
@@ -141,13 +128,13 @@ class RealTimeGestureDetector:
             checkpoint = torch.load(model_path, map_location=self.device)
             if 'MODEL_STATE' in checkpoint:
                 model.hagrid_model.load_state_dict(checkpoint['MODEL_STATE'])
-                print(f"✅ 成功加载模型权重: {model_path}")
+                print(f" 成功加载模型权重: {model_path}")
             else:
                 # 如果直接是state_dict
                 model.hagrid_model.load_state_dict(checkpoint)
-                print(f"✅ 成功加载模型权重: {model_path}")
+                print(f" 成功加载模型权重: {model_path}")
         except Exception as e:
-            print(f"❌ 模型加载失败: {e}")
+            print(f" 模型加载失败: {e}")
             print("使用未训练的模型进行演示...")
             
         model.to(self.device)
@@ -177,10 +164,7 @@ class RealTimeGestureDetector:
     def detect_hands(self, frame):
         """检测手部关键点"""
         rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-        # 设置图像尺寸以避免MediaPipe警告
-        rgb_frame.flags.writeable = False
         results = self.hands.process(rgb_frame)
-        rgb_frame.flags.writeable = True
         
         hands_info = []
         if results.multi_hand_landmarks and results.multi_handedness:
@@ -436,7 +420,7 @@ class RealTimeGestureDetector:
         
         # 置信度过滤：只有置信度高于阈值的手势才发送到Unity
         if confidence < self.confidence_threshold:
-            print(f"🚫 手势 '{gesture_name}' 置信度 {confidence:.3f} 低于阈值 {self.confidence_threshold}，不发送")
+            print(f" 手势 '{gesture_name}' 置信度 {confidence:.3f} 低于阈值 {self.confidence_threshold}，不发送")
             return
             
         try:
@@ -504,7 +488,7 @@ class RealTimeGestureDetector:
                 }
                 hands_data.append(left_hand_data)
             elif left_gesture and left_gesture != "no_gesture":
-                print(f"🚫 左手手势 '{left_gesture}' 置信度 {left_confidence:.3f} 低于阈值 {self.confidence_threshold}，不发送")
+                print(f" 左手手势 '{left_gesture}' 置信度 {left_confidence:.3f} 低于阈值 {self.confidence_threshold}，不发送")
             
             # 处理右手数据
             if right_gesture and right_gesture != "no_gesture" and right_confidence >= self.confidence_threshold:
@@ -523,7 +507,7 @@ class RealTimeGestureDetector:
                 }
                 hands_data.append(right_hand_data)
             elif right_gesture and right_gesture != "no_gesture":
-                print(f"🚫 右手手势 '{right_gesture}' 置信度 {right_confidence:.3f} 低于阈值 {self.confidence_threshold}，不发送")
+                print(f" 右手手势 '{right_gesture}' 置信度 {right_confidence:.3f} 低于阈值 {self.confidence_threshold}，不发送")
             
             # 构建发送数据（与Unity期望的格式匹配）
             if hands_data:  # 只有当有手势数据时才发送
@@ -569,20 +553,20 @@ class RealTimeGestureDetector:
         # 设置置信度阈值
         self.confidence_threshold = confidence_threshold
         
-        print("🚀 启动手势分类器...")
-        print(f"📱 使用设备: {self.device}")
-        print(f"🎯 置信度阈值: {confidence_threshold}")
+        print(" 启动手势分类器...")
+        print(f" 使用设备: {self.device}")
+        print(f" 置信度阈值: {confidence_threshold}")
         if auto_interval > 0:
-            print(f"🤖 自动模式: 每 {auto_interval} 毫秒自动分类一次")
-            print("📹 按 'q' 键退出")
+            print(f" 自动模式: 每 {auto_interval} 毫秒自动分类一次")
+            print(" 按 'q' 键退出")
         else:
-            print("👆 手动模式: 按 '空格' 键进行手势分类")
-            print("📹 按 'q' 键退出，按 '空格' 键进行手势分类")
+            print(" 手动模式: 按 '空格' 键进行手势分类")
+            print(" 按 'q' 键退出，按 '空格' 键进行手势分类")
         
         # 初始化摄像头
         cap = cv2.VideoCapture(camera_id)
         if not cap.isOpened():
-            print("❌ 无法打开摄像头")
+            print(" 无法打开摄像头")
             return
         
         # 设置摄像头参数
@@ -601,7 +585,7 @@ class RealTimeGestureDetector:
             while True:
                 ret, frame = cap.read()
                 if not ret:
-                    print("❌ 无法读取摄像头帧")
+                    print(" 无法读取摄像头帧")
                     break
                 
                 # 水平翻转（镜像效果）
@@ -632,7 +616,7 @@ class RealTimeGestureDetector:
                 if self.enable_window:
                     key = cv2.waitKey(1) & 0xFF
                     if key == ord('q'):
-                        print("👋 退出程序")
+                        print(" 退出程序")
                         break
                     elif key == ord(' ') and auto_interval == 0:  # 手动模式下的空格键触发分类
                         should_classify = True
@@ -640,14 +624,14 @@ class RealTimeGestureDetector:
                     # 不显示窗口时，仍需要waitKey来处理OpenCV内部事件
                     key = cv2.waitKey(1) & 0xFF
                     if key == ord('q'):
-                        print("👋 退出程序")
+                        print(" 退出程序")
                         break
                     elif key == ord(' ') and auto_interval == 0:  # 手动模式下的空格键触发分类
                         should_classify = True
                 
                 # 执行分类
                 if should_classify:
-                    print("\n🔍 正在进行智能手势分类...")
+                    print("\n 正在进行智能手势分类...")
                     try:
                         result = self.predict_dual_hand(frame)
                         
@@ -660,12 +644,12 @@ class RealTimeGestureDetector:
                             last_prediction = gesture
                             last_confidence = confidence
                             
-                            print(f"🤲 双手手势: {gesture}")
-                            print(f"📊 置信度: {confidence:.4f}")
+                            print(f" 双手手势: {gesture}")
+                            print(f" 置信度: {confidence:.4f}")
                             
                             # 显示前5个最可能的类别
                             top5_probs, top5_indices = torch.topk(probabilities, 5)
-                            print("\n📈 Top 5 预测:")
+                            print("\n Top 5 预测:")
                             for i in range(5):
                                 class_name = self.gesture_names[top5_indices[i]]
                                 prob = top5_probs[i].item()
@@ -684,13 +668,13 @@ class RealTimeGestureDetector:
                             last_prediction = f"{hand_type} {gesture}"
                             last_confidence = confidence
                             
-                            print(f"👋 {hand_type}手手势: {gesture}")
-                            print(f"📊 分类置信度: {confidence:.4f}")
-                            print(f"🤚 手部检测置信度: {hand_confidence:.4f}")
+                            print(f" {hand_type}手手势: {gesture}")
+                            print(f" 分类置信度: {confidence:.4f}")
+                            print(f" 手部检测置信度: {hand_confidence:.4f}")
                             
                             # 显示前5个最可能的类别
                             top5_probs, top5_indices = torch.topk(probabilities, 5)
-                            print("\n📈 Top 5 预测:")
+                            print("\n Top 5 预测:")
                             for i in range(5):
                                 class_name = self.gesture_names[top5_indices[i]]
                                 prob = top5_probs[i].item()
@@ -709,14 +693,14 @@ class RealTimeGestureDetector:
                             last_prediction = f"L:{left_gesture} R:{right_gesture}"
                             last_confidence = (left_confidence + right_confidence) / 2
                             
-                            print(f"👈 左手: {left_gesture} (置信度: {left_confidence:.4f})")
-                            print(f"👉 右手: {right_gesture} (置信度: {right_confidence:.4f})")
-                            print(f"✂️ 分割线位置: x={split_x}")
+                            print(f" 左手: {left_gesture} (置信度: {left_confidence:.4f})")
+                            print(f" 右手: {right_gesture} (置信度: {right_confidence:.4f})")
+                            print(f" 分割线位置: x={split_x}")
                             
                             # 显示左手Top 3预测
                             left_probs = result['left_hand']['probabilities']
                             top3_left_probs, top3_left_indices = torch.topk(left_probs, 3)
-                            print("\n📈 左手 Top 3:")
+                            print("\n 左手 Top 3:")
                             for i in range(3):
                                 class_name = self.gesture_names[top3_left_indices[i]]
                                 prob = top3_left_probs[i].item()
@@ -725,7 +709,7 @@ class RealTimeGestureDetector:
                             # 显示右手Top 3预测
                             right_probs = result['right_hand']['probabilities']
                             top3_right_probs, top3_right_indices = torch.topk(right_probs, 3)
-                            print("\n📈 右手 Top 3:")
+                            print("\n 右手 Top 3:")
                             for i in range(3):
                                 class_name = self.gesture_names[top3_right_indices[i]]
                                 prob = top3_right_probs[i].item()
@@ -740,7 +724,7 @@ class RealTimeGestureDetector:
                             # 未检测到手部
                             last_prediction = "No Hand"
                             last_confidence = 0.0
-                            print("🚫 未检测到手部")
+                            print(" 未检测到手部")
                             
                         else:
                             # 其他情况（如dual_hand_failed）
@@ -748,19 +732,19 @@ class RealTimeGestureDetector:
                             confidence = result['confidence']
                             last_prediction = gesture
                             last_confidence = confidence
-                            print(f"🤲 整体分类: {gesture} (置信度: {confidence:.4f})")
+                            print(f" 整体分类: {gesture} (置信度: {confidence:.4f})")
                         
                         print("-" * 50)
                         
                     except Exception as e:
-                        print(f"⚠️ 分类错误: {e}")
+                        print(f" 分类错误: {e}")
                         last_prediction = "Error"
                         last_confidence = 0.0
                 
                 # 手动截图功能已移除
                     
         except KeyboardInterrupt:
-            print("\n👋 程序被用户中断")
+            print("\n 程序被用户中断")
         
         finally:
             cap.release()
@@ -770,7 +754,7 @@ class RealTimeGestureDetector:
             if self.enable_signal and hasattr(self, 'sock'):
                 self.sock.close()
                 print("🔌 UDP连接已关闭")
-            print("🔚 程序结束")
+            print(" 程序结束")
 
 def main():
     # 解析命令行参数
@@ -794,12 +778,12 @@ def main():
                                      enable_signal=args.signal, enable_window=args.window)
     
     # 显示启动信息
-    print(f"🚀 启动实时手势识别系统")
-    print(f"📡 UDP信号发送: {'✅ 启用' if args.signal else '❌ 关闭'}")
-    print(f"🖥️  窗口显示: {'✅ 启用' if args.window else '❌ 关闭'}")
-    print(f"📹 摄像头ID: {args.camera_id}")
-    print(f"🎯 置信度阈值: {args.confidence_threshold}")
-    print(f"⏱️  模式: {'自动模式 (' + str(args.auto) + 'ms)' if args.auto > 0 else '手动模式'}")
+    print(f" 启动实时手势识别系统")
+    print(f" UDP信号发送: {' 启用' if args.signal else ' 关闭'}")
+    print(f"  窗口显示: {' 启用' if args.window else ' 关闭'}")
+    print(f" 摄像头ID: {args.camera_id}")
+    print(f" 置信度阈值: {args.confidence_threshold}")
+    print(f"  模式: {'自动模式 (' + str(args.auto) + 'ms)' if args.auto > 0 else '手动模式'}")
     print("按 'q' 退出程序")
     if args.window and args.auto == 0:
         print("按 '空格' 进行手势识别")
