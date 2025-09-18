@@ -1,3 +1,4 @@
+using Broadcast;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -33,6 +34,7 @@ public class NetworkMagicHandler : MonoBehaviour
         // 这里可以订阅网络事件
         // 例如：EventCenter.AddListener<SkillCastNotify>("OnSkillCastReceived", OnSkillCastReceived);
         LogDebug("[NetworkMagicHandler] 网络魔法处理器已初始化");
+        EventCenter.GetInstance().AddEventListener<EntityAttackNotify>(E_EventType.Event_Combat_Info, OnSkillCastReceived);
     }
     
     /// <summary>
@@ -40,12 +42,13 @@ public class NetworkMagicHandler : MonoBehaviour
     /// 这个方法应该被网络消息系统调用
     /// </summary>
     /// <param name="skillCastNotify">技能施放通知消息</param>
-    public void OnSkillCastReceived(object skillCastNotify)
+    public void OnSkillCastReceived(EntityAttackNotify skillCastNotify)
     {
         // 这里需要根据实际的SkillCastNotify结构来解析
         // 暂时使用模拟数据进行演示
         LogDebug("[NetworkMagicHandler] 接收到技能施放广播");
-        
+        string userId = skillCastNotify.EntityId;
+        string skillId = skillCastNotify.SkillId;
         // TODO: 解析skillCastNotify消息，提取玩家ID和技能ID
         // 示例代码（需要根据实际消息结构调整）：
         // int casterId = skillCastNotify.entityId;
@@ -210,5 +213,6 @@ public class NetworkMagicHandler : MonoBehaviour
     {
         // 取消订阅网络事件
         // 例如：EventCenter.RemoveListener<SkillCastNotify>("OnSkillCastReceived", OnSkillCastReceived);
+        EventCenter.GetInstance().RemoveEventListener<EntityAttackNotify>(E_EventType.Event_Combat_Info,OnSkillCastReceived);
     }
 }

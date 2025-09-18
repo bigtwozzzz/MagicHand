@@ -64,6 +64,7 @@ public enum E_EventType
     Event_Stage_Select_Request_Notify,
     Event_Stage_Select_Result_Notify,
     Event_Player_Skill_Info_Notify,
+    Event_Combat_Info,
     // 系统指令
     Event_Platform_Loaded,
     Event_LoadScene_Progress,
