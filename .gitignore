@@ -98,5 +98,8 @@ __pycache__/
 .Spotlight-V100
 .Trashes
 ehthumbs.db
+
+# Gesture training data (too large for git)
+Gesture/Hagrid/gestures/
 Thumbs.db
 /GameExe
