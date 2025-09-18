@@ -73,8 +73,18 @@ public class MagicCooldown : MonoBehaviour
     /// </summary>
     private void OnMagicTriggered(int magicId, MagicData magicData, int playerId)
     {
-        // 魔法触发后自动开始冷却
-        StartCooldown(magicId, magicData.cooldownTime);
+        // 只对本地玩家的魔法进行冷却计算
+        int localPlayerId = MagicManager.Instance?.GetLocalPlayerId() ?? 1;
+        if (playerId == localPlayerId)
+        {
+            // 魔法触发后自动开始冷却
+            StartCooldown(magicId, magicData.cooldownTime);
+        }
+        else
+        {
+            // 远程玩家的魔法不进行冷却计算
+            Debug.Log($"[MagicCooldown] 跳过远程玩家{playerId}的魔法{magicId}冷却计算");
+        }
     }
     
     /// <summary>

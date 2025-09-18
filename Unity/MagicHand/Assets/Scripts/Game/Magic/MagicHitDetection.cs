@@ -13,34 +13,85 @@ public class MagicHitDetection : MonoBehaviour
     
     void Awake()
     {
-        // 订阅魔法施放事件
-        MagicManager.OnMagicCast += OnMagicCast;
+        // 订阅魔法触发事件（包含施法者ID）
+        MagicEventSystem.OnMagicTriggered += OnMagicTriggered;
     }
     
     void OnDestroy()
     {
-        // 取消订阅魔法施放事件
-        MagicManager.OnMagicCast -= OnMagicCast;
+        // 取消订阅魔法触发事件
+        MagicEventSystem.OnMagicTriggered -= OnMagicTriggered;
     }
     
     /// <summary>
-    /// 处理魔法施放事件
+    /// 处理魔法触发事件
     /// </summary>
     /// <param name="magicId">魔法ID</param>
     /// <param name="magicData">魔法数据</param>
-    private void OnMagicCast(int magicId, MagicData magicData)
+    /// <param name="playerId">施法者玩家ID</param>
+    private void OnMagicTriggered(int magicId, MagicData magicData, int playerId)
     {
         if (enableDebugLog)
         {
-            Debug.Log($"[MagicHitDetection] 收到魔法施放事件，魔法: {magicData.magicName}");
+            Debug.Log($"[MagicHitDetection] 收到魔法触发事件，魔法: {magicData.magicName}，施法者: 玩家{playerId}");
         }
         
-        // 获取施法位置（这里使用玩家位置，实际项目中可能需要更精确的位置）
-        Vector3 castPosition = Camera.main != null ? Camera.main.transform.position : Vector3.zero;
-        Vector3 castDirection = Camera.main != null ? Camera.main.transform.forward : Vector3.forward;
+        // 根据施法者ID获取对应玩家位置
+        Vector3 castPosition = GetCasterPosition(playerId);
+        Vector3 castDirection = GetCasterDirection(playerId);
         
         // 执行命中判定
         ExecuteMagicHitDetection(magicData, castPosition, castDirection);
+    }
+    
+    /// <summary>
+    /// 获取施法者位置（忽略Y轴）
+    /// </summary>
+    /// <param name="playerId">施法者玩家ID</param>
+    /// <returns>施法者位置</returns>
+    private Vector3 GetCasterPosition(int playerId)
+    {
+        // 根据玩家ID获取对应玩家的位置
+        PlayerManager.PlayerData playerData = PlayerManager.Instance?.GetPlayerData(playerId);
+        if (playerData != null && playerData.playerObject != null)
+        {
+            Vector3 position = playerData.playerObject.transform.position;
+            // 忽略Y轴位置，设为0
+            position.y = 0;
+            if (enableDebugLog)
+            {
+                Debug.Log($"[MagicHitDetection] 使用玩家{playerId}位置作为施法基准: {position}");
+            }
+            return position;
+        }
+        else
+        {
+            // 回退到摄像机位置
+            Vector3 fallbackPosition = Camera.main != null ? Camera.main.transform.position : Vector3.zero;
+            fallbackPosition.y = 0; // 忽略Y轴
+            Debug.LogWarning($"[MagicHitDetection] 未找到玩家{playerId}，使用摄像机位置: {fallbackPosition}");
+            return fallbackPosition;
+        }
+    }
+    
+    /// <summary>
+    /// 获取施法者方向
+    /// </summary>
+    /// <param name="playerId">施法者玩家ID</param>
+    /// <returns>施法者方向</returns>
+    private Vector3 GetCasterDirection(int playerId)
+    {
+        // 根据玩家ID获取对应玩家的方向
+        PlayerManager.PlayerData playerData = PlayerManager.Instance?.GetPlayerData(playerId);
+        if (playerData != null && playerData.playerObject != null)
+        {
+            return playerData.playerObject.transform.forward;
+        }
+        else
+        {
+            // 回退到摄像机方向
+            return Camera.main != null ? Camera.main.transform.forward : Vector3.forward;
+        }
     }
     
     /// <summary>

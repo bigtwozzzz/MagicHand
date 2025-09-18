@@ -233,6 +233,14 @@ public class MagicManager : MonoBehaviour
     public static event System.Action<int, MagicData> OnMagicCast;
     
     /// <summary>
+    /// 触发魔法施放事件（供外部调用）
+    /// </summary>
+    public static void TriggerMagicCastEvent(int magicId, MagicData magicData)
+    {
+        OnMagicCast?.Invoke(magicId, magicData);
+    }
+    
+    /// <summary>
     /// 触发魔法
     /// </summary>
     private void TriggerMagic(int magicId, MagicData magicData)
@@ -266,8 +274,8 @@ public class MagicManager : MonoBehaviour
     /// <summary>
     /// 获取本地玩家ID
     /// </summary>
-    /// <returns>本地玩家ID，默认为1</returns>
-    private int GetLocalPlayerId()
+    /// <returns>本地玩家ID</returns>
+    public int GetLocalPlayerId()
     {
         // 查找主玩家
         if (PlayerManager.Instance != null)
@@ -301,7 +309,7 @@ public class MagicManager : MonoBehaviour
                 PlayerIdentity identity = player.playerObject.GetComponent<PlayerIdentity>();
                 if (identity != null && identity.IsMainPlayer)
                 {
-                    // 获取玩家的生命值管理器
+                    // 获取玩家的健康管理器
                     PlayerHealthManager healthManager = player.playerObject.GetComponent<PlayerHealthManager>();
                     if (healthManager != null)
                     {
@@ -311,9 +319,11 @@ public class MagicManager : MonoBehaviour
             }
         }
         
-        // 如果找不到玩家或生命值管理器，默认认为玩家未死亡
+        // 默认返回false（未死亡）
         return false;
     }
+    
+
     
     /// <summary>
     /// 添加功能性手势
@@ -341,6 +351,8 @@ public class MagicManager : MonoBehaviour
         gestureHistory.Clear();
         Debug.Log("[MagicManager] 清空手势历史");
     }
+    
+
 }
 
 /// <summary>

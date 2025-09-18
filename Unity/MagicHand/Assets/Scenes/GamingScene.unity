@@ -202,6 +202,7 @@ Transform:
   - {fileID: 1094445632}
   - {fileID: 1607355228}
   - {fileID: 1324357768}
+  - {fileID: 1603551815}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &613146830
@@ -635,15 +636,15 @@ MonoBehaviour:
   magicEffects:
   - magicId: 3
     effectPrefab: {fileID: 3378743505738119105, guid: 1828ae7d3481cdd4890df79463a3f2a9, type: 3}
-    poolSize: 1
+    poolSize: 2
     expandPool: 0
   - magicId: 4
     effectPrefab: {fileID: 3085166871639097753, guid: f6dc9c912fbf3454e987a927fe308a59, type: 3}
-    poolSize: 1
+    poolSize: 2
     expandPool: 0
   - magicId: 22
     effectPrefab: {fileID: 1839445213900760, guid: e4f0684498764e345bd20f7fc367e618, type: 3}
-    poolSize: 1
+    poolSize: 2
     expandPool: 0
   defaultPoolSize: 10
   effectParent: {fileID: 2121945816}
@@ -1234,6 +1235,51 @@ MonoBehaviour:
   playerBaseTransform: {fileID: 1568656441}
   playerSpacing: 4
   spawnedPlayers: []
+--- !u!1 &1603551814
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1603551815}
+  - component: {fileID: 1603551816}
+  m_Layer: 0
+  m_Name: NetCastMagic
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1603551815
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1603551814}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 485650344}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1603551816
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1603551814}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63e442fe6f908f5459d2db0a4b98e9d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enableDebugLog: 1
 --- !u!1 &1607355227
 GameObject:
   m_ObjectHideFlags: 0

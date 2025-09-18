@@ -42,11 +42,15 @@ public class MagicRange
     }
     
     /// <summary>
-    /// 检查位置是否在范围内
+    /// 检查位置是否在范围内（忽略Y轴）
     /// </summary>
     public bool IsPositionInRange(Vector3 position, Vector3 casterPosition)
     {
-        Vector3 relativePos = position - casterPosition;
+        // 忽略Y轴位置，只考虑XZ平面的范围判定
+        Vector3 targetPos = new Vector3(position.x, 0, position.z);
+        Vector3 casterPos = new Vector3(casterPosition.x, 0, casterPosition.z);
+        Vector3 relativePos = targetPos - casterPos;
+        
         return relativePos.x >= left && relativePos.x <= right &&
                relativePos.z >= backward && relativePos.z <= forward;
     }
@@ -130,13 +134,17 @@ public class MagicData
     }
     
     /// <summary>
-    /// 检查位置是否在魔法范围内
+    /// 检查位置是否在魔法范围内（忽略Y轴）
     /// </summary>
     public bool IsPositionInRange(Vector3 position, Vector3 casterPosition)
     {
         if (range == null) return false;
         
-        Vector3 relativePos = position - casterPosition;
+        // 忽略Y轴位置，只考虑XZ平面的范围判定
+        Vector3 targetPos = new Vector3(position.x, 0, position.z);
+        Vector3 casterPos = new Vector3(casterPosition.x, 0, casterPosition.z);
+        Vector3 relativePos = targetPos - casterPos;
+        
         return relativePos.x >= range.left && relativePos.x <= range.right &&
                relativePos.z >= range.backward && relativePos.z <= range.forward;
     }
