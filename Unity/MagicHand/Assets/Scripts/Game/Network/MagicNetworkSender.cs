@@ -11,7 +11,7 @@ public class MagicNetworkSender : MonoBehaviour
     [SerializeField] private bool enableDebugLog = true;
     
     [Header("网络设置")]
-    [SerializeField] private uint magicCastMessageId = 8; // 魔法施放消息ID，可根据服务器协议调整
+    [SerializeField] private uint magicCastMessageId = 4; // 魔法施放消息ID，可根据服务器协议调整
     
     private Encoder encoder;
     private int localPlayerId = 1; // 本地玩家ID，可从PlayerManager获取
@@ -38,7 +38,10 @@ public class MagicNetworkSender : MonoBehaviour
     void OnDestroy()
     {
         // 取消订阅事件
-        MagicEventSystem.OnMagicTriggered -= OnLocalMagicTriggered;
+        //if (MagicEventSystem.OnMagicTriggered != null)
+       // {
+            MagicEventSystem.OnMagicTriggered -= OnLocalMagicTriggered;
+        //}
     }
     
     /// <summary>
