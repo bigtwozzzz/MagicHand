@@ -39,6 +39,9 @@ public class PlayerUIController : MonoBehaviour
         // 订阅玩家死亡事件
         PlayerHealthManager.OnPlayerDeath += OnPlayerDeath;
         
+        // 订阅玩家复活事件
+        PlayerHealthManager.OnPlayerRevive += OnPlayerRevive;
+        
         // 初始化血条显示
         UpdateAllHealthBars();
         
@@ -59,6 +62,9 @@ public class PlayerUIController : MonoBehaviour
         
         // 取消订阅玩家死亡事件
         PlayerHealthManager.OnPlayerDeath -= OnPlayerDeath;
+        
+        // 取消订阅玩家复活事件
+        PlayerHealthManager.OnPlayerRevive -= OnPlayerRevive;
     }
     
     /// <summary>
@@ -327,6 +333,30 @@ public class PlayerUIController : MonoBehaviour
             // 隐藏玩家UI
             HidePlayerUI(playerId);
         }
+        
+        // 更新UI显示状态
+        UpdatePlayerUIVisibility();
+    }
+    
+    /// <summary>
+    /// 玩家复活事件处理
+    /// </summary>
+    /// <param name="playerId">复活玩家ID</param>
+    private void OnPlayerRevive(int playerId)
+    {
+        Debug.Log($"[PlayerUIController] 玩家{playerId}复活，重新显示UI");
+        
+        // 重新显示玩家UI
+        ShowPlayerUI(playerId);
+        
+        // 通知PlayerManager处理模型启用
+        if (PlayerManager.Instance != null)
+        {
+            PlayerManager.Instance.EnablePlayer(playerId);
+        }
+        
+        // 更新血条显示
+        UpdateAllHealthBars();
         
         // 更新UI显示状态
         UpdatePlayerUIVisibility();

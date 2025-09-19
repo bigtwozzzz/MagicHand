@@ -43,6 +43,20 @@ public class MagicHitDetection : MonoBehaviour
             return;
         }
         
+        // 检查是否为冰风暴魔法（魔法ID 30）
+        if (magicId == 30)
+        {
+            ExecuteIceStormMagic(magicData, playerId);
+            return;
+        }
+        
+        // 检查是否为天降甘霖魔法（魔法ID 42）
+        if (magicId == 42)
+        {
+            ExecuteHeavenlyRainMagic(magicData, playerId);
+            return;
+        }
+        
         // 根据施法者ID获取对应玩家位置
         Vector3 castPosition = GetCasterPosition(playerId);
         Vector3 castDirection = GetCasterDirection(playerId);
@@ -231,6 +245,136 @@ public class MagicHitDetection : MonoBehaviour
             {
                 Debug.Log($"[MagicHitDetection] 治疗失败或无需治疗，玩家{playerId}当前生命值: {healthManager.CurrentHealth}/{healthManager.MaxHealth}");
             }
+        }
+    }
+    
+    /// <summary>
+    /// 执行冰风暴魔法逻辑 - 持续2.5秒，每0.5秒造成伤害
+    /// </summary>
+    /// <param name="magicData">魔法数据</param>
+    /// <param name="playerId">施法者玩家ID</param>
+    private void ExecuteIceStormMagic(MagicData magicData, int playerId)
+    {
+        if (magicData == null)
+        {
+            Debug.LogError("[MagicHitDetection] 冰风暴魔法数据为空");
+            return;
+        }
+        
+        if (enableDebugLog)
+        {
+            Debug.Log($"[MagicHitDetection] 执行冰风暴魔法，玩家{playerId}，持续2.5秒，每0.5秒造成{magicData.damage}点伤害");
+        }
+        
+        // 启动冰风暴协程
+        StartCoroutine(IceStormCoroutine(magicData, playerId));
+    }
+    
+    /// <summary>
+    /// 冰风暴协程 - 持续伤害逻辑
+    /// </summary>
+    private System.Collections.IEnumerator IceStormCoroutine(MagicData magicData, int playerId)
+    {
+        const float totalDuration = 2.5f; // 总持续时间
+        const float damageInterval = 0.5f; // 伤害间隔
+        float elapsedTime = 0f;
+        
+        // 获取施法者位置和方向
+        Vector3 casterPosition = GetCasterPosition(playerId);
+        Vector3 casterDirection = GetCasterDirection(playerId);
+        
+        while (elapsedTime < totalDuration)
+        {
+            // 对范围内的怪物造成伤害
+            ExecuteMagicHitDetection(magicData, casterPosition, casterDirection);
+            
+            if (enableDebugLog)
+            {
+                Debug.Log($"[MagicHitDetection] 冰风暴造成伤害，已持续{elapsedTime:F1}秒");
+            }
+            
+            // 等待下次伤害
+            yield return new WaitForSeconds(damageInterval);
+            elapsedTime += damageInterval;
+        }
+        
+        if (enableDebugLog)
+        {
+            Debug.Log($"[MagicHitDetection] 冰风暴结束，总持续时间{elapsedTime:F1}秒");
+        }
+    }
+    
+    /// <summary>
+    /// 执行天降甘霖魔法逻辑 - 治疗并复活所有玩家
+    /// </summary>
+    /// <param name="magicData">魔法数据</param>
+    /// <param name="playerId">施法者玩家ID</param>
+    private void ExecuteHeavenlyRainMagic(MagicData magicData, int playerId)
+    {
+        if (magicData == null)
+        {
+            Debug.LogError("[MagicHitDetection] 天降甘霖魔法数据为空");
+            return;
+        }
+        
+        if (enableDebugLog)
+        {
+            Debug.Log($"[MagicHitDetection] 执行天降甘霖魔法，玩家{playerId}，治疗并复活所有玩家");
+        }
+        
+        // 获取所有玩家数据
+        if (PlayerManager.Instance == null)
+        {
+            Debug.LogError("[MagicHitDetection] PlayerManager实例为空，无法执行天降甘霖");
+            return;
+        }
+        
+        int healAmount = Mathf.RoundToInt(magicData.damage);
+        int healedCount = 0;
+        int revivedCount = 0;
+        
+        // 遍历所有玩家（包括死亡的玩家）
+        var allPlayers = PlayerManager.Instance.GetAllPlayers();
+        foreach (var playerData in allPlayers)
+        {
+            if (playerData?.playerObject == null) continue;
+            
+            PlayerHealthManager healthManager = playerData.playerObject.GetComponent<PlayerHealthManager>();
+            if (healthManager == null) continue;
+            
+            // 检查玩家是否死亡
+            bool wasDead = healthManager.IsDead();
+            
+            if (wasDead)
+            {
+                // 复活玩家 - 设置为满血
+                healthManager.SetCurrentHealth(healthManager.MaxHealth);
+                revivedCount++;
+                
+                if (enableDebugLog)
+                {
+                    Debug.Log($"[MagicHitDetection] 复活玩家{playerData.playerId}，生命值恢复至{healthManager.MaxHealth}");
+                }
+            }
+            else
+            {
+                // 治疗活着的玩家
+                bool healSuccess = healthManager.Heal(healAmount);
+                if (healSuccess)
+                {
+                    healedCount++;
+                }
+                
+                if (enableDebugLog)
+                {
+                    Debug.Log($"[MagicHitDetection] 治疗玩家{playerData.playerId}，恢复{healAmount}点生命值，当前生命值: {healthManager.CurrentHealth}/{healthManager.MaxHealth}");
+                }
+            }
+        }
+        
+        if (enableDebugLog)
+        {
+            Debug.Log($"[MagicHitDetection] 天降甘霖完成，治疗{healedCount}名玩家，复活{revivedCount}名玩家");
         }
     }
     

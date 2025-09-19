@@ -67,6 +67,30 @@ public class MonsterRuntimeData : MonoBehaviour
     }
     
     /// <summary>
+    /// 重置运行时数据到初始状态（用于对象池重用）
+    /// </summary>
+    public void ResetRuntimeData()
+    {
+        if (config == null) return;
+        
+        // 重置生命值和状态
+        currentHealth = config.maxHealth;
+        isAlive = true;
+        isMoving = false;
+        isAttacking = false;
+        
+        // 重置其他运行时状态
+        speedMultiplier = 1.0f;
+        targetTransform = null;
+        spawnTime = Time.time;
+        
+        if (config.enableDebugLog)
+        {
+            Debug.Log($"[MonsterRuntimeData] 怪物 {uniqueNumber} 运行时数据已重置");
+        }
+    }
+    
+    /// <summary>
     /// 受到伤害
     /// </summary>
     /// <param name="damage">伤害值</param>

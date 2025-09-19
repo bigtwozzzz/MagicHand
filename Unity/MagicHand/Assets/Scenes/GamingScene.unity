@@ -671,6 +671,14 @@ MonoBehaviour:
     effectPrefab: {fileID: 8193269319262022043, guid: d642c6ab14f9e19449192ebdccff6b25, type: 3}
     poolSize: 2
     expandPool: 1
+  - magicId: 42
+    effectPrefab: {fileID: 2381527365436467162, guid: 3779c5114b8ec51458c2074ddae7dde2, type: 3}
+    poolSize: 2
+    expandPool: 1
+  - magicId: 30
+    effectPrefab: {fileID: 1168529248583268, guid: 559c2104a317a6840b721f120bbb3060, type: 3}
+    poolSize: 2
+    expandPool: 1
   defaultPoolSize: 10
   effectParent: {fileID: 2121945816}
   playerTransform: {fileID: 1568656441}
@@ -1660,7 +1668,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6362684526502634374, guid: 296c47fd9e6f79e48afecc3f786b9212, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6375678424692516124, guid: 296c47fd9e6f79e48afecc3f786b9212, type: 3}
       propertyPath: m_fontAsset

@@ -139,6 +139,48 @@ public class MonsterAnimeMgr : MonoBehaviour
     }
     
     /// <summary>
+    /// 重置动画状态到初始状态（用于对象池重用）
+    /// </summary>
+    public void ResetAnimationState()
+    {
+        if (animator == null) return;
+        
+        // 停止所有攻击相关的协程
+        StopAttacking();
+        
+        // 重置所有动画参数到初始状态
+        SetAlive(true);
+        SetInRange(false);
+        SetDizzy(false);
+        SetHit(false);
+        
+        // 重置内部状态
+        isMoving = false;
+        isAttacking = false;
+        currentState = AnimationState.Unknown;
+        
+        // 重置运行时数据状态
+        if (runtimeData != null)
+        {
+            runtimeData.isAttacking = false;
+            runtimeData.isMoving = false;
+        }
+        
+        // 重置动画状态机到Entry状态
+        if (animator.isActiveAndEnabled)
+        {
+            // 重新启用Animator来触发Entry状态
+            animator.enabled = false;
+            animator.enabled = true;
+        }
+        
+        if (enableDebugLog)
+        {
+            Debug.Log($"[MonsterAnimeMgr] 动画状态已重置: {gameObject.name}");
+        }
+    }
+    
+    /// <summary>
     /// 监控动画状态变化
     /// </summary>
     private void MonitorAnimationState()

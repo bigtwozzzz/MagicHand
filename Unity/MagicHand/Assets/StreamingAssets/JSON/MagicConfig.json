@@ -184,6 +184,80 @@
         "duration": 0.8,
         "autoRecycle": true
       }
+    },
+    {
+      "magicId": 42,
+      "magicName": "天降甘霖",
+      "description": "双手比心，治疗并复活所有玩家",
+      "damage": 100.0,
+      "damageType": "Magic",
+      "range": {
+        "left": -15.0,
+        "right": 15.0,
+        "forward": 1.0,
+        "backward": -1.0
+      },
+      "cooldownTime": 15.0,
+      "castTime": 0.1,
+      "isEnabled": true,
+      "level": 1,
+      "amplificationFactor": 1,
+      "effectConfig": {
+        "positionOffset": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "rotationOffset": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "scale": {
+          "x": 2.0,
+          "y": 2.0,
+          "z": 2.0
+        },
+        "duration": 2.5,
+        "autoRecycle": true
+      }
+    },
+    {
+      "magicId": 30,
+      "magicName": "剑雨",
+      "description": "双手食指和大拇指比出矩形，减速并持续伤害远处的敌人",
+      "damage": 30.0,
+      "damageType": "Magic",
+      "range": {
+        "left": -3.0,
+        "right": 3.0,
+        "forward": 12.0,
+        "backward": 4.0
+      },
+      "cooldownTime": 12.0,
+      "castTime": 0.1,
+      "isEnabled": true,
+      "level": 1,
+      "amplificationFactor": 1,
+      "effectConfig": {
+        "positionOffset": {
+          "x": 0.0,
+          "y": 10.0,
+          "z": 7.0
+        },
+        "rotationOffset": {
+          "x": 90.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "scale": {
+          "x": 2.0,
+          "y": 2.0,
+          "z": 2.0
+        },
+        "duration": 4,
+        "autoRecycle": true
+      }
     }
   ]
 }

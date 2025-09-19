@@ -343,6 +343,24 @@ public class MonsterPoolMgr : MonoBehaviour
         // 设置动画管理器
         SetupMonsterAnimeMgr(monster);
         
+        // 重置运行时数据状态（确保从初始状态开始）
+        MonsterRuntimeData resetRuntimeData = monster.GetComponent<MonsterRuntimeData>();
+        if (resetRuntimeData != null)
+        {
+            resetRuntimeData.ResetRuntimeData();
+        }
+        
+        // 重置动画状态（确保从初始状态开始）
+        MonsterAnimeMgr animeMgr = monster.GetComponent<MonsterAnimeMgr>();
+        if (animeMgr != null)
+        {
+            animeMgr.ResetAnimationState();
+            if (enableDebugLog)
+            {
+                Debug.Log($"[MonsterPoolMgr] 重置怪物 {uniqueNumber} 的状态和动画");
+            }
+        }
+        
         // 激活怪物
         monster.SetActive(true);
         monster.transform.position = position;

@@ -153,9 +153,21 @@ public class PlayerManager : MonoBehaviour
         }
         players.Clear();
         
+        // 隐藏所有玩家的血条UI
+        PlayerUIController playerUIController = FindObjectOfType<PlayerUIController>();
+        if (playerUIController != null)
+        {
+            playerUIController.ClearAllPlayerUI();
+            // 隐藏所有玩家UI
+            for (int i = 1; i <= 4; i++) // 假设最多支持4个玩家
+            {
+                playerUIController.HidePlayerUI(i);
+            }
+        }
+        
         if (enableDebugLog)
         {
-            Debug.Log("[PlayerManager] 所有玩家已清除");
+            Debug.Log("[PlayerManager] 所有玩家已清除，血条UI已隐藏");
         }
     }
 
@@ -176,6 +188,15 @@ public class PlayerManager : MonoBehaviour
     public List<PlayerData> GetActivePlayers()
     {
         return players.Where(p => p.isActive && p.playerObject != null && !IsPlayerDead(p)).ToList();
+    }
+    
+    /// <summary>
+    /// 获取所有玩家（包括死亡的玩家）
+    /// </summary>
+    /// <returns>所有玩家列表</returns>
+    public List<PlayerData> GetAllPlayers()
+    {
+        return players.Where(p => p.isActive && p.playerObject != null).ToList();
     }
     
     /// <summary>

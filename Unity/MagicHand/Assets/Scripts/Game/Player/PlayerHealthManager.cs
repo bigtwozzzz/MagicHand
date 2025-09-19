@@ -21,6 +21,11 @@ public class PlayerHealthManager : MonoBehaviour
     public static event Action<int> OnPlayerDeath;
     
     /// <summary>
+    /// 玩家复活事件 - 参数：玩家ID
+    /// </summary>
+    public static event Action<int> OnPlayerRevive;
+    
+    /// <summary>
     /// 当前生命值属性
     /// </summary>
     public int CurrentHealth => currentHealth;
@@ -147,15 +152,28 @@ public class PlayerHealthManager : MonoBehaviour
     }
     
     /// <summary>
-    /// 设置生命值（用于调试或特殊情况）
+    /// 设置当前生命值
     /// </summary>
     /// <param name="newHealth">新的生命值</param>
-    public void SetHealth(int newHealth)
+    public void SetCurrentHealth(int newHealth)
     {
         int previousHealth = currentHealth;
+        bool wasDead = IsDead();
         currentHealth = Mathf.Clamp(newHealth, 0, maxHealth);
         
         Debug.Log($"[PlayerHealthManager] 生命值设置：{previousHealth} -> {currentHealth}");
+        
+        // 检查是否从死亡状态复活
+        if (wasDead && !IsDead())
+        {
+            // 获取玩家ID并触发复活事件
+            PlayerIdentity identity = GetComponent<PlayerIdentity>();
+            if (identity != null)
+            {
+                OnPlayerRevive?.Invoke(identity.PlayerId);
+                Debug.Log($"[PlayerHealthManager] 玩家{identity.PlayerId}已复活");
+            }
+        }
         
         // 触发血量变化事件
         TriggerHealthChangedEvent();
