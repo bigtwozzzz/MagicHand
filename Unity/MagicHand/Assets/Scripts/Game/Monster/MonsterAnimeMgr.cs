@@ -12,7 +12,7 @@ public class MonsterAnimeMgr : MonoBehaviour
     [SerializeField] private Animator animator;
     
     [Header("调试配置")]
-    [SerializeField] private bool enableDebugLog = true;
+    [SerializeField] private bool enableDebugLog = false;
     
     // 动画参数名称常量
     private const string PARAM_ALIVE = "alive";
@@ -64,6 +64,9 @@ public class MonsterAnimeMgr : MonoBehaviour
     private float lastAttackTime = 0f;
     private PlayerHealthManager[] playerHealthManagers;
     private Coroutine attackCoroutine;
+    
+    // 受击重置协程
+    private Coroutine hitResetCoroutine;
     
     void Awake()
     {
@@ -147,6 +150,13 @@ public class MonsterAnimeMgr : MonoBehaviour
         
         // 停止所有攻击相关的协程
         StopAttacking();
+        
+        // 停止受击重置协程
+        if (hitResetCoroutine != null)
+        {
+            StopCoroutine(hitResetCoroutine);
+            hitResetCoroutine = null;
+        }
         
         // 重置所有动画参数到初始状态
         SetAlive(true);
@@ -352,13 +362,44 @@ public class MonsterAnimeMgr : MonoBehaviour
     {
         if (animator != null)
         {
+            // 停止之前的重置协程（如果存在）
+            if (hitResetCoroutine != null)
+            {
+                StopCoroutine(hitResetCoroutine);
+            }
+            
             animator.SetBool("hit", true);
+            
+            // 启动自动重置协程，0.1秒后重置hit参数
+            hitResetCoroutine = StartCoroutine(ResetHitAfterDelay(0.1f));
             
             if (enableDebugLog)
             {
-                Debug.Log($"[MonsterAnimeMgr] 触发受击效果，hit参数设为true");
+                Debug.Log($"[MonsterAnimeMgr] 触发受击效果，hit参数设为true，将在0.1秒后自动重置");
             }
         }
+    }
+    
+    /// <summary>
+    /// 延迟重置hit参数的协程
+    /// </summary>
+    /// <param name="delay">延迟时间</param>
+    /// <returns></returns>
+    private IEnumerator ResetHitAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        
+        if (animator != null)
+        {
+            animator.SetBool("hit", false);
+            
+            if (enableDebugLog)
+            {
+                Debug.Log($"[MonsterAnimeMgr] 自动重置hit参数为false ({gameObject.name})");
+            }
+        }
+        
+        hitResetCoroutine = null;
     }
     
     #endregion

@@ -21,6 +21,10 @@ public class MagicUIMgr : MonoBehaviour
     // 当前显示的协程
     private Coroutine currentTipCoroutine;
     
+    // 魔法释放后的保护时间（防止误触冷却提示）
+    private Dictionary<int, float> magicCastProtectionTime = new Dictionary<int, float>();
+    private const float PROTECTION_DURATION = 1f; // 1秒保护时间
+    
     void Awake()
     {
         // 单例模式
@@ -39,6 +43,8 @@ public class MagicUIMgr : MonoBehaviour
     {
         // 订阅魔法冷却事件
         MagicEventSystem.OnMagicCooldownStart += OnMagicCooldownStart;
+        // 订阅魔法触发事件
+        MagicEventSystem.OnMagicTriggered += OnMagicTriggered;
         
         // 初始化UI状态
         if (cooldownTipPanel != null)
@@ -51,6 +57,16 @@ public class MagicUIMgr : MonoBehaviour
     {
         // 取消订阅
         MagicEventSystem.OnMagicCooldownStart -= OnMagicCooldownStart;
+        MagicEventSystem.OnMagicTriggered -= OnMagicTriggered;
+    }
+    
+    /// <summary>
+    /// 魔法触发时的处理
+    /// </summary>
+    private void OnMagicTriggered(int magicId, MagicData magicData, int playerId)
+    {
+        // 记录魔法释放时间，用于保护期判断
+        magicCastProtectionTime[magicId] = Time.time;
     }
     
     /// <summary>
@@ -58,6 +74,17 @@ public class MagicUIMgr : MonoBehaviour
     /// </summary>
     private void OnMagicCooldownStart(int magicId, float cooldownTime)
     {
+        // 检查是否在保护期内
+        if (magicCastProtectionTime.ContainsKey(magicId))
+        {
+            float timeSinceCast = Time.time - magicCastProtectionTime[magicId];
+            if (timeSinceCast < PROTECTION_DURATION)
+            {
+                Debug.Log($"[MagicUIMgr] 魔法{magicId}在保护期内({timeSinceCast:F2}s < {PROTECTION_DURATION}s)，跳过冷却提示");
+                return;
+            }
+        }
+        
         ShowCooldownTip(magicId, cooldownTime);
     }
     
@@ -77,7 +104,16 @@ public class MagicUIMgr : MonoBehaviour
         
         // 更新提示文本
         string tipMessage = $"{magicName}魔法冷却中，剩余{remainingTime:F1}秒";
-        cooldownTipText.text = tipMessage;
+        if (cooldownTipText != null)
+        {
+            cooldownTipText.text = tipMessage;
+            // 确保文本组件被激活
+            cooldownTipText.gameObject.SetActive(true);
+        }
+        else
+        {
+            Debug.LogError("[MagicUIMgr] cooldownTipText组件为空，无法显示文本");
+        }
         
         // 显示提示面板
         cooldownTipPanel.SetActive(true);

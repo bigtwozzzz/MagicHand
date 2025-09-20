@@ -78,7 +78,7 @@
       "magicId": 32,
       "magicName": "流星",
       "description": "先握拳后张掌的复合手势魔法，释放从天而降的火球，对大范围敌人造成伤害",
-      "damage": 100.0,
+      "damage": 200.0,
       "damageType": "Magic",
       "range": {
         "left": -5.0,
@@ -157,7 +157,7 @@
       "range": {
         "left": -4.0,
         "right": 4.0,
-        "forward": 4.0,
+        "forward": 5.5,
         "backward": 0.0
       },
       "cooldownTime": 5.0,

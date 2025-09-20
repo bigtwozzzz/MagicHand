@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -340,8 +341,11 @@ public class MonsterPoolMgr : MonoBehaviour
         
         // 血条组件现在会自动处理缩放调整，无需额外处理
         
-        // 设置动画管理器
-        SetupMonsterAnimeMgr(monster);
+        // 确保怪物处于非激活状态进行重置
+        monster.SetActive(false);
+        
+        // 设置位置（在激活前设置）
+        monster.transform.position = position;
         
         // 重置运行时数据状态（确保从初始状态开始）
         MonsterRuntimeData resetRuntimeData = monster.GetComponent<MonsterRuntimeData>();
@@ -361,9 +365,11 @@ public class MonsterPoolMgr : MonoBehaviour
             }
         }
         
-        // 激活怪物
-        monster.SetActive(true);
-        monster.transform.position = position;
+        // 设置动画管理器
+        SetupMonsterAnimeMgr(monster);
+        
+        // 等待一帧确保所有重置操作完成，然后激活怪物
+        StartCoroutine(ActivateMonsterAfterReset(monster, uniqueNumber));
         
         // 添加到活跃列表
         activeMonsters[uniqueNumber] = monster;
@@ -380,6 +386,29 @@ public class MonsterPoolMgr : MonoBehaviour
         }
         
         return uniqueNumber;
+    }
+    
+    /// <summary>
+    /// 延迟激活怪物的协程，确保所有重置操作完成
+    /// </summary>
+    /// <param name="monster">怪物对象</param>
+    /// <param name="uniqueNumber">怪物唯一编号</param>
+    /// <returns></returns>
+    private IEnumerator ActivateMonsterAfterReset(GameObject monster, string uniqueNumber)
+    {
+        // 等待一帧确保所有重置操作完成
+        yield return null;
+        
+        if (monster != null)
+        {
+            // 激活怪物
+            monster.SetActive(true);
+            
+            if (enableDebugLog)
+            {
+                Debug.Log($"[MonsterPoolMgr] 延迟激活怪物: 编号={uniqueNumber}");
+            }
+        }
     }
     
     /// <summary>

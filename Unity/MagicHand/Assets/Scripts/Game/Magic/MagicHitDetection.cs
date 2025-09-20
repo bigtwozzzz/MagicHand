@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -43,10 +44,10 @@ public class MagicHitDetection : MonoBehaviour
             return;
         }
         
-        // 检查是否为冰风暴魔法（魔法ID 30）
+        // 检查是否为剑雨魔法（魔法ID 30）
         if (magicId == 30)
         {
-            ExecuteIceStormMagic(magicData, playerId);
+            ExecuteSwordRainMagic(magicData, playerId);
             return;
         }
         
@@ -249,6 +250,16 @@ public class MagicHitDetection : MonoBehaviour
     }
     
     /// <summary>
+    /// 执行剑雨魔法逻辑 - 持续2.5秒，每0.5秒造成伤害
+    /// </summary>
+    /// <param name="magicData">魔法数据</param>
+    /// <param name="playerId">施法者玩家ID</param>
+    private void ExecuteSwordRainMagic(MagicData magicData, int playerId)
+    {
+        StartCoroutine(SwordRainCoroutine(magicData, playerId));
+    }
+    
+    /// <summary>
     /// 执行冰风暴魔法逻辑 - 持续2.5秒，每0.5秒造成伤害
     /// </summary>
     /// <param name="magicData">魔法数据</param>
@@ -268,6 +279,185 @@ public class MagicHitDetection : MonoBehaviour
         
         // 启动冰风暴协程
         StartCoroutine(IceStormCoroutine(magicData, playerId));
+    }
+    
+    /// <summary>
+     /// 执行剑雨命中判定 - 避免重复触发受击动画
+     /// </summary>
+     /// <param name="magicData">魔法数据</param>
+     /// <param name="castPosition">施法位置</param>
+     /// <param name="castDirection">施法方向</param>
+     /// <param name="hitMonsters">已受击怪物集合</param>
+     /// <returns>命中的怪物数量</returns>
+     private int ExecuteSwordRainHitDetection(MagicData magicData, Vector3 castPosition, Vector3 castDirection, HashSet<string> hitMonsters)
+     {
+         if (magicData == null)
+         {
+             Debug.LogError("[MagicHitDetection] 魔法数据为空");
+             return 0;
+         }
+         
+         if (MonsterPoolMgr.Instance == null)
+         {
+             Debug.LogError("[MagicHitDetection] MonsterPoolMgr实例不存在");
+             return 0;
+         }
+         
+         int hitCount = 0;
+         
+         // 获取所有活跃怪物并进行命中判定
+         var activeMonsters = GetAllActiveMonsters();
+         
+         foreach (var monsterPair in activeMonsters)
+         {
+             string uniqueNumber = monsterPair.Key;
+             GameObject monsterObj = monsterPair.Value;
+             
+             if (monsterObj == null) continue;
+             
+             MonsterRuntimeData runtimeData = monsterObj.GetComponent<MonsterRuntimeData>();
+             if (runtimeData == null || !runtimeData.isAlive) continue;
+             
+             // 检查怪物是否在魔法攻击范围内
+             if (IsMonsterInMagicRange(magicData, castPosition, castDirection, runtimeData.currentPosition))
+             {
+                 // 计算伤害并应用
+                 int damage = CalculateDamage(magicData, runtimeData);
+                 int remainingHealth = runtimeData.currentHealth - damage;
+                 
+                 if (enableDebugLog)
+                 {
+                     Debug.Log($"[MagicHitDetection] 怪物 {uniqueNumber} 被剑雨命中，伤害: {damage}, 剩余血量: {remainingHealth}");
+                 }
+                 
+                 // 只在第一次命中时触发受击动画
+                 if (!hitMonsters.Contains(uniqueNumber))
+                 {
+                     MonsterAnimeMgr animeMgr = monsterObj.GetComponent<MonsterAnimeMgr>();
+                     if (animeMgr != null)
+                     {
+                         animeMgr.TriggerHit();
+                     }
+                     hitMonsters.Add(uniqueNumber);
+                 }
+                 
+                 // 应用伤害
+                 runtimeData.TakeDamage(damage);
+                 
+                 hitCount++;
+             }
+         }
+         
+         return hitCount;
+     }
+     
+     /// <summary>
+     /// 执行冰风暴命中判定 - 避免重复触发受击动画
+     /// </summary>
+    /// <param name="magicData">魔法数据</param>
+    /// <param name="castPosition">施法位置</param>
+    /// <param name="castDirection">施法方向</param>
+    /// <param name="hitMonsters">已受击怪物集合</param>
+    /// <returns>命中的怪物数量</returns>
+    private int ExecuteIceStormHitDetection(MagicData magicData, Vector3 castPosition, Vector3 castDirection, HashSet<string> hitMonsters)
+    {
+        if (magicData == null)
+        {
+            Debug.LogError("[MagicHitDetection] 魔法数据为空");
+            return 0;
+        }
+        
+        if (MonsterPoolMgr.Instance == null)
+        {
+            Debug.LogError("[MagicHitDetection] MonsterPoolMgr实例不存在");
+            return 0;
+        }
+        
+        int hitCount = 0;
+        
+        // 获取所有活跃怪物并进行命中判定
+        var activeMonsters = GetAllActiveMonsters();
+        
+        foreach (var monsterPair in activeMonsters)
+        {
+            string uniqueNumber = monsterPair.Key;
+            GameObject monsterObj = monsterPair.Value;
+            
+            if (monsterObj == null) continue;
+            
+            MonsterRuntimeData runtimeData = monsterObj.GetComponent<MonsterRuntimeData>();
+            if (runtimeData == null || !runtimeData.isAlive) continue;
+            
+            // 检查怪物是否在魔法攻击范围内
+            if (IsMonsterInMagicRange(magicData, castPosition, castDirection, runtimeData.currentPosition))
+            {
+                // 计算伤害并应用
+                int damage = CalculateDamage(magicData, runtimeData);
+                int remainingHealth = runtimeData.currentHealth - damage;
+                
+                if (enableDebugLog)
+                {
+                    Debug.Log($"[MagicHitDetection] 怪物 {uniqueNumber} 被冰风暴命中，伤害: {damage}, 剩余血量: {remainingHealth}");
+                }
+                
+                // 只在第一次命中时触发受击动画
+                if (!hitMonsters.Contains(uniqueNumber))
+                {
+                    MonsterAnimeMgr animeMgr = monsterObj.GetComponent<MonsterAnimeMgr>();
+                    if (animeMgr != null)
+                    {
+                        animeMgr.TriggerHit();
+                    }
+                    hitMonsters.Add(uniqueNumber);
+                }
+                
+                // 应用伤害
+                runtimeData.TakeDamage(damage);
+                
+                hitCount++;
+            }
+        }
+        
+        return hitCount;
+    }
+    
+    /// <summary>
+    /// 剑雨协程 - 持续伤害逻辑
+    /// </summary>
+    /// <param name="magicData">魔法数据</param>
+    /// <param name="playerId">施法者玩家ID</param>
+    /// <returns></returns>
+    private IEnumerator SwordRainCoroutine(MagicData magicData, int playerId)
+    {
+        const float totalDuration = 2.5f; // 总持续时间
+        const float damageInterval = 0.5f; // 伤害间隔
+        float elapsedTime = 0f;
+        
+        // 获取施法者位置和方向
+        Vector3 casterPosition = GetCasterPosition(playerId);
+        Vector3 casterDirection = GetCasterDirection(playerId);
+        
+        // 记录已经受击的怪物，避免重复触发受击动画
+        HashSet<string> hitMonsters = new HashSet<string>();
+        
+        while (elapsedTime < totalDuration)
+        {
+            // 对范围内的怪物造成伤害，但不重复触发受击动画
+            ExecuteSwordRainHitDetection(magicData, casterPosition, casterDirection, hitMonsters);
+            
+            if (enableDebugLog)
+            {
+                Debug.Log($"[MagicHitDetection] 剑雨造成伤害，已持续{elapsedTime:F1}秒");
+            }
+            
+            elapsedTime += damageInterval;
+            yield return new WaitForSeconds(damageInterval);
+        }
+        
+        if (enableDebugLog)
+        {
+            Debug.Log($"[MagicHitDetection] 剑雨魔法执行完成，总持续时间: {totalDuration}秒");
+        }
     }
     
     /// <summary>
